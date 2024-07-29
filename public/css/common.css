@@ -51,6 +51,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1;
 }
 
 .modal:not(:target) {
@@ -85,9 +86,12 @@ body {
     padding: 10px 0;
 }
 
-.modal__list a {
+.modal__list a,
+.modal__list button {
+    border: none;
     color: #305dff;
     text-decoration: none;
     font-size: 32px;
     font-weight: bold;
+    cursor: pointer;
 }

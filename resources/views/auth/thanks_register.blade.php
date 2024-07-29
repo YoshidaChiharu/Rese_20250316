@@ -8,7 +8,7 @@
 <div class="thanks-wrapper">
     <div class="thanks-content">
         <p class="thanks-content__text">会員登録ありがとうございます</p>
-        <button class="thanks-content__button">ログインする</button>
+        <a class="thanks-content__button" href="/login">ログインする</a>
     </div>
 </div>
 @endsection

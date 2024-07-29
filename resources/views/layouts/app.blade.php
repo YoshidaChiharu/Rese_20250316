@@ -36,7 +36,12 @@
                 <div class="modal__list">
                     <ul>
                         <li><a href="/">Home</a></li>
-                        <li><a href="/logout">Logout</a></li>
+                        <li>
+                            <form action="/logout" method="post">
+                                @csrf
+                                <button>Logout</button>
+                            </form>    
+                        </li>
                         <li><a href="/mypage">Mypage</a></li>
                     </ul>
                 </div>
