@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/auth/register.css') }}">
+<link rel="stylesheet" href="{{ asset('css/auth/register.css') }}">
 @endsection
 
 @section('content')
@@ -12,6 +12,11 @@
         </div>
         <form action="/register" class="register-content__form" method="post">
             @csrf
+            <div class="form__error">
+                @error('name')
+                {{ $message }}
+                @enderror
+            </div>
             <div class="form__group">
                 <div class="form__group--icon">
                     <img src="{{ asset('img/user.svg') }}" alt="user icon">
@@ -20,6 +25,11 @@
                     <input type="text" class="form__group-input" name="name" placeholder="Username" value="{{ old('name') }}">
                 </div>
             </div>
+            <div class="form__error">
+                @error('email')
+                {{ $message }}
+                @enderror
+            </div>
             <div class="form__group">
                 <div class="form__group--icon">
                     <img src="{{ asset('img/mail.svg') }}" alt="mail icon">
@@ -27,6 +37,11 @@
                 <div class="form__group--input">
                     <input type="text" class="form__group-input" name="email" placeholder="Email" value="{{ old('email') }}">
                 </div>
+            </div>
+            <div class="form__error">
+                @error('password')
+                {{ $message }}
+                @enderror
             </div>
             <div class="form__group">
                 <div class="form__group--icon">
