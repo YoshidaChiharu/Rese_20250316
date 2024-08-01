@@ -30,17 +30,18 @@
     </form>
 </div>
 <div class="shop-list-section">
+    @foreach($shops as $shop)
     <div class="shop-card">
         <div class="card-image">
-            <img src="{{ asset('img/sushi.jpg') }}" alt="shop image">
+            <img src="{{ $shop->image }}" alt="shop image">
         </div>
         <div class="card-content">
             <div class="card-content__name">
-                <h2>サンプルテキストサンプルテキスト</h2>
+                <h2>{{ $shop->name }}</h2>
             </div>
             <ul class="card-content__tag-list">
-                <li class="card-content__tag">#東京都</li>
-                <li class="card-content__tag">#寿司</li>
+                <li class="card-content__tag">#{{ $shop->area }}</li>
+                <li class="card-content__tag">#{{ $shop->genre }}</li>
             </ul>
             <form action="" class="card-content__form">
                 <button class="form__button--detail">詳しく見る</button>
@@ -48,25 +49,6 @@
             </form>
         </div>
     </div>
-    @for($i=0; $i < 10; $i++)
-    <div class="shop-card">
-        <div class="card-image">
-            <img src="{{ asset('img/sushi.jpg') }}" alt="shop image">
-        </div>
-        <div class="card-content">
-            <div class="card-content__name">
-                <h2>仙人</h2>
-            </div>
-            <ul class="card-content__tag-list">
-                <li class="card-content__tag">#東京都</li>
-                <li class="card-content__tag">#寿司</li>
-            </ul>
-            <form action="" class="card-content__form">
-                <button class="form__button--detail">詳しく見る</button>
-                <input type="image" class="form__button--favorite" src="{{ asset('img/heart_gray.svg') }}" alt="favorite">
-            </form>
-        </div>
-    </div>
-    @endfor
+    @endforeach
 </div>
 @endsection
