@@ -1,31 +1,35 @@
 @extends('layouts.app')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/shop_all.css') }}">
+<link rel="stylesheet" href="{{ asset('css/shop_all.css') }}">
 @endsection
 
 @section('content')
 <div class="search-section">
     <form action="" class="search-form">
         <div class="form__area">
-            <select name="" id="">
+            <select name="area" onchange="submit(this.form)">
                 <option value="">All area</option>
-                <option value="">area1</option>
-                <option value="">area2</option>
-                <option value="">area3</option>
+                @foreach($areas as $area)
+                <option value="{{ $area }}" {{ $area == $input_area ? 'selected' : '' }}>
+                    {{ $area }}
+                </option>
+                @endforeach
             </select>
         </div>
         <div class="form__genre">
-            <select name="" id="">
+            <select name="genre" onchange="submit(this.form)">
                 <option value="">All genre</option>
-                <option value="">genre1</option>
-                <option value="">genre2</option>
-                <option value="">genre3</option>
+                @foreach($genres as $genre)
+                <option value="{{ $genre }}" {{ $genre == $input_genre ? 'selected' : '' }}>
+                    {{ $genre }}
+                </option>
+                @endforeach
             </select>
         </div>
         <div class="form__name">
             <img src="{{ asset('img/search.svg') }}" alt="search">
-            <input type="text" placeholder="Search ...">
+            <input type="text" name="name" placeholder="Search ..." onchange="submit(this.form)" value="{{ $input_name }}">
         </div>
     </form>
 </div>
