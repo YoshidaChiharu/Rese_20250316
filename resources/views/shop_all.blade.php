@@ -47,10 +47,19 @@
                 <li class="card-content__tag">#{{ $shop->area }}</li>
                 <li class="card-content__tag">#{{ $shop->genre }}</li>
             </ul>
-            <form action="" class="card-content__form">
-                <button class="form__button--detail">詳しく見る</button>
-                <input type="image" class="form__button--favorite" src="{{ asset('img/heart_gray.svg') }}" alt="favorite">
-            </form>
+            <div class="card-content__button">
+                <button class="button-detail">詳しく見る</button>
+                <form action="/" method="post">
+                    @csrf
+                    <input type="hidden" name="shop_id" value="{{ $shop->id }}">
+                    <input type="hidden" name="favorite_flag" value="{{ $shop->favorite_flag }}">
+                    @if ($shop->favorite_flag === 0)
+                    <input type="image" class="button-favorite" src="{{ asset('img/heart_gray.svg') }}" alt="favorite">
+                    @else
+                    <input type="image" class="button-favorite" src="{{ asset('img/heart_red.svg') }}" alt="favorite">
+                    @endif
+                </form>
+            </div>
         </div>
     </div>
     @endforeach
