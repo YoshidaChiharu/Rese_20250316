@@ -89,7 +89,9 @@ class ShopController extends Controller
 
     // 飲食店詳細ページ表示 ================================================
     public function showShopDetail(Request $request) {
-        return view('shop_detail');
+        $shop = Shop::find($request->shop_id);
+
+        return view('shop_detail', compact(['shop']));
     }
 
     // 予約完了ページ表示 ==================================================
