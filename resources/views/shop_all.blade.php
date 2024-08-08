@@ -1,72 +1,67 @@
 @extends('layouts.app')
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/shop_all.css') }}">
+<link rel="stylesheet" href="{{ asset('css/shop_all.css') }}">
 @endsection
 
 @section('content')
 <div class="search-section">
     <form action="" class="search-form">
         <div class="form__area">
-            <select name="" id="">
+            <select name="area" onchange="submit(this.form)">
                 <option value="">All area</option>
-                <option value="">area1</option>
-                <option value="">area2</option>
-                <option value="">area3</option>
+                @foreach($areas as $area)
+                <option value="{{ $area }}" {{ $area == $input_area ? 'selected' : '' }}>
+                    {{ $area }}
+                </option>
+                @endforeach
             </select>
         </div>
         <div class="form__genre">
-            <select name="" id="">
+            <select name="genre" onchange="submit(this.form)">
                 <option value="">All genre</option>
-                <option value="">genre1</option>
-                <option value="">genre2</option>
-                <option value="">genre3</option>
+                @foreach($genres as $genre)
+                <option value="{{ $genre }}" {{ $genre == $input_genre ? 'selected' : '' }}>
+                    {{ $genre }}
+                </option>
+                @endforeach
             </select>
         </div>
         <div class="form__name">
             <img src="{{ asset('img/search.svg') }}" alt="search">
-            <input type="text" placeholder="Search ...">
+            <input type="text" name="name" placeholder="Search ..." onchange="submit(this.form)" value="{{ $input_name }}">
         </div>
     </form>
 </div>
 <div class="shop-list-section">
+    @foreach($shops as $shop)
     <div class="shop-card">
         <div class="card-image">
-            <img src="{{ asset('img/sushi.jpg') }}" alt="shop image">
+            <img src="{{ $shop->image }}" alt="shop image">
         </div>
         <div class="card-content">
             <div class="card-content__name">
-                <h2>サンプルテキストサンプルテキスト</h2>
+                <h2>{{ $shop->name }}</h2>
             </div>
             <ul class="card-content__tag-list">
-                <li class="card-content__tag">#東京都</li>
-                <li class="card-content__tag">#寿司</li>
+                <li class="card-content__tag">#{{ $shop->area }}</li>
+                <li class="card-content__tag">#{{ $shop->genre }}</li>
             </ul>
-            <form action="" class="card-content__form">
-                <button class="form__button--detail">詳しく見る</button>
-                <input type="image" class="form__button--favorite" src="{{ asset('img/heart_gray.svg') }}" alt="favorite">
-            </form>
-        </div>
-    </div>
-    @for($i=0; $i < 10; $i++)
-    <div class="shop-card">
-        <div class="card-image">
-            <img src="{{ asset('img/sushi.jpg') }}" alt="shop image">
-        </div>
-        <div class="card-content">
-            <div class="card-content__name">
-                <h2>仙人</h2>
+            <div class="card-content__button">
+                <button class="button-detail">詳しく見る</button>
+                <form action="/" method="post">
+                    @csrf
+                    <input type="hidden" name="shop_id" value="{{ $shop->id }}">
+                    <input type="hidden" name="favorite_flag" value="{{ $shop->favorite_flag }}">
+                    @if ($shop->favorite_flag === 0)
+                    <input type="image" class="button-favorite" src="{{ asset('img/heart_gray.svg') }}" alt="favorite">
+                    @else
+                    <input type="image" class="button-favorite" src="{{ asset('img/heart_red.svg') }}" alt="favorite">
+                    @endif
+                </form>
             </div>
-            <ul class="card-content__tag-list">
-                <li class="card-content__tag">#東京都</li>
-                <li class="card-content__tag">#寿司</li>
-            </ul>
-            <form action="" class="card-content__form">
-                <button class="form__button--detail">詳しく見る</button>
-                <input type="image" class="form__button--favorite" src="{{ asset('img/heart_gray.svg') }}" alt="favorite">
-            </form>
         </div>
     </div>
-    @endfor
+    @endforeach
 </div>
 @endsection

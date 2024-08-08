@@ -92,14 +92,14 @@
     list-style: none;
 }
 
-.card-content__form {
+.card-content__button {
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.form__button--detail {
+.button-detail {
     padding: 8px 16px;
     color: white;
     background-color: #305dff;
@@ -108,7 +108,9 @@
     cursor: pointer;
 }
 
-.form__button--favorite {
+.button-favorite {
+    margin: auto 0;
     width: 32px;
     cursor: pointer;
+    display: block;
 }
