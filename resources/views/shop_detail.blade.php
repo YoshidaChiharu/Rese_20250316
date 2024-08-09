@@ -8,7 +8,9 @@
 <div class="wrapper">
     <div class="shop-info-section">
         <div class="shop-info__name">
-            <a class="back-button" href="/?area={{ session('area') }}&genre={{ session('genre') }}&name={{ session('name') }}"><</a>
+            <a class="back-button" href="/?area={{ session('area') }}&genre={{ session('genre') }}&name={{ session('name') }}">
+                &lt;
+            </a>
             <h2>{{ $shop->name }}</h2>
         </div>
         <div class="shop-info__image">
@@ -31,25 +33,20 @@
                 <div class="form__title">
                     <h3>予約</h3>
                 </div>
+                <input type="hidden" name="shop_id" value={{ $shop->id }}>
                 <div class="form__input">
-                    <input type="date" name="reserve_date" class="form__input--date">
+                    <input type="date" name="reserve_date" class="form__input--date" id="form_date" onchange="setDate(this.value)">
                 </div>
                 <div class="form__input">
-                    <select name="reserve_time" class="form__input--select">
-                        <option value="">16:00</option>
-                        <option value="">17:00</option>
-                        <option value="">18:00</option>
-                        <option value="">19:00</option>
-                        <option value="">20:00</option>
-                        <option value="">21:00</option>
+                    <select name="reserve_time" class="form__input--select" id="form_time" onchange="setTime(this.value)">
+                        <option value="">-</option>
+                        @for($i = 16; $i <= 22; $i++) <option value="{{$i}}:00">{{$i}}:00</option> @endfor
                     </select>
                 </div>
                 <div class="form__input">
-                    <select name="reserve_number" class="form__input--select">
-                        <option value="">1人</option>
-                        <option value="">2人</option>
-                        <option value="">3人</option>
-                        <option value="">4人</option>
+                    <select name="reserve_number" class="form__input--select" id="form_number" onchange="setNumber(this.value)">
+                        <option value="">-</option>
+                        @for($i = 1; $i <= 5; $i++) <option value="{{$i}}">{{$i}}</option> @endfor
                     </select>
                 </div>
                 <div class="form__confirm">
@@ -60,15 +57,15 @@
                         </tr>
                         <tr>
                             <th>Date</th>
-                            <td>2021-07-28</td>
+                            <td id="confirm_date">-</td>
                         </tr>
                         <tr>
                             <th>Time</th>
-                            <td>17:00</td>
+                            <td id="confirm_time">-</td>
                         </tr>
                         <tr>
                             <th>Number</th>
-                            <td>1人</td>
+                            <td id="confirm_number">-</td>
                         </tr>
                     </table>
                 </div>
@@ -76,6 +73,23 @@
             <div class="form__button">
                 <button class="form__button--submit">予約する</button>
             </div>
+
+            <script>
+                function setDate(value) {
+                    document.getElementById('confirm_date').textContent = value;
+                }
+            </script>
+            <script>
+                function setTime(value) {
+                    document.getElementById('confirm_time').textContent = value;
+                }
+            </script>
+            <script>
+                function setNumber(value) {
+                    document.getElementById('confirm_number').textContent = value;
+                }
+            </script>
+
         </form>
     </div>
 </div>

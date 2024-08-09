@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Shop;
 use App\Models\Favorite;
+use App\Models\Reservation;
 use Auth;
+use Carbon\Carbon;
 
 class ShopController extends Controller
 {
@@ -99,6 +101,25 @@ class ShopController extends Controller
         $shop = Shop::find($request->shop_id);
 
         return view('shop_detail', compact(['shop']));
+    }
+    // 予約登録処理 =======================================================
+    public function reserve(Request $request) {
+        $user_id = Auth::user()->id;
+        $shop_id = $request->shop_id;
+        $start_at = $request->reserve_time;
+        $finish_at = (new carbon($start_at))->addHour(2)->format('H:i');
+        // dd($start_at, $finish_at);
+
+        Reservation::create([
+            'user_id' => Auth::user()->id,
+            'shop_id' => $request->shop_id,
+            'scheduled_on' => $request->reserve_date,
+            'start_at' => $start_at,
+            'finish_at' => $finish_at,
+            'number' => $request->reserve_number,
+        ]);
+
+        return redirect('/done');
     }
 
     // 予約完了ページ表示 ==================================================
