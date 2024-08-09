@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Shop;
 use App\Models\Favorite;
+use App\Models\Reservation;
 use Auth;
+use Carbon\Carbon;
 
 class ShopController extends Controller
 {
@@ -39,6 +41,13 @@ class ShopController extends Controller
                 return preg_match("/{$input_name}/", $shop['name']);
             });
         }
+
+        // 店舗一覧の検索条件をセッションに保存（shop_detail.blade.phpで使用）
+        session([
+            'area' => $input_area,
+            'genre' => $input_genre,
+            'name' => $input_name,
+        ]);
 
         // お気に入り登録済み店舗の取得
         $favorite_shops = Auth::user()->shops;
@@ -89,7 +98,28 @@ class ShopController extends Controller
 
     // 飲食店詳細ページ表示 ================================================
     public function showShopDetail(Request $request) {
-        return view('shop_detail');
+        $shop = Shop::find($request->shop_id);
+
+        return view('shop_detail', compact(['shop']));
+    }
+    // 予約登録処理 =======================================================
+    public function reserve(Request $request) {
+        $user_id = Auth::user()->id;
+        $shop_id = $request->shop_id;
+        $start_at = $request->reserve_time;
+        $finish_at = (new carbon($start_at))->addHour(2)->format('H:i');
+        // dd($start_at, $finish_at);
+
+        Reservation::create([
+            'user_id' => Auth::user()->id,
+            'shop_id' => $request->shop_id,
+            'scheduled_on' => $request->reserve_date,
+            'start_at' => $start_at,
+            'finish_at' => $finish_at,
+            'number' => $request->reserve_number,
+        ]);
+
+        return redirect('/done');
     }
 
     // 予約完了ページ表示 ==================================================

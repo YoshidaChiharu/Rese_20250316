@@ -48,7 +48,7 @@
                 <li class="card-content__tag">#{{ $shop->genre }}</li>
             </ul>
             <div class="card-content__button">
-                <button class="button-detail">詳しく見る</button>
+                <a class="button-detail" href="/detail/{{ $shop->id }}">詳しく見る</a>
                 <form action="/" method="post">
                     @csrf
                     <input type="hidden" name="shop_id" value="{{ $shop->id }}">
