@@ -8,10 +8,7 @@
 <div class="wrapper">
     <div class="shop-info-section">
         <div class="shop-info__name">
-            <form action="">
-                <button>
-                    << /button>
-            </form>
+            <a class="back-button" href="/?area={{ session('area') }}&genre={{ session('genre') }}&name={{ session('name') }}"><</a>
             <h2>{{ $shop->name }}</h2>
         </div>
         <div class="shop-info__image">

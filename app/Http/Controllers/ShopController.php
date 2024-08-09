@@ -40,6 +40,13 @@ class ShopController extends Controller
             });
         }
 
+        // 店舗一覧の検索条件をセッションに保存（shop_detail.blade.phpで使用）
+        session([
+            'area' => $input_area,
+            'genre' => $input_genre,
+            'name' => $input_name,
+        ]);
+
         // お気に入り登録済み店舗の取得
         $favorite_shops = Auth::user()->shops;
         foreach ($shops as $shop) {
