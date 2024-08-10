@@ -27,14 +27,10 @@ class ShopController extends Controller
         $input_genre = $request->genre;
         $input_name = $request->name;
         if ( !empty($input_area) ) {
-            $shops = $shops->filter(function ($shop) use ($input_area) {
-                return $shop['area'] === $input_area;
-            });
+            $shops = $shops->where('area', $input_area);
         }
         if ( !empty($input_genre) ) {
-            $shops = $shops->filter(function ($shop) use ($input_genre) {
-                return $shop['genre'] === $input_genre;
-            });
+            $shops = $shops->where('genre', $input_genre);
         }
         if ( !empty($input_name) ) {
             $shops = $shops->filter(function ($shop) use ($input_name) {
@@ -43,14 +39,10 @@ class ShopController extends Controller
         }
 
         // 店舗一覧の検索条件をセッションに保存（shop_detail.blade.phpで使用）
-        session([
-            'area' => $input_area,
-            'genre' => $input_genre,
-            'name' => $input_name,
-        ]);
+        session(['previous_page' => $request->getRequestUri()]);
 
         // お気に入り登録済み店舗の取得
-        $favorite_shops = Auth::user()->shops;
+        $favorite_shops = Auth::user()->favorite_shops;
         foreach ($shops as $shop) {
             $shop->favorite_flag = 0;
             foreach ($favorite_shops as $favorite_shop) {
@@ -123,12 +115,46 @@ class ShopController extends Controller
     }
 
     // 予約完了ページ表示 ==================================================
-    public function showThanksReserve(Request $request) {
+    public function showThanksReserve() {
         return view('thanks_reserve');
     }
 
     // マイページ表示 ======================================================
     public function showMypage(Request $request) {
-        return view('mypage');
+        $user = Auth::user();
+
+        session(['previous_page' => $request->getRequestUri()]);
+
+        // 予約情報の取得
+        $reservations = Reservation::where('user_id', $user->id)->get();
+        foreach ($reservations as $reservation) {
+            $shop_id = $reservation->shop_id;
+            $reservation->shop_name = Shop::find($shop_id)->name;
+        }
+
+        // お気に入り店舗情報の取得
+        $favorite_shops = $user->favorite_shops;
+
+        return view('mypage', compact(['reservations', 'favorite_shops']));
     }
+
+    // 予約／お気に入りの削除処理 ==========================================
+    public function deleteMyData(Request $request) {
+        // 予約削除
+        if ($request->has('reservation_id')) {
+            Reservation::find($request->reservation_id)->delete();
+        }
+
+        // お気に入り削除
+        if ($request->has('favorite_shop_id')) {
+            $user_id = Auth::user()->id;
+            $shop_id = $request->favorite_shop_id;
+            Favorite::where('user_id', $user_id)
+                    ->where('shop_id', $shop_id)
+                    ->delete();
+        }
+
+        return redirect('/mypage');
+    }
+
 }

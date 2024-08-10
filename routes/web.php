@@ -13,3 +13,4 @@ use App\Http\Controllers\AuthController;
     Route::post('/detail/{shop_id}', [ShopController::class, 'reserve']);
     Route::get('/done', [ShopController::class, 'showThanksReserve']);
     Route::get('/mypage', [ShopController::class, 'showMypage']);
+    Route::post('/mypage', [ShopController::class, 'deleteMyData']);
