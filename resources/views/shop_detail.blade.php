@@ -8,7 +8,10 @@
 <div class="wrapper">
     <div class="shop-info-section">
         <div class="shop-info__name">
-            <a class="back-button" href="/?area={{ session('area') }}&genre={{ session('genre') }}&name={{ session('name') }}">
+            <!-- <a class="back-button" href="/?area={{ session('area') }}&genre={{ session('genre') }}&name={{ session('name') }}">
+                &lt;
+            </a> -->
+            <a class="back-button" href="{{ session('previous_page') }}">
                 &lt;
             </a>
             <h2>{{ $shop->name }}</h2>
@@ -78,13 +81,11 @@
                 function setDate(value) {
                     document.getElementById('confirm_date').textContent = value;
                 }
-            </script>
-            <script>
+
                 function setTime(value) {
                     document.getElementById('confirm_time').textContent = value;
                 }
-            </script>
-            <script>
+
                 function setNumber(value) {
                     document.getElementById('confirm_number').textContent = value;
                 }

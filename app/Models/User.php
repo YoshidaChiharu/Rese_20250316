@@ -47,7 +47,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function shops() : BelongsToMany
+    public function favorite_shops() : BelongsToMany
     {
         return $this->belongsToMany(Shop::class, 'favorites');
     }
