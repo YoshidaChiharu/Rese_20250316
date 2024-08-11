@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
     @yield('css')
+    @yield('scripts')
     <title>Rese</title>
 </head>
 <body>
@@ -40,7 +41,7 @@
                             <form action="/logout" method="post">
                                 @csrf
                                 <button>Logout</button>
-                            </form>    
+                            </form>
                         </li>
                         <li><a href="/mypage">Mypage</a></li>
                     </ul>
