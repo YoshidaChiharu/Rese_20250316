@@ -9,6 +9,8 @@ use App\Models\Favorite;
 use App\Models\Reservation;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ShopController extends Controller
 {
@@ -67,22 +69,29 @@ class ShopController extends Controller
 
     // お気に入り更新処理 ==================================================
     public function updateFavorites(Request $request) {
-        $user_id = Auth::user()->id;
-        $shop_id = $request->shop_id;
-        $flag = $request->favorite_flag;
+        try {
+            DB::transaction(function () use($request) {
+                $user_id = Auth::user()->id;
+                $shop_id = $request->shop_id;
+                $flag = $request->favorite_flag;
 
-        if ($flag == 0) {
-            // お気に入り登録
-            Favorite::create([
-                'user_id' => $user_id,
-                'shop_id' => $shop_id,
-            ]);
-        }
-        if ($flag == 1) {
-            // お気に入り削除
-            Favorite::where('user_id', $user_id)
-                      ->where('shop_id', $shop_id)
-                      ->delete();
+                // お気に入り登録
+                if ($flag == 0) {
+                    Favorite::create([
+                        'user_id' => $user_id,
+                        'shop_id' => $shop_id,
+                    ]);
+                }
+
+                // お気に入り削除
+                if ($flag == 1) {
+                    Favorite::where('user_id', $user_id)
+                        ->where('shop_id', $shop_id)
+                        ->delete();
+                }
+            });
+        } catch (\Exception $e) {
+            Log::error($e);
         }
 
         return redirect('/');
@@ -94,24 +103,33 @@ class ShopController extends Controller
 
         return view('shop_detail', compact(['shop']));
     }
+
     // 予約登録処理 =======================================================
     public function reserve(Request $request) {
-        $user_id = Auth::user()->id;
-        $shop_id = $request->shop_id;
-        $start_at = $request->reserve_time;
-        $finish_at = (new carbon($start_at))->addHour(2)->format('H:i');
-        // dd($start_at, $finish_at);
+        try {
+            DB::transaction(function () use($request) {
+                $user_id = Auth::user()->id;
+                $shop_id = $request->shop_id;
+                $start_at = $request->reserve_time;
+                $finish_at = (new carbon($start_at))->addHour(2)->format('H:i');
 
-        Reservation::create([
-            'user_id' => Auth::user()->id,
-            'shop_id' => $request->shop_id,
-            'scheduled_on' => $request->reserve_date,
-            'start_at' => $start_at,
-            'finish_at' => $finish_at,
-            'number' => $request->reserve_number,
-        ]);
+                Reservation::create([
+                    'user_id' => $user_id,
+                    'shop_id' => $shop_id,
+                    'scheduled_on' => $request->reserve_date,
+                    'start_at' => $start_at,
+                    'finish_at' => $finish_at,
+                    'number' => $request->reserve_number,
+                ]);
+            });
 
-        return redirect('/done');
+            return redirect('/done');
+
+        } catch (\Exception $e) {
+            Log::error($e);
+            return redirect(session('previous_page') ?? '/');
+        }
+
     }
 
     // 予約完了ページ表示 ==================================================
@@ -140,18 +158,24 @@ class ShopController extends Controller
 
     // 予約／お気に入りの削除処理 ==========================================
     public function deleteMyData(Request $request) {
-        // 予約削除
-        if ($request->has('reservation_id')) {
-            Reservation::find($request->reservation_id)->delete();
-        }
+        try {
+            DB::transaction(function () use($request) {
+                // 予約削除
+                if ($request->has('reservation_id')) {
+                    Reservation::find($request->reservation_id)->delete();
+                }
 
-        // お気に入り削除
-        if ($request->has('favorite_shop_id')) {
-            $user_id = Auth::user()->id;
-            $shop_id = $request->favorite_shop_id;
-            Favorite::where('user_id', $user_id)
-                    ->where('shop_id', $shop_id)
-                    ->delete();
+                // お気に入り削除
+                if ($request->has('favorite_shop_id')) {
+                    $user_id = Auth::user()->id;
+                    $shop_id = $request->favorite_shop_id;
+                    Favorite::where('user_id', $user_id)
+                        ->where('shop_id', $shop_id)
+                        ->delete();
+                }
+            });
+        } catch (\Exception $e) {
+            Log::error($e);
         }
 
         return redirect('/mypage');
