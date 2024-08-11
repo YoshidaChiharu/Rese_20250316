@@ -4,10 +4,6 @@
 <link rel="stylesheet" href="{{ asset('css/shop_detail.css') }}">
 @endsection
 
-@section('scripts')
-<script src="{{ asset('js/util.js') }}"></script>
-@endsection
-
 @section('content')
 <div class="wrapper">
     <div class="shop-info-section">
