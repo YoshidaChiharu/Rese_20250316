@@ -150,5 +150,14 @@ return [
         'name' => '名前',
         'email' => 'メールアドレス',
         'password' => 'パスワード',
+        'reserve_date' => '予約日',
+        'reserve_time' => '予約時刻',
+        'reserve_number' => '予約人数',
+    ],
+
+    'values' => [
+        'reserve_date' => [
+            'today' => '当日'
+        ],
     ],
 ];

@@ -35,18 +35,22 @@
                 </div>
                 <input type="hidden" name="shop_id" value={{ $shop->id }}>
                 <div class="form__input">
-                    <input type="date" name="reserve_date" class="form__input--date" id="form_date" onchange="setValue(this.value, 'confirm_date')">
+                    <input type="date" name="reserve_date" class="form__input--date" id="form_date" value="{{ old('reserve_date') }}" onchange="setValue(this.value, 'confirm_date')">
                 </div>
                 <div class="form__input">
                     <select name="reserve_time" class="form__input--select" id="form_time" onchange="setValue(this.value, 'confirm_time')">
                         <option value="">-</option>
-                        @for($i = 16; $i <= 22; $i++) <option value="{{$i}}:00">{{$i}}:00</option> @endfor
+                        @foreach ($reservable_times as $reservable_time)
+                        <option value="{{ $reservable_time }}" {{ old('reserve_time') == $reservable_time ? 'selected' : '' }}>{{ $reservable_time }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form__input">
                     <select name="reserve_number" class="form__input--select" id="form_number" onchange="setValue(this.value, 'confirm_number')">
                         <option value="">-</option>
-                        @for($i = 1; $i <= 5; $i++) <option value="{{$i}}">{{$i}}</option> @endfor
+                        @for ($i = 1; $i <= $reserve_max_number; $i++)
+                            <option value="{{$i}}" {{ old('reserve_number') == $i ? 'selected' : '' }}>{{$i}}</option>
+                            @endfor
                     </select>
                 </div>
                 <div class="form__confirm">
@@ -57,18 +61,33 @@
                         </tr>
                         <tr>
                             <th>Date</th>
-                            <td id="confirm_date">-</td>
+                            <td id="confirm_date">{{ old('reserve_date') ?? '-' }}</td>
                         </tr>
                         <tr>
                             <th>Time</th>
-                            <td id="confirm_time">-</td>
+                            <td id="confirm_time">{{ old('reserve_time') ?? '-' }}</td>
                         </tr>
                         <tr>
                             <th>Number</th>
-                            <td id="confirm_number">-</td>
+                            <td id="confirm_number">{{ old('reserve_number') ?? '-' }}</td>
                         </tr>
                     </table>
                 </div>
+
+                @if (count($errors) > 0)
+                <div class="form__error">
+                    <div class="error__title">
+                        <img src="{{ asset('img/error.svg') }}" alt="error">
+                        <span>入力エラー</span>
+                    </div>
+                    <ul class="error__list">
+                        @foreach ($errors->all() as $error)
+                        <li>{{$error}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
             </div>
             <div class="form__button">
                 <button class="form__button--submit">予約する</button>

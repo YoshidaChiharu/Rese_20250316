@@ -9,8 +9,10 @@ use App\Models\Favorite;
 use App\Models\Reservation;
 use Auth;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\ReserveRequest;
 
 class ShopController extends Controller
 {
@@ -101,11 +103,32 @@ class ShopController extends Controller
     public function showShopDetail(Request $request) {
         $shop = Shop::find($request->shop_id);
 
-        return view('shop_detail', compact(['shop']));
+        // 予約時間セレクトボックス用の選択肢作成
+        $time_start = new CarbonImmutable('16:00');
+        $time_finish = new CarbonImmutable('21:00');
+        $span_minute = 30;
+
+        $time = $time_start->toMutable();
+        while ($time <= $time_finish) {
+            $reservable_times[] = $time->format('H:i');
+            $time->addMinutes($span_minute);
+        }
+
+        // 予約可能最大人数
+        $reserve_max_number = 10;
+
+        return view(
+            'shop_detail',
+            compact([
+                'shop',
+                'reservable_times',
+                'reserve_max_number',
+            ])
+        );
     }
 
     // 予約登録処理 =======================================================
-    public function reserve(Request $request) {
+    public function reserve(ReserveRequest $request) {
         try {
             DB::transaction(function () use($request) {
                 $user_id = Auth::user()->id;
