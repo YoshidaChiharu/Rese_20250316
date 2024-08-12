@@ -49,8 +49,8 @@
                     <select name="reserve_number" class="form__input--select" id="form_number" onchange="setValue(this.value, 'confirm_number')">
                         <option value="">-</option>
                         @for ($i = 1; $i <= $reserve_max_number; $i++)
-                            <option value="{{$i}}" {{ old('reserve_number') == $i ? 'selected' : '' }}>{{$i}}</option>
-                            @endfor
+                        <option value="{{$i}}" {{ old('reserve_number') == $i ? 'selected' : '' }}>{{$i}}</option>
+                        @endfor
                     </select>
                 </div>
                 <div class="form__confirm">
