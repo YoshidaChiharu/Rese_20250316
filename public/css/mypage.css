@@ -28,11 +28,20 @@
 }
 
 .reserve-card {
-    padding: 30px;
     background-color: #305dff;
     border-radius: 6px;
     box-shadow: 2px 2px 3px #aaa;
     color: white;
+}
+
+.bg-orange {
+    /* background-color: #FFA60C; */
+    background-color: #D68700;
+}
+
+.reserve-card__inner {
+    padding: 30px;
+    padding-bottom: 10px;
 }
 
 .reserve-card__title {
@@ -43,13 +52,10 @@
 
 .reserve-card__title img {
     width: 28px;
+    margin-right: 20px;
 }
 
-.reserve-card__title span {
-    width: 60%;
-}
-
-.reserve-card__button {
+.reserve-card__button--delete {
     width: 24px;
     height: 24px;
     cursor: pointer;
@@ -64,8 +70,33 @@
     padding: 10px 0 10px 30px;
 }
 
+.reserve-card__button--change {
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    font-size: 14px;
+    color: white;
+    background-color: #0538ff;
+    cursor: pointer;
+}
+
+.button-orange {
+    background-color: #BC7700;
+}
+
 .favorite-section {
     width: 55%;
+}
+
+.reserve-card__error {
+    color: red;
+    font-weight: bold;
+}
+
+.reserve-card__error ul {
+    margin-top: 0;
 }
 
 .favorite-list {

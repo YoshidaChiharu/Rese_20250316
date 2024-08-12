@@ -14,3 +14,4 @@ use App\Http\Controllers\AuthController;
     Route::get('/done', [ShopController::class, 'showThanksReserve']);
     Route::get('/mypage', [ShopController::class, 'showMypage']);
     Route::post('/mypage', [ShopController::class, 'deleteMyData']);
+    Route::post('/mypage/update_reserve', [ShopController::class, 'updateReserve']);

@@ -104,15 +104,7 @@ class ShopController extends Controller
         $shop = Shop::find($request->shop_id);
 
         // 予約時間セレクトボックス用の選択肢作成
-        $time_start = new CarbonImmutable('16:00');
-        $time_finish = new CarbonImmutable('21:00');
-        $span_minute = 30;
-
-        $time = $time_start->toMutable();
-        while ($time <= $time_finish) {
-            $reservable_times[] = $time->format('H:i');
-            $time->addMinutes($span_minute);
-        }
+        $reservable_times = $this->getEqualIntervalTimes('16:00', '21:00', 30);
 
         // 予約可能最大人数
         $reserve_max_number = 10;
@@ -163,12 +155,14 @@ class ShopController extends Controller
     // マイページ表示 ======================================================
     public function showMypage(Request $request) {
         $user = Auth::user();
+        $user_name = $user->name;
 
         session(['previous_page' => $request->getRequestUri()]);
 
         // 予約情報の取得
         $reservations = Reservation::where('user_id', $user->id)->get();
         foreach ($reservations as $reservation) {
+            $reservation->start_at = (new Carbon($reservation->start_at))->format("H:i");
             $shop_id = $reservation->shop_id;
             $reservation->shop_name = Shop::find($shop_id)->name;
         }
@@ -176,7 +170,19 @@ class ShopController extends Controller
         // お気に入り店舗情報の取得
         $favorite_shops = $user->favorite_shops;
 
-        return view('mypage', compact(['reservations', 'favorite_shops']));
+        // 予約変更用パラメータの作成
+        $reservable_times = $this->getEqualIntervalTimes('16:00', '21:00', 30);
+        $reserve_max_number = 10;
+
+        return view('mypage',
+            compact([
+                'user_name',
+                'reservations',
+                'favorite_shops',
+                'reservable_times',
+                'reserve_max_number',
+            ])
+        );
     }
 
     // 予約／お気に入りの削除処理 ==========================================
@@ -202,6 +208,44 @@ class ShopController extends Controller
         }
 
         return redirect('/mypage');
+    }
+
+    // 予約変更処理 ========================================================
+    public function updateReserve(ReserveRequest $request) {
+
+        try {
+            DB::transaction(function () use ($request) {
+                $start_at = $request->reserve_time;
+                $finish_at = (new carbon($start_at))->addHour(2)->format('H:i');
+
+                Reservation::find($request->reservation_id)
+                    ->update([
+                        'scheduled_on' => $request->reserve_date,
+                        'start_at' => $start_at,
+                        'finish_at' => $finish_at,
+                        'number' => $request->reserve_number,
+                    ]);
+            });
+        } catch (\Exception $e) {
+            Log::error($e);
+        }
+
+        return redirect('/mypage');
+    }
+
+    // 等間隔の時間配列取得メソッド ========================================
+    private function getEqualIntervalTimes($start_time, $end_time, $span_minute) {
+        // 予約時間セレクトボックス用の選択肢作成
+        $span_minute = 30;
+
+        $time = new Carbon($start_time);
+        $end = new Carbon($end_time);
+        while ($time <= $end) {
+            $equal_interval_times[] = $time->format('H:i');
+            $time->addMinutes($span_minute);
+        }
+
+        return $equal_interval_times;
     }
 
 }
