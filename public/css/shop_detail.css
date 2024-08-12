@@ -126,3 +126,21 @@
     position: absolute;
     bottom: 0;
 }
+
+.form__error {
+    margin-top: 20px;
+    padding: 20px;
+    color: white;
+    background-color: #cc4400;
+    border-radius: 6px;
+}
+
+.error__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.error__title img {
+    width: 20px;
+}
