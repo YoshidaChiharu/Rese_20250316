@@ -167,6 +167,15 @@ class ShopController extends Controller
             $reservation->shop_name = Shop::find($shop_id)->name;
         }
 
+        // 取得した予約情報を「過去or未来」振り分け
+        $now = CarbonImmutable::now();
+        $past_reservations = $reservations->filter(function($reservation) use ($now) {
+            $datetime = $reservation->scheduled_on . " " . $reservation->finish_at;
+            $datetime = new Carbon($datetime);
+            return $datetime < $now;
+        });
+        $reservations = $reservations->diff($past_reservations);
+
         // お気に入り店舗情報の取得
         $favorite_shops = $user->favorite_shops;
 
@@ -178,6 +187,7 @@ class ShopController extends Controller
             compact([
                 'user_name',
                 'reservations',
+                'past_reservations',
                 'favorite_shops',
                 'reservable_times',
                 'reserve_max_number',

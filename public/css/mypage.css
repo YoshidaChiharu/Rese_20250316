@@ -21,10 +21,19 @@
     width: 37%;
 }
 
-.reserve-list {
+.title-margin {
+    margin-top: 30px;
+}
+
+.reserve-list,
+.reserve-history-list{
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.reserve-section .list-title:not(:first-child) {
+    margin-top: 60px;
 }
 
 .reserve-card {
@@ -35,8 +44,11 @@
 }
 
 .bg-orange {
-    /* background-color: #FFA60C; */
     background-color: #D68700;
+}
+
+.bg-darkblue {
+    background-color: #00008B;
 }
 
 .reserve-card__inner {
@@ -50,8 +62,13 @@
     align-items: center;
 }
 
-.reserve-card__title img {
+.reserve-card__image--clock {
     width: 28px;
+    margin-right: 20px;
+}
+
+.reserve-card__image--dish {
+    width: 36px;
     margin-right: 20px;
 }
 
@@ -67,7 +84,7 @@
 }
 
 .reserve-card__table td {
-    padding: 10px 0 10px 30px;
+    padding: 6px 0 6px 30px;
 }
 
 .reserve-card__button--change {
@@ -82,12 +99,38 @@
     cursor: pointer;
 }
 
+.reserve-card__review {
+    padding: 10px 30px;
+    background-color: white;
+    color: #D68700;
+    font-weight: bold;
+}
+
+.review__heading {
+    margin: 0;
+}
+
+.review__heading:not(:first-child) {
+    margin-top: 10px;
+}
+
+.review__image--star {
+    width: 24px;
+    margin-right: 4px;
+}
+
+.review__input {
+    width: 100%;
+    padding: 4px;
+    border: solid 1px #D68700;
+}
+
 .button-orange {
     background-color: #BC7700;
 }
 
-.favorite-section {
-    width: 55%;
+.button-darkblue {
+    background-color: #000070;
 }
 
 .reserve-card__error {
@@ -97,6 +140,10 @@
 
 .reserve-card__error ul {
     margin-top: 0;
+}
+
+.favorite-section {
+    width: 55%;
 }
 
 .favorite-list {
