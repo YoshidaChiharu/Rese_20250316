@@ -102,19 +102,30 @@
 .reserve-card__review {
     padding: 10px 30px;
     background-color: white;
-    color: #D68700;
-    font-weight: bold;
 }
 
 .review__heading {
     margin: 0;
+    color: #00008B;
+    font-weight: bold;
+}
+
+.text-orange {
+    color: #D68700;
+}
+
+.review__text {
+    margin: 0;
+    /* color: #D68700; */
+    color: #00008B;
 }
 
 .review__heading:not(:first-child) {
     margin-top: 10px;
 }
 
-.review__image--star {
+.review__image--star,
+.review__input--star {
     width: 24px;
     margin-right: 4px;
 }

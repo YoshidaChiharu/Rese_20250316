@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Shop;
 use App\Models\Favorite;
 use App\Models\Reservation;
+use App\Models\Review;
 use Auth;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -222,7 +223,6 @@ class ShopController extends Controller
 
     // 予約変更処理 ========================================================
     public function updateReserve(ReserveRequest $request) {
-
         try {
             DB::transaction(function () use ($request) {
                 $start_at = $request->reserve_time;
@@ -243,9 +243,38 @@ class ShopController extends Controller
         return redirect('/mypage');
     }
 
+    // 口コミ投稿／更新処理 ========================================================
+    public function storeReview(Request $request) {
+        try {
+            DB::transaction(function () use ($request) {
+                $review = Reservation::find($request->reservation_id)->review;
+                if ($review) {
+                    // 更新処理
+                    $review->update([
+                        'reservation_id' => $request->reservation_id,
+                        'rating' => $request->rating,
+                        'title' => $request->title,
+                        'comment' => $request->comment,
+                    ]);
+                } else {
+                    // 新規登録処理
+                    Review::create([
+                        'reservation_id' => $request->reservation_id,
+                        'rating' => $request->rating,
+                        'title' => $request->title,
+                        'comment' => $request->comment,
+                    ]);
+                }
+            });
+        } catch (\Exception $e) {
+            Log::error($e);
+        }
+
+        return redirect('/mypage');
+    }
+
     // 等間隔の時間配列取得メソッド ========================================
     private function getEqualIntervalTimes($start_time, $end_time, $span_minute) {
-        // 予約時間セレクトボックス用の選択肢作成
         $span_minute = 30;
 
         $time = new Carbon($start_time);

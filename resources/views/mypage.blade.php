@@ -157,15 +157,36 @@
                         </tr>
                     </table>
                 </div>
+                @if(empty($reservation->review))
                 <div>
                     <button class="reserve-card__button--change button-darkblue" onclick="location.href='/mypage?review_id={{ $reservation->id }}'">口コミを投稿する</button>
                 </div>
+                @else
+                <div class="reserve-card__review">
+                    <p class="review__heading">評価：{{ $reservation->review->rating }}</p>
+                    <div class="review_stars">
+                        @for ($i=1; $i<=5 ; $i++)
+                            @if($i <=$reservation->review->rating)
+                            <img src="{{ asset('img/star_on_gold.svg') }}" class="review__image--star" alt="star">
+                            @else
+                            <img src="{{ asset('img/star_on_gray.svg') }}" class="review__image--star" alt="star">
+                            @endif
+                            @endfor
+                    </div>
+                    <p class="review__heading">タイトル</p>
+                    <p class="review__text">{{ $reservation->review->title ?? 'なし' }}</p>
+                    <p class="review__heading">コメント</p>
+                    <p class="review__text">{{ $reservation->review->comment ?? 'なし' }}</p>
+                </div>
+                <div>
+                    <button class="reserve-card__button--change button-darkblue" onclick="location.href='/mypage?review_id={{ $reservation->id }}'">口コミを編集する</button>
+                </div>
+                @endif
             </div>
             @else
             <!-- 口コミ投稿時 -->
             <div class="reserve-card bg-orange">
-                <!-- <form action="/mypage/review" method="post"> -->
-                <form action="" method="">
+                <form action="/mypage/review" method="post">
                     @csrf
                     <div class="reserve-card__inner">
                         <div class="reserve-card__title">
@@ -193,19 +214,23 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="reserve-card__review" action="">
-                        @csrf
-                        <span class="review__heading">評価&emsp;</span>
+                    <div class="reserve-card__review">
+                        <input type="hidden" name="reservation_id" value="$reservation->id">
+                        <input type="hidden" id="rating" name="rating" value="{{ $reservation->review->rating ?? '0' }}">
+                        <span class="review__heading text-orange">評価</span>
                         <div class="review_stars">
-                            <input type="hidden" id="review_level" value="0">
                             @for ($i=1; $i<=5 ; $i++)
-                                <input type="image" class="review__image--star" src="{{ asset('img/star_off_gold.svg') }}" alt="star" value="{{ $i }}" onclick="return changeStar(this.value)">
-                                @endfor
+                            @if($i <=($reservation->review->rating ?? 0))
+                            <input type="image" class="review__input--star" src="{{ asset('img/star_on_gold.svg') }}" alt="star" value="{{ $i }}" onclick="return changeStar(this.value)">
+                            @else
+                            <input type="image" class="review__input--star" src="{{ asset('img/star_off_gold.svg') }}" alt="star" value="{{ $i }}" onclick="return changeStar(this.value)">
+                            @endif
+                            @endfor
                         </div>
-                        <p class="review__heading">タイトル</p>
-                        <input class="review__input" type="text">
-                        <p class="review__heading">コメント</p>
-                        <textarea class="review__input" name="" rows="5"></textarea>
+                        <p class="review__heading text-orange">タイトル</p>
+                        <input class="review__input" type="text" name="title" value="{{ $reservation->review->title ?? '' }}">
+                        <p class="review__heading text-orange">コメント</p>
+                        <textarea class="review__input" name="comment" rows="5">{{ $reservation->review->comment ?? '' }}</textarea>
                         @if (count($errors) > 0)
                         <div class="reserve-card__error">
                             <span>※入力エラー</span>
@@ -243,7 +268,7 @@
                     </div>
                     <ul class="card-content__tag-list">
                         <li class="card-content__tag">#{{ $shop->area }}</li>
-                        <li class="card-content__tag">#{{ $shop->ganre }}</li>
+                        <li class="card-content__tag">#{{ $shop->genre }}</li>
                     </ul>
                     <div class="card-content__button">
                         <a class="button-detail" href="/detail/{{ $shop->id }}">詳しく見る</a>
