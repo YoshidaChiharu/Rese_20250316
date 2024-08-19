@@ -153,6 +153,8 @@ return [
         'reserve_date' => '予約日',
         'reserve_time' => '予約時刻',
         'reserve_number' => '予約人数',
+        'title' => 'タイトル',
+        'comment' => 'コメント',
     ],
 
     'values' => [

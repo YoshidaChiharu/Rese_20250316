@@ -14,6 +14,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ReserveRequest;
+use App\Http\Requests\ReviewRequest;
 
 class ShopController extends Controller
 {
@@ -244,7 +245,7 @@ class ShopController extends Controller
     }
 
     // 口コミ投稿／更新処理 ========================================================
-    public function storeReview(Request $request) {
+    public function storeReview(ReviewRequest $request) {
         try {
             DB::transaction(function () use ($request) {
                 $review = Reservation::find($request->reservation_id)->review;

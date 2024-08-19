@@ -227,10 +227,11 @@
                             @endif
                             @endfor
                         </div>
-                        <p class="review__heading text-orange">タイトル</p>
-                        <input class="review__input" type="text" name="title" value="{{ $reservation->review->title ?? '' }}">
-                        <p class="review__heading text-orange">コメント</p>
-                        <textarea class="review__input" name="comment" rows="5">{{ $reservation->review->comment ?? '' }}</textarea>
+                        <p class="review__heading text-orange">タイトル（任意）</p>
+                        <input class="review__input" type="text" name="title" value="{{ old('title') ?? $reservation->review->title ?? '' }}">
+                        <p class="review__heading text-orange">コメント（任意）</p>
+                        <textarea class="review__input" name="comment" rows="5">{{
+                            old('comment') ?? $reservation->review->comment ?? '' }}</textarea>
                         @if (count($errors) > 0)
                         <div class="reserve-card__error">
                             <span>※入力エラー</span>
