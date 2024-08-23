@@ -116,8 +116,8 @@
 
 .review__text {
     margin: 0;
-    /* color: #D68700; */
     color: #00008B;
+    white-space: pre-wrap;
 }
 
 .review__heading:not(:first-child) {
@@ -203,8 +203,39 @@
     list-style: none;
 }
 
+.card-content__rating {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.rating-value {
+    margin-left: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-content__rating .image--star {
+    width: 18px;
+}
+
+.card-content__info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.card-content__info img {
+    width: 14px;
+}
+
+.card-content__info span {
+    margin-right: 6px;
+    font-size: 14px;
+}
+
 .card-content__button {
-    margin-top: 10px;
+    margin-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -212,6 +243,7 @@
 
 .button-detail {
     padding: 6px 16px;
+    font-size: 14px;
     text-decoration: none;
     color: white;
     background-color: #305dff;

@@ -47,6 +47,13 @@ class ShopController extends Controller
         // 店舗一覧の検索条件をセッションに保存（shop_detail.blade.phpで使用）
         session(['previous_page' => $request->getRequestUri()]);
 
+        // 店舗の「評価値」「レビュー数」「お気に入り数」を算出
+        foreach ($shops as $shop) {
+            $shop->rating = $shop->getShopRating();
+            $shop->reviews_quantity = $shop->getReviewsQuantity();
+            $shop->favorites_quantity = $shop->getFavoritesQuantity();
+        }
+
         // お気に入り登録済み店舗の取得
         $favorite_shops = Auth::user()->favorite_shops;
         foreach ($shops as $shop) {
@@ -111,12 +118,24 @@ class ShopController extends Controller
         // 予約可能最大人数
         $reserve_max_number = 10;
 
+        // 口コミ情報の取得
+        $reviews = $shop->reviews();
+        foreach ($reviews as $review) {
+            $review->review_date = ($review->updated_at)->format('Y-m-d');
+            $review->visit_date = (new Carbon($review->reservation->scheduled_on))->format('Y年m月');
+        }
+
+        // 店舗の評価値を取得
+        $shop_rating = $shop->getShopRating();
+
         return view(
             'shop_detail',
             compact([
                 'shop',
                 'reservable_times',
                 'reserve_max_number',
+                'reviews',
+                'shop_rating',
             ])
         );
     }
@@ -180,6 +199,13 @@ class ShopController extends Controller
 
         // お気に入り店舗情報の取得
         $favorite_shops = $user->favorite_shops;
+
+        // 店舗の「評価値」「レビュー数」「お気に入り数」を算出
+        foreach ($favorite_shops as $favorite_shop) {
+            $favorite_shop->rating = $favorite_shop->getShopRating();
+            $favorite_shop->reviews_quantity = $favorite_shop->getReviewsQuantity();
+            $favorite_shop->favorites_quantity = $favorite_shop->getFavoritesQuantity();
+        }
 
         // 予約変更用パラメータの作成
         $reservable_times = $this->getEqualIntervalTimes('16:00', '21:00', 30);
