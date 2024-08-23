@@ -4,6 +4,10 @@
 <link rel="stylesheet" href="{{ asset('css/shop_detail.css') }}">
 @endsection
 
+@section('script')
+<script src="{{ asset('js/shop_detail.js') }}"></script>
+@endsection
+
 @section('content')
 <div class="top-wrapper">
     <div class="shop-info-section">
@@ -33,7 +37,7 @@
                 <div class="form__title">
                     <h3>予約</h3>
                 </div>
-                <input type="hidden" name="shop_id" value={{ $shop->id }}>
+                <input type="hidden" name="shop_id" value="{{ $shop->id }}">
                 <div class="form__input">
                     <input type="date" name="reserve_date" class="form__input--date" id="form_date" value="{{ old('reserve_date') }}" onchange="setValue(this.value, 'confirm_date')">
                 </div>
@@ -130,8 +134,11 @@
                             @endfor
                             <span class="review-date">{{ $review->review_date }}に投稿</span>
                     </div>
-                    <div class="review-content__comment">{{ $review->comment }}</div>
-                    <div class="review-content__visit-date">（訪問：{{ $review->visit_date }}）</div>
+                    <div class="review-content__comment">
+                        <p>{{ $review->comment }}</p>
+                        <span class="review-content__visit-date">（訪問：{{ $review->visit_date }}）</span>
+                    </div>
+                    <button class="read-more-button">▼ もっと見る ▼</button>
                 </div>
             </div>
             @endforeach

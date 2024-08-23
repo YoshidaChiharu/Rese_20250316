@@ -174,9 +174,10 @@
                             @endfor
                     </div>
                     <p class="review__heading">タイトル</p>
-                    <p class="review__text">{{ $reservation->review->title ?? 'なし' }}</p>
+                    <p class="review__title">{{ $reservation->review->title ?? 'なし' }}</p>
                     <p class="review__heading">コメント</p>
-                    <p class="review__text">{{ $reservation->review->comment ?? 'なし' }}</p>
+                    <p class="review__comment">{{ $reservation->review->comment ?? 'なし' }}</p>
+                    <button class="read-more-button" id="button">▼ もっと見る ▼</button>
                 </div>
                 <div>
                     <button class="reserve-card__button--change button-darkblue" onclick="location.href='/mypage?review_id={{ $reservation->id }}'">口コミを編集する</button>

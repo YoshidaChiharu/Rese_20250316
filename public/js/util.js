@@ -19,3 +19,20 @@ window.addEventListener("load", function(){
     }
     window.addEventListener("scroll", saveScrollPosition, false);
 });
+
+// 「もっと見る」ボタン押下時のアクション
+function readMore(content, button) {
+    const content_height = content.clientHeight;
+
+    button.addEventListener('click', () => {
+        if(!content.classList.contains('show')){
+            content.style.maxHeight = content.scrollHeight + 'px';
+            content.classList.add('show');
+            button.innerText = '▲ 閉じる ▲';
+        } else {
+            content.style.maxHeight = content_height + 'px';
+            content.classList.remove('show');
+            button.innerText = '▼ もっと見る ▼';
+        }
+    });
+}
