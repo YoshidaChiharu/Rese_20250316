@@ -15,3 +15,4 @@ use App\Http\Controllers\AuthController;
     Route::get('/mypage', [ShopController::class, 'showMypage']);
     Route::post('/mypage', [ShopController::class, 'deleteMyData']);
     Route::post('/mypage/update_reserve', [ShopController::class, 'updateReserve']);
+    Route::post('/mypage/review', [ShopController::class, 'storeReview']);

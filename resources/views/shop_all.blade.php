@@ -47,6 +47,24 @@
                 <li class="card-content__tag">#{{ $shop->area }}</li>
                 <li class="card-content__tag">#{{ $shop->genre }}</li>
             </ul>
+            <div class="card-content__rating">
+                @for ($i=1; $i<=5 ; $i++)
+                    @if($i <=$shop->rating)
+                    <img src="{{ asset('img/star_on_gold.svg') }}" class="image--star" alt="star">
+                    @elseif(($i - $shop->rating) < 0.5)
+                        <img src="{{ asset('img/star_on_half.png') }}" class="image--star" alt="star">
+                        @else
+                        <img src="{{ asset('img/star_on_gray.svg') }}" class="image--star" alt="star">
+                        @endif
+                        @endfor
+                        <span class="rating-value">{{ $shop->rating }}</span>
+            </div>
+            <div class="card-content__info">
+                <img src="{{ asset('img/speech_bubble_beige.svg') }}" alt="speech_bubble">
+                <span>{{ $shop->reviews_quantity }}人</span>
+                <img src="{{ asset('img/heart_beige.svg') }}" alt="heart">
+                <span>{{ $shop->favorites_quantity }}人</span>
+            </div>
             <div class="card-content__button">
                 <a class="button-detail" href="/detail/{{ $shop->id }}">詳しく見る</a>
                 <form action="/" method="post">

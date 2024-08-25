@@ -4,8 +4,12 @@
 <link rel="stylesheet" href="{{ asset('css/shop_detail.css') }}">
 @endsection
 
+@section('script')
+<script src="{{ asset('js/shop_detail.js') }}"></script>
+@endsection
+
 @section('content')
-<div class="wrapper">
+<div class="top-wrapper">
     <div class="shop-info-section">
         <div class="shop-info__name">
             <a class="back-button" href="{{ session('previous_page') ?? '/' }}">
@@ -33,7 +37,7 @@
                 <div class="form__title">
                     <h3>予約</h3>
                 </div>
-                <input type="hidden" name="shop_id" value={{ $shop->id }}>
+                <input type="hidden" name="shop_id" value="{{ $shop->id }}">
                 <div class="form__input">
                     <input type="date" name="reserve_date" class="form__input--date" id="form_date" value="{{ old('reserve_date') }}" onchange="setValue(this.value, 'confirm_date')">
                 </div>
@@ -49,8 +53,8 @@
                     <select name="reserve_number" class="form__input--select" id="form_number" onchange="setValue(this.value, 'confirm_number')">
                         <option value="">-</option>
                         @for ($i = 1; $i <= $reserve_max_number; $i++)
-                        <option value="{{$i}}" {{ old('reserve_number') == $i ? 'selected' : '' }}>{{$i}}</option>
-                        @endfor
+                            <option value="{{$i}}" {{ old('reserve_number') == $i ? 'selected' : '' }}>{{$i}}</option>
+                            @endfor
                     </select>
                 </div>
                 <div class="form__confirm">
@@ -93,6 +97,58 @@
                 <button class="form__button--submit">予約する</button>
             </div>
         </form>
+    </div>
+</div>
+<div class="bottom-wrapper">
+    <div class="review-section">
+        <div class="review-section__heading">
+            <h3 class="heading__text">口コミ情報</h3>
+        </div>
+        <div class="review-section__body">
+            <div class="body-top">
+                <div class="shop-rating">
+                    <span>評価：</span>
+                    @for ($i=1; $i<=5 ; $i++)
+                        @if($i <=$shop_rating)
+                        <img src="{{ asset('img/star_on_gold.svg') }}" class="image--star" alt="star">
+                        @elseif(($i - $shop_rating) < 0.5)
+                            <img src="{{ asset('img/star_on_half.png') }}" class="image--star" alt="star">
+                            @else
+                            <img src="{{ asset('img/star_on_gray.svg') }}" class="image--star" alt="star">
+                            @endif
+                            @endfor
+                            <span class="shop-rating__value">{{ $shop_rating }}</span>
+                </div>
+                <div class="review-pagenation">
+                    {{ $reviews->links('vendor.pagination.default') }}
+                </div>
+            </div>
+            @if($reviews)
+            @foreach($reviews as $review)
+            <div class="review-item">
+                <div class="review-item__reviewer">{{ $review->reviewer()->name }}</div>
+                <div class="review-item__review-content">
+                    <h4 class="review-content__title">{{ $review->title }}</h4>
+                    <div class="review-content__rating">
+                        @for ($i=1; $i<=5 ; $i++)
+                            @if($i <=$review->rating)
+                            <img src="{{ asset('img/star_on_gold.svg') }}" class="image--star" alt="star">
+                            @else
+                            <img src="{{ asset('img/star_on_gray.svg') }}" class="image--star" alt="star">
+                            @endif
+                            @endfor
+                            <span class="review-date">{{ $review->review_date }}に投稿</span>
+                    </div>
+                    <div class="review-content__comment">
+                        <p>{{ $review->comment }}</p>
+                        <span class="review-content__visit-date">（訪問：{{ $review->visit_date }}）</span>
+                    </div>
+                    <button class="read-more-button">▼ もっと見る ▼</button>
+                </div>
+            </div>
+            @endforeach
+            @endif
+        </div>
     </div>
 </div>
 @endsection

@@ -9,8 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
-    <script src="{{ asset('js/util.js') }}"></script>
     @yield('css')
+    <script src="{{ asset('js/util.js') }}"></script>
+    @yield('script')
     <title>Rese</title>
 </head>
 
