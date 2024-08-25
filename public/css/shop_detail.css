@@ -290,11 +290,6 @@
 }
 
 /* ページネーションのカスタマイズ */
-.review-pagenation {
-    /* margin-top: 20px;
-    text-align: center; */
-}
-
 .review-pagenation nav {
     display: inline-block;
 }

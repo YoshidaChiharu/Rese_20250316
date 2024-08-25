@@ -127,9 +127,9 @@ class ShopController extends Controller
         }
         // 口コミ情報のページネーション
         $reviews = new LengthAwarePaginator(
-            $reviews->forPage($request->page, 5),
+            $reviews->forPage($request->page, 10),
             $reviews->count(),
-            5,
+            10,
             $request->page,
             ['path' => $request->url()],
         );

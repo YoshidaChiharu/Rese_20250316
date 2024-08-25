@@ -20,8 +20,6 @@ class ReviewsTableSeeder extends Seeder
         $csvData = File::get($csvFile);
         $rows = explode(";\n", $csvData);
 
-        // dd($rows);
-
         foreach ($rows as $index => $row) {
             $data = str_getcsv($row);
 
@@ -32,7 +30,7 @@ class ReviewsTableSeeder extends Seeder
             ];
         }
 
-        $data_num = 200;
+        $data_num = 2000;
         for ($i = 0; $i < $data_num; $i++) {
             $random_num = fake()->numberBetween(0, count($review_data) - 1);
 
