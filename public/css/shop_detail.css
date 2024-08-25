@@ -192,6 +192,12 @@
     margin-top: 14px;
 }
 
+.review-section__body .body-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .review-item {
     padding: 10px 0;
     border-top: solid 1px #aaa;
@@ -281,4 +287,44 @@
 
 .read-more-button.hidden {
     display: none;
+}
+
+/* ページネーションのカスタマイズ */
+.review-pagenation {
+    /* margin-top: 20px;
+    text-align: center; */
+}
+
+.review-pagenation nav {
+    display: inline-block;
+}
+
+.review-pagenation ul {
+    margin: 0;
+    border: solid 1px #e0dfde;
+    border-radius: 5px;
+    background-color: white;
+    display: flex;
+}
+
+.review-pagenation a,
+.review-pagenation span {
+    padding: 0 10px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #305dff;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.review-pagenation li:not(:last-child) {
+    border-right: solid 1px #e0dfde;
+}
+
+.review-pagenation .active {
+    background-color: #305dff;
+}
+
+.review-pagenation .active span {
+    color: white;
 }

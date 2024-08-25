@@ -105,18 +105,23 @@
             <h3 class="heading__text">口コミ情報</h3>
         </div>
         <div class="review-section__body">
-            <div class="shop-rating">
-                <span>評価：</span>
-                @for ($i=1; $i<=5 ; $i++)
-                    @if($i <=$shop_rating)
-                    <img src="{{ asset('img/star_on_gold.svg') }}" class="image--star" alt="star">
-                    @elseif(($i - $shop_rating) < 0.5)
-                        <img src="{{ asset('img/star_on_half.png') }}" class="image--star" alt="star">
-                        @else
-                        <img src="{{ asset('img/star_on_gray.svg') }}" class="image--star" alt="star">
-                        @endif
-                        @endfor
-                        <span class="shop-rating__value">{{ $shop_rating }}</span>
+            <div class="body-top">
+                <div class="shop-rating">
+                    <span>評価：</span>
+                    @for ($i=1; $i<=5 ; $i++)
+                        @if($i <=$shop_rating)
+                        <img src="{{ asset('img/star_on_gold.svg') }}" class="image--star" alt="star">
+                        @elseif(($i - $shop_rating) < 0.5)
+                            <img src="{{ asset('img/star_on_half.png') }}" class="image--star" alt="star">
+                            @else
+                            <img src="{{ asset('img/star_on_gray.svg') }}" class="image--star" alt="star">
+                            @endif
+                            @endfor
+                            <span class="shop-rating__value">{{ $shop_rating }}</span>
+                </div>
+                <div class="review-pagenation">
+                    {{ $reviews->links('vendor.pagination.default') }}
+                </div>
             </div>
             @if($reviews)
             @foreach($reviews as $review)

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ReserveRequest;
 use App\Http\Requests\ReviewRequest;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ShopController extends Controller
 {
@@ -105,7 +106,7 @@ class ShopController extends Controller
             Log::error($e);
         }
 
-        return redirect('/');
+        return redirect(session('previous_page'));
     }
 
     // 飲食店詳細ページ表示 ================================================
@@ -124,6 +125,14 @@ class ShopController extends Controller
             $review->review_date = ($review->updated_at)->format('Y-m-d');
             $review->visit_date = (new Carbon($review->reservation->scheduled_on))->format('Y年m月');
         }
+        // 口コミ情報のページネーション
+        $reviews = new LengthAwarePaginator(
+            $reviews->forPage($request->page, 5),
+            $reviews->count(),
+            5,
+            $request->page,
+            ['path' => $request->url()],
+        );
 
         // 店舗の評価値を取得
         $shop_rating = $shop->getShopRating();
