@@ -13,6 +13,15 @@
             ご確認いただき、メールに記載されたボタンをクリックして、<br>
             会員登録を完了してください。
         </p>
+        <form class="verify-email-content__form" action="/email/verification-notification" method="post">
+            @csrf
+            <button class="form__mail-button">メール再送信</button>
+        </form>
+        @if (session('status') == 'verification-link-sent')
+        <div class="verify-email-content__sent-email">
+            新しい認証用メールを送信しました。
+        </div>
+        @endif
     </div>
 </div>
 @endsection
