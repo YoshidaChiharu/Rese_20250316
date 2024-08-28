@@ -25,8 +25,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function register(): void
     {
         // ユーザー登録後のリダイレクト先指定
-        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse
-        {
+        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
             public function toResponse($request)
             {
                 return redirect('/thanks_register');
@@ -56,6 +55,10 @@ class FortifyServiceProvider extends ServiceProvider
 		Fortify::loginView(function () {
             return view('auth.login');
 		});
+
+        Fortify::verifyEmailView(function () {
+            return view('auth.verify_email');
+        });
 
 		RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
