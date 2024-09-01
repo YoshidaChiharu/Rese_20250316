@@ -10,7 +10,7 @@
         <div class="login-content__heading">
             <h2>Login</h2>
         </div>
-        <form action="/login" class="login-content__form" method="post">
+        <form action="/auth_first" class="login-content__form" method="post">
             @csrf
             <div class="form__error">
                 @error('email')

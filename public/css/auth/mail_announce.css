@@ -1,0 +1,33 @@
+.container {
+    margin: 40px auto;
+    padding: 20px 15px;
+    max-width: 800px;
+}
+
+.container__heading {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.notes-text {
+    padding: 10px;
+    background-color: white;
+    border: solid 1px #909090;
+    border-radius: 6px;
+}
+
+.notes-text__heading {
+    padding-left: 20px;
+}
+
+.notes-text li {
+    padding-right: 20px;
+}
+
+.register-link {
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #214BE0;
+}

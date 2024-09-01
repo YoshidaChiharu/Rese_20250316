@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(ShopsTableSeeder::class);
-        User::factory(10000)->create();
-        Favorite::factory(10000)->create();
-        Reservation::factory(5000)->create();
+        User::factory(1000)->create();
+        Favorite::factory(1000)->create();
+        Reservation::factory(500)->create();
         $this->call(ReviewsTableSeeder::class);
     }
 }
