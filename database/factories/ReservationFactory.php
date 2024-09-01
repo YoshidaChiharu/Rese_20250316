@@ -3,8 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\User;
-use App\Models\Shop;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Reservation>
@@ -22,8 +20,8 @@ class ReservationFactory extends Factory
         $finish = $start + 2;
 
         return [
-            'user_id' => $this->faker->numberBetween(1, User::count()),
-            'shop_id' => $this->faker->numberBetween(1, Shop::count()),
+            'user_id' => $this->faker->numberBetween(1, 1000),
+            'shop_id' => $this->faker->numberBetween(1, 20),
             'scheduled_on' => $this->faker->dateTimeBetween('-4week', '+4week')->format('Y-m-d'),
             'start_at' => $start . ':00',
             'finish_at' => $finish . ':00',
