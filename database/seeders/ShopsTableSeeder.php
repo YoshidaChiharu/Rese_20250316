@@ -23,11 +23,12 @@ class ShopsTableSeeder extends Seeder
             $data = str_getcsv($row);
 
             DB::table('shops')->insert([
-                'name' => $data[0],
-                'area' => $data[1],
-                'genre' => $data[2],
-                'detail' => $data[3],
-                'image' => $data[4],
+                'owner_id' => $data[0],
+                'name' => $data[1],
+                'area' => $data[2],
+                'genre' => $data[3],
+                'detail' => $data[4],
+                'image' => $data[5],
             ]);
         }
     }

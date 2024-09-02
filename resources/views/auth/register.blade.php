@@ -12,6 +12,7 @@
         </div>
         <form action="/register" class="register-content__form" method="post">
             @csrf
+            <input type="hidden" name="role_id" value="3">
             <div class="form__error">
                 @error('name')
                 {{ $message }}
