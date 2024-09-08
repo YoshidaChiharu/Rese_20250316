@@ -10,45 +10,46 @@
         <div class="register-content__heading">
             <h2>新規登録</h2>
         </div>
-        <form action="/admin/register_shop_data" class="register-content__form" method="post">
+        <form action="/admin/register_shop_data" class="register-content__form" method="post" enctype="multipart/form-data">
             @csrf
             <table class="form-table">
                 <tr>
                     <th>店名</th>
                     <td>
-                        <input class="form-table__input--text" type="text">
+                        <input class="form-table__input--text" type="text" name="name">
                     </td>
                 </tr>
                 <tr>
                     <th>エリア</th>
                     <td>
-                        <select class="form-table__input--select" name="">
-                            <option value="">東京都</option>
+                        <select class="form-table__input--select" name="area">
+                            <option value="東京都">東京都</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <th>ジャンル</th>
                     <td>
-                        <select class="form-table__input--select" name="">
-                            <option value="">寿司</option>
+                        <select class="form-table__input--select" name="genre">
+                            <option value="寿司">寿司</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <th>紹介文</th>
                     <td>
-                        <textarea class="form-table__input--text" rows="5" name=""></textarea>
+                        <textarea class="form-table__input--text" rows="5" name="detail"></textarea>
                     </td>
                 </tr>
                 <tr>
                     <th>サムネイル画像</th>
                     <td>
-                        <div class="form-table__drop-area">
-                            <img src="{{ asset('img/camera.svg') }}" alt="camera">
-                            <p>写真を追加</p>
+                        <div class="form-table__drop-area" id="drop-target">
+                            <img class="drop-area__icon" id="drop-area__icon" src="{{ asset('img/camera.svg') }}" alt="camera">
+                            <p class="drop-area__text" id="drop-area__text">写真を追加</p>
+                            <img class="drop-area__preview" id="drop-area__preview" src="">
                         </div>
-                        <input class="form-table__input--file" type="file" accept="image/*" value="ファイルを選択" name="photo">
+                        <input class="form-table__input--file" id="input-file" type="file" accept="image/*" name="images[]">
                     </td>
                 </tr>
             </table>
@@ -59,4 +60,6 @@
         </form>
     </div>
 </div>
+
+<script src="{{ asset('js/edit_shop_data.js') }}"></script>
 @endsection

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 use App\Models\User;
+use App\Models\Shop;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\ShopDataRequest;
 
 class AdminController extends Controller
 {
@@ -53,9 +56,26 @@ class AdminController extends Controller
     }
 
     // 店舗情報登録処理 ============================================================
-    public function storeShopData()
+    public function storeShopData(Request $request)
     {
-        dd("店舗情報登録処理");
+        $owner_id = Auth::user()->id;
+
+        // サムネイル画像の保存
+        // （※複数ファイル選択時は1つ目の画像を保存）
+        $images = $request->file('images');
+        $image_path = $images[0]->store('public/img');
+        $image_path = str_replace("public/", "", $image_path);
+
+        Shop::create([
+            'owner_id' => $owner_id,
+            'name' => $request->name,
+            'area' => $request->area,
+            'genre' => $request->genre,
+            'detail' => $request->detail,
+            'image' => $image_path,
+        ]);
+
+        return redirect('/admin/register_shop_data');
     }
 
     // 店舗情報編集ページ表示 ======================================================

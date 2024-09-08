@@ -68,17 +68,26 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
-.form-table__drop-area img {
+.drop-area__icon {
     width: 20%;
 }
 
-.form-table__drop-area p {
+.drop-area__text {
     margin: 10px 0 0 0;
     color: #959595;
     font-size: 24px;
     font-weight: bold;
+}
+
+.drop-area__preview {
+    width: 100%;
+}
+
+.form-table__drop-area .hidden {
+    display: none;
 }
 
 .form-table__input--file {
