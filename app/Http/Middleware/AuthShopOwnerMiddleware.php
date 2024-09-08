@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
-class AdminMiddleware
+class AuthShopOwnerMiddleware
 {
     /**
      * Handle an incoming request.
@@ -19,7 +19,7 @@ class AdminMiddleware
     {
         $id = Auth::id();
         $role_id = User::find($id)->role_id;
-        if ($role_id >= 3) {
+        if ($role_id !== 2) {
             return redirect('/');
         }
 

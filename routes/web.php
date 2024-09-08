@@ -25,10 +25,13 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
     Route::post('/mypage/review', [ShopController::class, 'storeReview']);
 });
 
-Route::group(['middleware' => ['verified', 'auth', 'admin']], function () {
-    Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin'], function () {
+    Route::group(['middleware' => ['verified', 'auth', 'administrator']], function () {
         Route::get('/register_shop_owner', [AdminController::class, 'createShopOwner']);
         Route::post('/register_shop_owner', [AdminController::class, 'storeShopOwner']);
+    });
+
+    Route::group(['middleware' => ['verified', 'auth', 'shop_owner']], function () {
         Route::get('/register_shop_data', [AdminController::class, 'createShopData']);
         Route::post('/register_shop_data', [AdminController::class, 'storeShopData']);
         Route::get('/edit_shop_data', [AdminController::class, 'editShopData']);
