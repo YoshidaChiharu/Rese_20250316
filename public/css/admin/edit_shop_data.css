@@ -50,6 +50,7 @@
     width: 100%;
     padding: 4px 8px;
     font-size: 16px;
+    white-space: pre-wrap;
 }
 
 .form-table__input--select {
@@ -78,15 +79,8 @@
     align-items: center;
 }
 
-.form-table__drop-area img {
-    width: 20%;
-}
-
-.form-table__drop-area p {
-    margin: 10px 0 0 0;
-    color: #959595;
-    font-size: 24px;
-    font-weight: bold;
+.drop-area__preview {
+    width: 100%;
 }
 
 .form-table__input--file {

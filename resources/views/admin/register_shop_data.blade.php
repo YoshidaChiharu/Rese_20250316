@@ -16,14 +16,18 @@
                 <tr>
                     <th>店名</th>
                     <td>
-                        <input class="form-table__input--text" type="text" name="name">
+                        <input class="form-table__input--text" type="text" value="{{ old('name') }}" name="name">
                     </td>
                 </tr>
                 <tr>
                     <th>エリア</th>
                     <td>
                         <select class="form-table__input--select" name="area">
-                            <option value="東京都">東京都</option>
+                            @foreach(config('pref') as $key => $score)
+                            <option value="{{ $score }}" {{ $score == old('area') ? 'selected' : '' }}>
+                            {{ $score }}
+                            </option>
+                            @endforeach
                         </select>
                     </td>
                 </tr>
@@ -31,14 +35,18 @@
                     <th>ジャンル</th>
                     <td>
                         <select class="form-table__input--select" name="genre">
-                            <option value="寿司">寿司</option>
+                            @foreach(config('genre') as $key => $score)
+                            <option value="{{ $score }}" {{ $score == old('genre') ? 'selected' : '' }}>
+                            {{ $score }}
+                            </option>
+                            @endforeach
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <th>紹介文</th>
                     <td>
-                        <textarea class="form-table__input--text" rows="5" name="detail"></textarea>
+                        <textarea class="form-table__input--text" rows="5" name="detail">{{ old('detail') }}</textarea>
                     </td>
                 </tr>
                 <tr>

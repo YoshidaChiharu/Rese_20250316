@@ -34,27 +34,59 @@
         <div class="side-menu">
             <ul class="side-menu__list">
                 <li class="menu-list-item">
-                    <img src="{{ asset('img/home.svg') }}" alt="home">
+                    <img class="menu-icon" src="{{ asset('img/home.svg') }}" alt="home">
                     <a href="/">サイトトップへ</a>
                 </li>
                 @if (Auth::user()->role_id == 1)
                 <li class="menu-list-item">
-                    <img src="{{ asset('img/register.svg') }}" alt="home">
+                    <img class="menu-icon" src="{{ asset('img/register.svg') }}" alt="home">
                     <a href="/admin/register_shop_owner">店舗代表者登録</a>
                 </li>
                 @endif
                 @if (Auth::user()->role_id == 2)
                 <li class="menu-list-item">
-                    <img src="{{ asset('img/register.svg') }}" alt="home">
+                    <img class="menu-icon"  src="{{ asset('img/register.svg') }}" alt="home">
                     <a href="/admin/register_shop_data">新規登録</a>
                 </li>
                 <li class="menu-list-item">
-                    <img src="{{ asset('img/shop.svg') }}" alt="home">
-                    <a href="/admin/edit_shop_data">店舗情報の編集 ▼</a>
+                    <details>
+                        <summary>
+                            <span class="summary__inner">
+                                <img class="menu-icon"  src="{{ asset('img/shop.svg') }}" alt="home">
+                                店舗情報の編集
+                                <img class="open-close-icon" src="{{ asset('img/arrow.svg') }}">
+                            </span>
+                        </summary>
+                        <ul class="shop-list">
+                            @foreach($shops as $shop)
+                            <li>
+                                <a href="/admin/edit_shop_data/{{ $loop->index }}">
+                                {{ $shop->name }}
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </details>
                 </li>
                 <li class="menu-list-item">
-                    <img src="{{ asset('img/reservation.svg') }}" alt="home">
-                    <a href="/admin/reservation_list">予約一覧 ▼</a>
+                    <details>
+                        <summary>
+                            <span class="summary__inner">
+                                <img class="menu-icon"  src="{{ asset('img/reservation.svg') }}" alt="home">
+                                予約一覧
+                                <img class="open-close-icon" src="{{ asset('img/arrow.svg') }}">
+                            </span>
+                        </summary>
+                        <ul class="shop-list">
+                            @foreach($shops as $shop)
+                            <li>
+                                <a href="/admin/reservation_list/{{ $loop->index }}">
+                                {{ $shop->name }}
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </details>
                 </li>
                 @endif
             </ul>

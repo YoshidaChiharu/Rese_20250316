@@ -34,8 +34,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => ['verified', 'auth', 'shop_owner']], function () {
         Route::get('/register_shop_data', [AdminController::class, 'createShopData']);
         Route::post('/register_shop_data', [AdminController::class, 'storeShopData']);
-        Route::get('/edit_shop_data', [AdminController::class, 'editShopData']);
+        Route::get('/edit_shop_data/{shop_index}', [AdminController::class, 'editShopData']);
         Route::post('/edit_shop_data', [AdminController::class, 'updateShopData']);
-        Route::get('/reservation_list', [AdminController::class, 'showReservationList']);
+        Route::get('/reservation_list/{shop_index}', [AdminController::class, 'showReservationList']);
     });
 });

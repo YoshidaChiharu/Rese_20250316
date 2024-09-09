@@ -52,18 +52,48 @@
 
 .menu-list-item {
     margin-bottom: 20px;
+    color: white;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.menu-list-item img {
+.menu-icon {
     width: 24px;
 }
 
 .menu-list-item a {
     text-decoration: none;
     color: white;
+}
+
+.menu-list-item summary {
+    display: block;
+}
+
+.summary__inner,
+.summary__inner::-webkit-details-marker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.open-close-icon {
+    width: 16px;
+    transition: transform 0.2s;
+}
+
+details[open] .open-close-icon {
+    transform: rotate(180deg);
+}
+
+.shop-list {
+    list-style: none;
+}
+
+.shop-list li {
+    padding-top: 8px;
 }
 
 .content {

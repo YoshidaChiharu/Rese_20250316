@@ -50,8 +50,13 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function favorite_shops() : BelongsToMany
+    public function favoriteShops() : BelongsToMany
     {
         return $this->belongsToMany(Shop::class, 'favorites');
+    }
+
+    public function managingShops()
+    {
+        return $this->hasMany(Shop::class, 'owner_id');
     }
 }

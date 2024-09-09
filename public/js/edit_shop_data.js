@@ -1,4 +1,5 @@
 let target = document.getElementById('drop-target');
+let input = document.getElementById("input-file");
 
 target.addEventListener('dragover', function (e) {
 	e.preventDefault();
@@ -12,7 +13,7 @@ target.addEventListener('drop', function (e) {
 
     // inputタグに画像ファイルをセット
     const files = e.dataTransfer.files;
-    document.getElementById("input-file").files = files;
+    input.files = files;
 
     // 画像のプレビュー表示
     const reader = new FileReader();
@@ -22,4 +23,13 @@ target.addEventListener('drop', function (e) {
 		document.getElementById('drop-area__text').classList.add('hidden');
 	}
 	reader.readAsDataURL(files[0]);
+});
+
+input.addEventListener('change', function (e) {
+	const [file] = e.target.files;
+	if (file) {
+		document.getElementById('drop-area__preview').src = URL.createObjectURL(file);
+		document.getElementById('drop-area__icon').classList.add('hidden');
+		document.getElementById('drop-area__text').classList.add('hidden');
+	}
 });

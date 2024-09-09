@@ -56,7 +56,7 @@ class ShopController extends Controller
         }
 
         // お気に入り登録済み店舗の取得
-        $favorite_shops = Auth::user()->favorite_shops;
+        $favorite_shops = Auth::user()->favoriteShops;
         foreach ($shops as $shop) {
             $shop->favorite_flag = 0;
             foreach ($favorite_shops as $favorite_shop) {
@@ -207,7 +207,7 @@ class ShopController extends Controller
         $reservations = $reservations->diff($past_reservations);
 
         // お気に入り店舗情報の取得
-        $favorite_shops = $user->favorite_shops;
+        $favorite_shops = $user->favoriteShops;
 
         // 店舗の「評価値」「レビュー数」「お気に入り数」を算出
         foreach ($favorite_shops as $favorite_shop) {

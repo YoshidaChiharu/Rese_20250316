@@ -51,8 +51,10 @@ class AdminController extends Controller
     }
 
     // 店舗情報作成ページ表示 ======================================================
-    public function createShopData() {
-        return view('admin.register_shop_data');
+    public function createShopData(Request $request) {
+        $shops = Auth::user()->managingShops;
+
+        return view('admin.register_shop_data', compact('shops'));
     }
 
     // 店舗情報登録処理 ============================================================
@@ -79,13 +81,39 @@ class AdminController extends Controller
     }
 
     // 店舗情報編集ページ表示 ======================================================
-    public function editShopData() {
-        return view('admin.edit_shop_data');
+    public function editShopData(Request $request) {
+        $shops = Auth::user()->managingShops;
+
+        return view('admin.edit_shop_data', compact('shops'));
+    }
+
+    // 店舗情報編集処理 ============================================================
+    public function updateShopData(Request $request) {
+        $param = [
+            'name' => $request->name,
+            'area' => $request->area,
+            'genre' => $request->genre,
+            'detail' => $request->detail,
+        ];
+
+        // サムネイル画像の保存
+        // （※複数ファイル選択時は1つ目の画像を保存）
+        $images = $request->file('images');
+        if ($images) {
+            $image_path = $images[0]->store('public/img');
+            $param['image'] = str_replace("public/", "", $image_path);
+        }
+
+        Shop::find($request->shop_id)->update($param);
+
+        return redirect('/admin/edit_shop_data/' . $request->shop_index);
     }
 
     // 予約一覧ページ表示 ==========================================================
-    public function showReservationList() {
-        return view('admin.reservation_list');
+    public function showReservationList(Request $request) {
+        $shops = Auth::user()->managingShops;
+
+        return view('admin.reservation_list', compact('shops'));
     }
 
 }
