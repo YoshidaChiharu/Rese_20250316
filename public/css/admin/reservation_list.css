@@ -5,12 +5,8 @@
 
 .heading__shop-name {
     margin: 0;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
-}
-
-.calendar-section {
-    margin-top: 40px;
 }
 
 .section__title {
@@ -26,6 +22,7 @@
 
 .calendar-top__year-month {
     text-align: center;
+    font-weight: bold;
 }
 
 .calendar-top__button {
@@ -41,6 +38,9 @@
     padding: 4px 8px;
     font-size: 12px;
     margin-right: 10px;
+    text-decoration: none;
+    color: black;
+    background-color: #F4F4F4;
     border: solid 1px #959997;
     border-radius: 4px;
     cursor: pointer;
@@ -48,8 +48,9 @@
 
 .button__prev,
 .button__next {
-    padding: 5.5px 12px;
+    padding: 3.5px 12px;
     border-radius: 0;
+    background-color: #F4F4F4;
     border: solid 1px #959997;
     cursor: pointer;
 }
@@ -75,6 +76,7 @@
 }
 
 .calendar-content__table .table__header {
+    width: calc(100% / 7);
     padding: 4px 0;
     border-right: solid 1px #959997;
     background-color: #F4F4F4;
@@ -92,21 +94,42 @@
 }
 
 .calendar-content__table .table__data {
-    padding: 10px;
+    padding: 10px 4px;
     border-right: solid 1px #959997;
 }
 
-.calendar-content__table .table__data p {
-    margin: 0;
+.calendar-content__table .table__data--gray {
+    background-color: #DBDBDB;
 }
 
-.calendar-content__table .table__data button {
+.calendar-content__table .table__data--yellow {
+    background-color: #FEFECC;
+}
+
+.calendar-content__table .table__days {
+    margin: 0;
+    line-height: 1;
+}
+
+.calendar-content__table .table__button {
     width: 100%;
     margin-top: 10px;
+    padding: 1px 4px;
+    line-height: 1.5;
     border: none;
     border-radius: 6px;
     color: white;
+    background-color: #E8E8E8;
+    font-size: 14px;
+}
+
+.calendar-content__table .table__button--blue {
     background-color: #599bc1;
+    cursor: pointer;
+}
+
+.calendar-content__table .table__button--gray {
+    background-color: #767676;
     cursor: pointer;
 }
 
@@ -127,6 +150,7 @@
 
 .time-schedule-content__table {
     margin-top: 10px;
+    text-align: left;
 }
 
 .time-schedule-content__table .columns {
@@ -148,11 +172,8 @@
     background-color: #F4F4F4;
 }
 
-.time-schedule-content__table .table__header td {
-
-}
-
 .time-schedule-content__table .table__data {
+    padding: 0;
     border-left: solid 1px #D7DDE0;
 }
 
@@ -162,6 +183,7 @@
 }
 
 .time-schedule-content__table .scroll-rock {
+    padding: 15px 40px;
     position: sticky;
     left: 0;
 }
@@ -179,3 +201,21 @@
     z-index: -1;
     box-sizing: content-box;
   }
+
+.relative {
+    position: relative;
+}
+
+.reservation-box {
+    height: 90%;
+    width: calc(151px * 2);
+    padding: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #F2CD5D;
+    border: solid 1px #EAB002;
+    border-radius: 6px;
+    position: absolute;
+    top: 5%;
+    left: 0;
+}

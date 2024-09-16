@@ -49,6 +49,7 @@ class Shop extends Model
         return $reviews;
     }
 
+    // 店舗のレーティング値取得メソッド
     public function getShopRating()
     {
         $standard_value = 3;        // レーティングの基準値
@@ -72,11 +73,13 @@ class Shop extends Model
         return $shop_rating;
     }
 
+    // 店舗の口コミ人数取得メソッド
     public function getReviewsQuantity()
     {
         return $this->reviews()->count();
     }
 
+    // 店舗のお気に入り登録人数取得メソッド
     public function getFavoritesQuantity()
     {
         return $this->favorites->count();
