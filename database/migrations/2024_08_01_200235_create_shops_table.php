@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('shops', function (Blueprint $table) {
             $table->id();
             $table->foreignId('owner_id')->constrained('users');
-            $table->string('name', 255);
+            $table->string('name', 50);
             $table->string('area', 255);
             $table->string('genre', 255);
-            $table->string('detail', 255);
+            $table->string('detail', 1000);
             $table->string('image', 255);
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrent()->nullable();

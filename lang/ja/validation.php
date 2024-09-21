@@ -155,6 +155,8 @@ return [
         'reserve_number' => '予約人数',
         'title' => 'タイトル',
         'comment' => 'コメント',
+        'detail' => '詳細文',
+        'images' => '画像'
     ],
 
     'values' => [

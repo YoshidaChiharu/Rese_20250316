@@ -11,7 +11,7 @@ class ShopDataRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,8 +25,9 @@ class ShopDataRequest extends FormRequest
             'name' => ['required', 'string', 'max:50'],
             'area' => ['required'],
             'genre' => ['required'],
-            'detail' => ['required', 'string','max:2000'],
-            'image' => ['required'],
+            'detail' => ['required', 'string','max:1000'],
+            'images' => ['required'],
         ];
     }
+
 }

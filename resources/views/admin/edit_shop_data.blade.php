@@ -17,6 +17,11 @@
                     <th>店名</th>
                     <td>
                         <input class="form-table__input--text" type="text" value="{{ old('name', $shops[request()->shop_index]->name) }}" name="name">
+                        <div class="form-table__error">
+                            @error('name')
+                            ※{{ $message }}
+                            @enderror
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -29,6 +34,11 @@
                             </option>
                             @endforeach
                         </select>
+                        <div class="form-table__error">
+                            @error('area')
+                            ※{{ $message }}
+                            @enderror
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -41,12 +51,22 @@
                             </option>
                             @endforeach
                         </select>
+                        <div class="form-table__error">
+                            @error('genre')
+                            ※{{ $message }}
+                            @enderror
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <th>紹介文</th>
                     <td>
                         <textarea class="form-table__input--text" rows="5" name="detail">{{ old('detail', $shops[request()->shop_index]->detail) }}</textarea>
+                        <div class="form-table__error">
+                            @error('detail')
+                            ※{{ $message }}
+                            @enderror
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -56,6 +76,11 @@
                             <img class="drop-area__preview" id="drop-area__preview" src="{{ asset('storage/' . $shops[request()->shop_index]->image) }}">
                         </div>
                         <input class="form-table__input--file" id="input-file" type="file" accept="image/*" name="images[]">
+                        <div class="form-table__error">
+                            @error('images')
+                            ※{{ $message }}
+                            @enderror
+                        </div>
                     </td>
                 </tr>
             </table>

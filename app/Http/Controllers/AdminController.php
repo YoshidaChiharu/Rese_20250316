@@ -9,7 +9,6 @@ use App\Models\Shop;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\ShopDataRequest;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 
@@ -22,6 +21,7 @@ class AdminController extends Controller
 
     // 店舗代表者アカウント登録処理 ================================================
     public function storeShopOwner(Request $request) {
+        // バリデーション
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => [
@@ -39,6 +39,7 @@ class AdminController extends Controller
             ],
         ]);
 
+        // 店舗代表者作成
         $shop_owner = [
             'role_id' => '2',
             'name' => $request->name,
@@ -64,12 +65,22 @@ class AdminController extends Controller
     {
         $owner_id = Auth::user()->id;
 
+        // バリデーション
+        $request->validate([
+            'name' => ['required', 'string', 'max:50'],
+            'area' => ['required'],
+            'genre' => ['required'],
+            'detail' => ['required', 'string','max:1000'],
+            'images' => ['required'],
+        ]);
+
         // サムネイル画像の保存
         // （※複数ファイル選択時は1つ目の画像を保存）
         $images = $request->file('images');
         $image_path = $images[0]->store('public/img');
         $image_path = str_replace("public/", "", $image_path);
 
+        // 店舗情報作成
         Shop::create([
             'owner_id' => $owner_id,
             'name' => $request->name,
@@ -98,6 +109,14 @@ class AdminController extends Controller
             'detail' => $request->detail,
         ];
 
+        // バリデーション
+        $request->validate([
+            'name' => ['required', 'string', 'max:50'],
+            'area' => ['required'],
+            'genre' => ['required'],
+            'detail' => ['required', 'string','max:1000'],
+        ]);
+
         // サムネイル画像の保存
         // （※複数ファイル選択時は1つ目の画像を保存）
         $images = $request->file('images');
@@ -106,6 +125,7 @@ class AdminController extends Controller
             $param['image'] = str_replace("public/", "", $image_path);
         }
 
+        // 店舗情報更新
         Shop::find($request->shop_id)->update($param);
 
         return redirect('/admin/edit_shop_data/' . $request->shop_index);
