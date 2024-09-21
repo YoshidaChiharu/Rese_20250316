@@ -47,6 +47,12 @@
                             </form>
                         </li>
                         <li><a href="/mypage">Mypage</a></li>
+                        @if (Auth::user()->role_id == 1)
+                        <li class="admin-menu"><a href="/admin/register_shop_owner">administration page</a></li>
+                        @endif
+                        @if (Auth::user()->role_id == 2)
+                        <li class="admin-menu"><a href="/admin/register_shop_data">administration page</a></li>
+                        @endif
                     </ul>
                 </div>
                 @else

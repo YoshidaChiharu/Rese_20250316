@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\RolesTableSeeder;
+use Database\Seeders\UsersTableSeeder;
 use Database\Seeders\ShopsTableSeeder;
 use Database\Seeders\ReviewsTableSeeder;
 use App\Models\User;
@@ -17,6 +19,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(RolesTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
         $this->call(ShopsTableSeeder::class);
         User::factory(1000)->create();
         Favorite::factory(1000)->create();

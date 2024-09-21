@@ -262,7 +262,7 @@
             @foreach($favorite_shops as $shop)
             <div class="shop-card">
                 <div class="card-image">
-                    <img src="{{ $shop->image }}" alt="shop image">
+                    <img src="{{ asset('storage/' . $shop->image) }}" alt="shop image">
                 </div>
                 <div class="card-content">
                     <div class="card-content__name">

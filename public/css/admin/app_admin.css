@@ -1,0 +1,103 @@
+* {
+    box-sizing: border-box;
+    font-family: "Noto Sans JP", sans-serif;
+}
+
+.header {
+    height: 80px;
+    background-color: #eee;
+    border-bottom: solid 2px #434343;
+}
+
+.header__inner {
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header__logo h1 {
+    margin: 0;
+}
+
+.header__logo a {
+    text-decoration: none;
+    color: #305dff;
+}
+
+.header__text,
+.header__role {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.main {
+    display: flex;
+}
+
+.side-menu {
+    width: 20%;
+    max-width: 300px;
+    min-height: calc(100vh - 80px);
+    padding: 20px;
+    background-color: #383838;
+}
+
+.side-menu__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.menu-list-item {
+    margin-bottom: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-icon {
+    width: 24px;
+}
+
+.menu-list-item a {
+    text-decoration: none;
+    color: white;
+}
+
+.menu-list-item summary {
+    display: block;
+}
+
+.summary__inner,
+.summary__inner::-webkit-details-marker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.open-close-icon {
+    width: 16px;
+    transition: transform 0.2s;
+}
+
+details[open] .open-close-icon {
+    transform: rotate(180deg);
+}
+
+.shop-list {
+    list-style: none;
+}
+
+.shop-list li {
+    padding-top: 8px;
+}
+
+.content {
+    width: 80%;
+    padding: 40px;
+}

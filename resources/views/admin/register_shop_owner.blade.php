@@ -1,16 +1,16 @@
-@extends('layouts.app')
+@extends('admin.app_admin')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/auth/register.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/register_shop_owner.css') }}">
 @endsection
 
 @section('content')
 <div class="register-wrapper">
     <div class="register-content">
         <div class="register-content__heading">
-            <h2>Registration</h2>
+            <h2>Registration&ensp;&lt;Shop owner&gt;</h2>
         </div>
-        <form action="/register" class="register-content__form" method="post">
+        <form action="/admin/register_shop_owner" class="register-content__form" method="post">
             @csrf
             <input type="hidden" name="role_id" value="3">
             <div class="form__error">
