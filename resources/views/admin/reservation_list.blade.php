@@ -122,7 +122,7 @@
                             @if($i.":00:00" == $reservation->start_at)
                             <td class="table__data relative">
                                 <div class="reservation-box" length_minutes={{ $reservation->getMinutesLength() }} interval_minutes=30>
-                                    {{ $reservation->user->name }}様&emsp;{{ $reservation->number }}名&emsp;{{ $reservation->start_at }}～{{ $reservation->finish_at }}
+                                    {{ $reservation->user->name }}様&emsp;{{ $reservation->number }}名&emsp;{{ substr($reservation->start_at, 0, 5) }}～{{ substr($reservation->finish_at, 0, 5) }}
                                 </div>
                             </td>
                             @else
@@ -132,7 +132,7 @@
                             @if($i.":30:00" == $reservation->start_at)
                             <td class="table__data relative">
                                 <div class="reservation-box" length_minutes={{ $reservation->getMinutesLength() }} interval_minutes=30>
-                                    {{ $reservation->user->name }}様&emsp;{{ $reservation->number }}名&emsp;{{ $reservation->start_at }}～{{ $reservation->finish_at }}
+                                    {{ $reservation->user->name }}様&emsp;{{ $reservation->number }}名&emsp;{{ substr($reservation->start_at, 0, 5) }}～{{ substr($reservation->finish_at, 0, 5) }}
                                 </div>
                             </td>
                             @else
