@@ -9,6 +9,7 @@ use App\Models\Shop;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 
@@ -40,15 +41,21 @@ class AdminController extends Controller
         ]);
 
         // 店舗代表者作成
-        $shop_owner = [
-            'role_id' => '2',
-            'name' => $request->name,
-            'email' => $request->email,
-            'email_verified_at' => now(),
-            'password' => Hash::make($request->password),
-            'remember_token' => Str::random(10),
-        ];
-        DB::table('users')->insert($shop_owner);
+        try {
+            DB::transaction(function () use($request) {
+                $shop_owner = [
+                    'role_id' => '2',
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'email_verified_at' => now(),
+                    'password' => Hash::make($request->password),
+                    'remember_token' => Str::random(10),
+                ];
+                DB::table('users')->insert($shop_owner);
+            });
+        } catch (\Exception $e) {
+            Log::error($e);
+        }
 
         return redirect('/admin/register_shop_owner');
     }
@@ -81,14 +88,20 @@ class AdminController extends Controller
         $image_path = str_replace("public/", "", $image_path);
 
         // 店舗情報作成
-        Shop::create([
-            'owner_id' => $owner_id,
-            'name' => $request->name,
-            'area' => $request->area,
-            'genre' => $request->genre,
-            'detail' => $request->detail,
-            'image' => $image_path,
-        ]);
+        try {
+            DB::transaction(function () use($request, $owner_id, $image_path) {
+                Shop::create([
+                    'owner_id' => $owner_id,
+                    'name' => $request->name,
+                    'area' => $request->area,
+                    'genre' => $request->genre,
+                    'detail' => $request->detail,
+                    'image' => $image_path,
+                ]);
+            });
+        } catch (\Exception $e) {
+            Log::error($e);
+        }
 
         return redirect('/admin/register_shop_data');
     }
@@ -102,13 +115,6 @@ class AdminController extends Controller
 
     // 店舗情報編集処理 ============================================================
     public function updateShopData(Request $request) {
-        $param = [
-            'name' => $request->name,
-            'area' => $request->area,
-            'genre' => $request->genre,
-            'detail' => $request->detail,
-        ];
-
         // バリデーション
         $request->validate([
             'name' => ['required', 'string', 'max:50'],
@@ -116,6 +122,13 @@ class AdminController extends Controller
             'genre' => ['required'],
             'detail' => ['required', 'string','max:1000'],
         ]);
+
+        $param = [
+            'name' => $request->name,
+            'area' => $request->area,
+            'genre' => $request->genre,
+            'detail' => $request->detail,
+        ];
 
         // サムネイル画像の保存
         // （※複数ファイル選択時は1つ目の画像を保存）
@@ -126,7 +139,13 @@ class AdminController extends Controller
         }
 
         // 店舗情報更新
-        Shop::find($request->shop_id)->update($param);
+        try {
+            DB::transaction(function () use($request, $param) {
+                Shop::find($request->shop_id)->update($param);
+            });
+        } catch (\Exception $e) {
+            Log::error($e);
+        }
 
         return redirect('/admin/edit_shop_data/' . $request->shop_index);
     }
