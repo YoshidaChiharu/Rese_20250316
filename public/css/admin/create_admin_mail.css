@@ -1,15 +1,35 @@
-.register-wrapper {
+.admin-mail-wrapper {
     margin: 0 auto;
     max-width: 800px;
 }
 
-.register-content {
+.message {
+    margin-bottom: 10px;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.is_sent--true {
+    color: #9CBAAB;
+    background-color: #BCE1CF;
+    border: solid 1px #9CBAAB;
+    border-radius: 6px;
+}
+
+.is_sent--false {
+    color: #FF475F;
+    background-color: #FEADB8;
+    border: solid 1px #FF475F;
+    border-radius: 6px;
+}
+
+.admin-mail-content {
     border: solid 1px #959997;
     border-radius: 8px;
     box-shadow: 2px 2px 3px #aaa;
 }
 
-.register-content__heading {
+.admin-mail-content__heading {
     padding: 4px;
     background-color: #383838;
     border-bottom: solid 1px #959997;
@@ -17,7 +37,7 @@
     border-top-right-radius: 6px;
 }
 
-.register-content__heading h2 {
+.admin-mail-content__heading h2 {
     margin: 0;
     color: white;
     font-size: 16px;

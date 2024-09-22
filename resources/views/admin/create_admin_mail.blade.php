@@ -5,12 +5,17 @@
 @endsection
 
 @section('content')
-<div class="register-wrapper">
-    <div class="register-content">
-        <div class="register-content__heading">
+<div class="admin-mail-wrapper">
+    @if(session('is_sent') === true)
+    <div class="message is_sent--true">{{ session('message') }}</div>
+    @elseif(session('is_sent') === false)
+    <div class="message is_sent--false">{{ session('message') }}</div>
+    @endif
+    <div class="admin-mail-content">
+        <div class="admin-mail-content__heading">
             <h2>お知らせメール</h2>
         </div>
-        <form action="/admin/admin_mail" class="register-content__form" method="post">
+        <form action="/admin/admin_mail" class="admin-mail-content__form" method="post">
             @csrf
             <table class="form-table">
                 <tr>
