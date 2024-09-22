@@ -29,6 +29,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => ['verified', 'auth', 'administrator']], function () {
         Route::get('/register_shop_owner', [AdminController::class, 'createShopOwner']);
         Route::post('/register_shop_owner', [AdminController::class, 'storeShopOwner']);
+        Route::get('/admin_mail', [AdminController::class, 'createAdminMail']);
+        Route::post('/admin_mail', [AdminController::class, 'sendAdminMail']);
     });
 
     Route::group(['middleware' => ['verified', 'auth', 'shop_owner']], function () {

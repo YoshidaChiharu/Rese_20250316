@@ -241,4 +241,12 @@ class AdminController extends Controller
         );
     }
 
+    // お知らせメール作成ページ表示 =================================================
+    public function createAdminMail(Request $request) {
+        return view('admin.create_admin_mail');
+    }
+
+    // お知らせメール送信処理 =======================================================
+
+
 }

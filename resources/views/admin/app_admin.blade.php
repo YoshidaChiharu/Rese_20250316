@@ -42,6 +42,10 @@
                     <img class="menu-icon" src="{{ asset('img/register.svg') }}" alt="home">
                     <a href="/admin/register_shop_owner">店舗代表者登録</a>
                 </li>
+                <li class="menu-list-item">
+                    <img class="menu-icon" src="{{ asset('img/mail_white.svg') }}" alt="home">
+                    <a href="/admin/admin_mail">お知らせメール</a>
+                </li>
                 @endif
                 @if (Auth::user()->role_id == 2)
                 <li class="menu-list-item">
