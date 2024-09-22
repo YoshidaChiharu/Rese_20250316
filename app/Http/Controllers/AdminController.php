@@ -251,9 +251,15 @@ class AdminController extends Controller
 
     // お知らせメール送信処理 =======================================================
     public function sendAdminMail(Request $request) {
-        $users = User::all();
+        // バリデーション
+        $request->validate([
+            'subject' => ['required'],
+            'main_text' => ['required'],
+        ]);
 
         try {
+            $users = User::all();
+
             // 一斉メール送信
             // foreach($users as $user) {
             //     Mail::to($user->email)

@@ -156,7 +156,9 @@ return [
         'title' => 'タイトル',
         'comment' => 'コメント',
         'detail' => '詳細文',
-        'images' => '画像'
+        'images' => '画像',
+        'subject' => '件名',
+        'main_text' => '本文',
     ],
 
     'values' => [
