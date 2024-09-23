@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Lang;
+use Mail;
+use App\Mail\AdminMail;
 
 class AdminController extends Controller
 {
@@ -239,6 +242,56 @@ class AdminController extends Controller
                 'next_month',
             ]),
         );
+    }
+
+    // お知らせメール作成ページ表示 =================================================
+    public function createAdminMail() {
+        return view('admin.create_admin_mail');
+    }
+
+    // お知らせメール送信処理 =======================================================
+    public function sendAdminMail(Request $request) {
+        // バリデーション
+        $request->validate([
+            'subject' => ['required'],
+            'main_text' => ['required'],
+        ]);
+
+        try {
+            $users = User::all();
+
+            // 一斉メール送信
+            // foreach($users as $user) {
+            //     Mail::to($user->email)
+            //         ->send(new AdminMail(
+            //                     $user->name,
+            //                     $request->subject,
+            //                     $request->main_text,
+            //     ));
+            // }
+
+            // googleメールの送信制限は1日「500件」まで
+            // 制限にかからないよう「10件」でテスト
+            for($i=0; $i<10; $i++) {
+                Mail::to($users[$i]->email)
+                    ->send(new AdminMail(
+                        $users[$i]->name,
+                        $request->subject,
+                        $request->main_text,
+                ));
+            }
+            $message = Lang::get('message.SENT_MAIL');
+            $is_sent = true;
+        } catch (\Exception $e) {
+            $message = Lang::get('message.ERR_MAIL');
+            $is_sent = false;
+            Log::error($e);
+        }
+
+        return redirect('/admin/admin_mail')->with([
+            'message' => $message,
+            'is_sent' => $is_sent,
+        ]);
     }
 
 }
