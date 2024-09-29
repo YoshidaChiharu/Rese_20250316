@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(ShopsTableSeeder::class);
-        User::factory(1000)->create();
-        Favorite::factory(1000)->create();
+        User::factory(50)->create();
+        Favorite::factory(500)->create();
         Reservation::factory(500)->create();
         $this->call(ReviewsTableSeeder::class);
     }
