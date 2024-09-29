@@ -14,7 +14,8 @@ use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Lang;
 use Mail;
-use App\Mail\AdminMail;
+use Illuminate\Support\Facades\Bus;
+use App\Jobs\SendAdminMail;
 
 class AdminController extends Controller
 {
@@ -258,28 +259,15 @@ class AdminController extends Controller
         ]);
 
         try {
+            // 送信対象は全ユーザー
             $users = User::all();
 
-            // 一斉メール送信
-            // foreach($users as $user) {
-            //     Mail::to($user->email)
-            //         ->send(new AdminMail(
-            //                     $user->name,
-            //                     $request->subject,
-            //                     $request->main_text,
-            //     ));
-            // }
+            // 全ユーザー分のメール送信ジョブを作成してディスパッチ
+            $jobs = $users->map(function ($user) use ($request) {
+                return new SendAdminMail($user, $request->subject, $request->main_text);
+            });
+            $batch = Bus::batch($jobs)->dispatch();
 
-            // googleメールの送信制限は1日「500件」まで
-            // 制限にかからないよう「10件」でテスト
-            for($i=0; $i<10; $i++) {
-                Mail::to($users[$i]->email)
-                    ->send(new AdminMail(
-                        $users[$i]->name,
-                        $request->subject,
-                        $request->main_text,
-                ));
-            }
             $message = Lang::get('message.SENT_MAIL');
             $is_sent = true;
         } catch (\Exception $e) {
