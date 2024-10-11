@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Models\User;
 use App\Models\Shop;
+use App\Models\Reservation;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -293,4 +294,37 @@ class AdminController extends Controller
         ]);
     }
 
+    // 予約詳細ページ表示 ===========================================================
+    public function showReservationDetail(Request $request) {
+        // 自身が作成した店舗の情報を取得
+        $managing_shops = Auth::user()->managingShops;
+
+        // 表示対象の店舗、予約情報を取得
+        $shop = Shop::find($request->shop_id);
+        $reservation = Reservation::find($request->reservation_id);
+
+        return view('admin.reservation_detail', compact('managing_shops', 'shop', 'reservation'));
+    }
+
+    // 予約詳細の編集処理 ===========================================================
+    public function editReservation(Request $request) {
+        // 自身が作成した店舗の情報を取得
+        $managing_shops = Auth::user()->managingShops;
+
+        // 表示対象の店舗、予約情報を取得
+        $shop = Shop::find($request->shop_id);
+        $reservation = Reservation::find($request->reservation_id);
+
+        // 予約変更用パラメータの作成
+        $reservable_times = $shop->getReservableTimes('16:00', '21:00', 30);
+
+        return view(
+            'admin.reservation_edit',
+            compact(
+                'managing_shops',
+                'shop',
+                'reservation',
+                'reservable_times',
+        ));
+    }
 }

@@ -15,13 +15,13 @@
             <div class="calendar-top">
                 <div class="calendar-top__year-month">{{ $this_year }}年{{ $this_month }}月</div>
                 <div class="calendar-top__button">
-                    <a class="button__this-month" href="/admin/reservation_list/{{ request()->shop_id }}">今月</a>
-                    <form action="/admin/reservation_list/{{ request()->shop_id }}" method="get">
+                    <a class="button__this-month" href="/admin/reservation_list/{{ $shop->id }}">今月</a>
+                    <form action="/admin/reservation_list/{{ $shop->id }}" method="get">
                         <input type="hidden" value="{{ $prev_year }}" name="year">
                         <input type="hidden" value="{{ $prev_month }}" name="month">
                         <button class="button__prev">&lt;</button>
                     </form>
-                    <form action="/admin/reservation_list/{{ request()->shop_id }}" method="get">
+                    <form action="/admin/reservation_list/{{ $shop->id }}" method="get">
                         <input type="hidden" value="{{ $next_year }}" name="year">
                         <input type="hidden" value="{{ $next_month }}" name="month">
                         <button class="button__next">&gt;</button>
@@ -116,7 +116,11 @@
                     </tr>
                     @foreach($reservations as $reservation)
                     <tr>
-                        <th class="scroll-rock">予約{{ $loop->iteration }}</th>
+                        <th class="scroll-rock">
+                            <a href="/admin/reservation_list/{{ $shop->id }}/detail/{{ $reservation->id }}">
+                                予約{{ $loop->iteration }}
+                            </a>
+                        </th>
                         @for($i=12; $i<=24; $i++)
                             <!-- 「**:00 ～」の予約の場合 -->
                             @if($i.":00:00" == $reservation->start_at)

@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Reservation;
 use App\Models\Favorite;
 use App\Models\Review;
+use Carbon\Carbon;
+
 
 class Shop extends Model
 {
@@ -83,6 +85,20 @@ class Shop extends Model
     public function getFavoritesQuantity()
     {
         return $this->favorites->count();
+    }
+
+    // 予約可能時間の配列取得メソッド
+    public function getReservableTimes($start_time, $end_time, $span_minute) {
+        $span_minute = 30;
+
+        $time = new Carbon($start_time);
+        $end = new Carbon($end_time);
+        while ($time <= $end) {
+            $reservable_times[] = $time->format('H:i');
+            $time->addMinutes($span_minute);
+        }
+
+        return $reservable_times;
     }
 }
 
