@@ -66,9 +66,10 @@ class AdminController extends Controller
 
     // 店舗情報作成ページ表示 ======================================================
     public function createShopData(Request $request) {
-        $shops = Auth::user()->managingShops;
+        // 自身が作成した店舗の情報を取得
+        $managing_shops = Auth::user()->managingShops;
 
-        return view('admin.register_shop_data', compact('shops'));
+        return view('admin.register_shop_data', compact('managing_shops'));
     }
 
     // 店舗情報登録処理 ============================================================
@@ -112,9 +113,13 @@ class AdminController extends Controller
 
     // 店舗情報編集ページ表示 ======================================================
     public function editShopData(Request $request) {
-        $shops = Auth::user()->managingShops;
+        // 自身が作成した店舗の情報を取得
+        $managing_shops = Auth::user()->managingShops;
 
-        return view('admin.edit_shop_data', compact('shops'));
+        // 編集対象の店舗情報を取得
+        $shop = Shop::find($request->shop_id);
+
+        return view('admin.edit_shop_data', compact('managing_shops', 'shop'));
     }
 
     // 店舗情報編集処理 ============================================================
@@ -126,6 +131,8 @@ class AdminController extends Controller
             'genre' => ['required'],
             'detail' => ['required', 'string','max:1000'],
         ]);
+
+        $shop_id = $request->shop_id;
 
         $param = [
             'name' => $request->name,
@@ -144,20 +151,25 @@ class AdminController extends Controller
 
         // 店舗情報更新
         try {
-            DB::transaction(function () use($request, $param) {
-                Shop::find($request->shop_id)->update($param);
+            DB::transaction(function () use($shop_id, $param) {
+                Shop::find($shop_id)->update($param);
             });
         } catch (\Exception $e) {
             Log::error($e);
         }
 
-        return redirect('/admin/edit_shop_data/' . $request->shop_index);
+        return redirect('/admin/edit_shop_data/' . $shop_id);
     }
 
     // 予約一覧ページ表示 ==========================================================
     public function showReservationList(Request $request) {
-        $shops = Auth::user()->managingShops;
+        // 自身が作成した店舗の情報を取得
+        $managing_shops = Auth::user()->managingShops;
 
+        // 表示対象の店舗情報を取得
+        $shop = Shop::find($request->shop_id);
+
+        // カレンダーに表示する年、月を決定
         $now = CarbonImmutable::now();
         $this_year = $request->year ?? $now->format('Y');
         $this_month = $request->month ?? $now->format('m');
@@ -194,10 +206,8 @@ class AdminController extends Controller
             if($base_date->format('Y-m-d') < $now->format('Y-m-d')) { $calendar[$i]['is_past'] = true; }
 
             // 予約組数＆人数
-            $shop_id = $shops[$request->shop_index]->id;
-            $reservations = Shop::find($shop_id)
-                                ->reservations
-                                ->where('scheduled_on', $base_date->format('Y-m-d'));
+            $reservations = $shop->reservations
+                                 ->where('scheduled_on', $base_date->format('Y-m-d'));
 
             $calendar[$i]['reservation_group_num'] = 0;
             $calendar[$i]['reservation_people_num'] = 0;
@@ -232,7 +242,8 @@ class AdminController extends Controller
         return view(
             'admin.reservation_list',
             compact([
-                'shops',
+                'managing_shops',
+                'shop',
                 'calendar',
                 'time_schedule',
                 'this_year',

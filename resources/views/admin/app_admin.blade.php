@@ -62,9 +62,9 @@
                             </span>
                         </summary>
                         <ul class="shop-list">
-                            @foreach($shops as $shop)
+                            @foreach($managing_shops as $shop)
                             <li>
-                                <a href="/admin/edit_shop_data/{{ $loop->index }}">
+                                <a href="/admin/edit_shop_data/{{ $shop->id }}">
                                 {{ $shop->name }}
                                 </a>
                             </li>
@@ -82,9 +82,9 @@
                             </span>
                         </summary>
                         <ul class="shop-list">
-                            @foreach($shops as $shop)
+                            @foreach($managing_shops as $shop)
                             <li>
-                                <a href="/admin/reservation_list/{{ $loop->index }}">
+                                <a href="/admin/reservation_list/{{ $shop->id }}">
                                 {{ $shop->name }}
                                 </a>
                             </li>
