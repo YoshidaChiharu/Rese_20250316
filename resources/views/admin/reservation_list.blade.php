@@ -7,7 +7,7 @@
 @section('content')
 <div class="container">
     <div class="heading-section">
-        <p class="heading__shop-name">{{ $shops[request()->shop_index]->name }}</p>
+        <p class="heading__shop-name">{{ $shop->name }}</p>
     </div>
     <div class="calendar-section">
         <div class="section__title">［予約カレンダー］</div>
@@ -15,13 +15,13 @@
             <div class="calendar-top">
                 <div class="calendar-top__year-month">{{ $this_year }}年{{ $this_month }}月</div>
                 <div class="calendar-top__button">
-                    <a class="button__this-month" href="/admin/reservation_list/{{ request()->shop_index }}">今月</a>
-                    <form action="/admin/reservation_list/{{ request()->shop_index }}" method="get">
+                    <a class="button__this-month" href="/admin/reservation_list/{{ request()->shop_id }}">今月</a>
+                    <form action="/admin/reservation_list/{{ request()->shop_id }}" method="get">
                         <input type="hidden" value="{{ $prev_year }}" name="year">
                         <input type="hidden" value="{{ $prev_month }}" name="month">
                         <button class="button__prev">&lt;</button>
                     </form>
-                    <form action="/admin/reservation_list/{{ request()->shop_index }}" method="get">
+                    <form action="/admin/reservation_list/{{ request()->shop_id }}" method="get">
                         <input type="hidden" value="{{ $next_year }}" name="year">
                         <input type="hidden" value="{{ $next_month }}" name="month">
                         <button class="button__next">&gt;</button>
@@ -59,7 +59,7 @@
                         ])>
                             <p class="table__days">{{ $day }}</p>
                             @if($people_num)
-                            <form action="/admin/reservation_list/{{ request()->shop_index }}" method="get">
+                            <form action="/admin/reservation_list/{{ request()->shop_id }}" method="get">
                                 <input type="hidden" value="{{ $this_year }}" name="year">
                                 <input type="hidden" value="{{ $this_month }}" name="month">
                                 <input type="hidden" value="{{ $year }}" name="time_schedule_year">
