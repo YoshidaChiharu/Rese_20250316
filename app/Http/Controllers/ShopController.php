@@ -171,6 +171,7 @@ class ShopController extends Controller
                     'start_at' => $start_at,
                     'finish_at' => $finish_at,
                     'number' => $request->reserve_number,
+                    'status' => 0,
                 ]);
 
                 // 予約詳細ページへのURL

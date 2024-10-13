@@ -14,6 +14,7 @@
             <span>●&nbsp;2024/10/11&nbsp;:&nbsp;予約1</span>
         </div>
         <form class="content__form" action="/admin/reservation_list/{{ $shop->id }}/detail/{{ $reservation->id }}/edit" method="post">
+            @csrf
             <table class="form__table">
                 <tr>
                     <th>お名前</th>
@@ -33,7 +34,7 @@
                 <tr>
                     <th>予約時刻</th>
                     <td>
-                        <select name="reserve_start_at" class="form__input--select">
+                        <select name="reserve_time" class="form__input--select">
                             <option value="">-</option>
                             @foreach ($reservable_times as $reservable_time)
                             <option value="{{ $reservable_time }}" {{ old('reserve_time') ?? substr($reservation->start_at, 0, 5)  == $reservable_time ? 'selected' : '' }}>
@@ -43,7 +44,7 @@
                         </select>
                         <span>&nbsp;～&nbsp;</span>
                         <div class="form-table__error">
-                            @error('reserve_start_at')
+                            @error('reserve_time')
                             ※{{ $message }}
                             @enderror
                         </div>

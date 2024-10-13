@@ -45,6 +45,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/reservation_list/{shop_id}/detail/{reservation_id}', [AdminController::class, 'showReservationDetail']);
         Route::get('/reservation_list/{shop_id}/detail/{reservation_id}/edit', [AdminController::class, 'editReservation']);
         Route::post('/reservation_list/{shop_id}/detail/{reservation_id}/edit', [AdminController::class, 'updateReservation']);
+        Route::post('/reservation_list/{shop_id}/detail/{reservation_id}/visit', [AdminController::class, 'visitReservation']);
+        Route::post('/reservation_list/{shop_id}/detail/{reservation_id}/cancel', [AdminController::class, 'cancelReservation']);
     });
 
 });

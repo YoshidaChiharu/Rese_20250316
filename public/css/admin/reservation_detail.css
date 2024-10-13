@@ -32,8 +32,14 @@
     border: solid 1px #959997;
 }
 
+.operate-buttons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .form__button {
-    margin-right: 10px;
     padding: 4px 20px;
     color: white;
     border: none;

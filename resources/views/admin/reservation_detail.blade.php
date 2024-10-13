@@ -40,16 +40,30 @@
             </tr>
             <tr>
                 <th>ステータス</th>
-                <td>来店前</td>
+                <td>
+                    @if($reservation->status === 0)来店前
+                    @elseif($reservation->status === 1)来店済み
+                    @elseif($reservation->status === 2)予約キャンセル
+                    @endif
+                </td>
             </tr>
             <tr>
                 <th>操作</th>
                 <td>
-                    <form action="/admin/reservation_list/{{ $shop->id }}/detail/{{ $reservation->id }}/edit" method="get">
-                        <button class="form__button form__button--edit">編集</button>
-                        <button class="form__button form__button--visit">来店処理</button>
-                        <button class="form__button form__button--cancel">予約キャンセル</button>
-                    </form>
+                    <div class="operate-buttons">
+                        <form action="/admin/reservation_list/{{ $shop->id }}/detail/{{ $reservation->id }}/edit" method="get">
+                            @csrf
+                            <button class="form__button form__button--edit">編集</button>
+                        </form>
+                        <form action="/admin/reservation_list/{{ $shop->id }}/detail/{{ $reservation->id }}/visit" method="post">
+                            @csrf
+                            <button class="form__button form__button--visit">来店処理</button>
+                        </form>
+                        <form action="/admin/reservation_list/{{ $shop->id }}/detail/{{ $reservation->id }}/cancel" method="post">
+                            @csrf
+                            <button class="form__button form__button--cancel">予約キャンセル</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
         </table>
