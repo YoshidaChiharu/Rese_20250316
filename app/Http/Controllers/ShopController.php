@@ -8,7 +8,7 @@ use App\Models\Shop;
 use App\Models\Favorite;
 use App\Models\Reservation;
 use App\Models\Review;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ReserveRequest;
 use App\Http\Requests\ReviewRequest;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Jobs\SendReservedMail;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
 
 class ShopController extends Controller
 {
@@ -158,14 +163,30 @@ class ShopController extends Controller
                 $start_at = $request->reserve_time;
                 $finish_at = (new carbon($start_at))->addHour(2)->format('H:i');
 
-                Reservation::create([
+                // 予約情報の登録
+                $reservation = Reservation::create([
                     'user_id' => $user_id,
                     'shop_id' => $shop_id,
                     'scheduled_on' => $request->reserve_date,
                     'start_at' => $start_at,
                     'finish_at' => $finish_at,
                     'number' => $request->reserve_number,
+                    'status' => 0,
                 ]);
+
+                // 予約詳細ページへのURL
+                $url = request()->getSchemeAndHttpHost() . "/admin/reservation_list/" . $shop_id . "/detail/" . $reservation->id;
+
+                // 上記URLのQRコードを生成
+                $renderer = new ImageRenderer(
+                    new RendererStyle(200),
+                    new ImagickImageBackEnd()
+                );
+                $writer = new Writer($renderer);
+                $qr_code = base64_encode($writer->writeString($url));
+
+                // 予約完了メール送信
+                SendReservedMail::dispatch($reservation, $qr_code);
             });
 
             return redirect('/done');

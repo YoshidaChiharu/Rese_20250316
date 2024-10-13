@@ -19,8 +19,10 @@ return new class extends Migration
             $table->time('start_at');
             $table->time('finish_at');
             $table->integer('number');
+            $table->tinyInteger('status');
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrent()->nullable();
+            $table->softDeletes();
         });
     }
 

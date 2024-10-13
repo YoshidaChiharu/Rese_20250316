@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Models\User;
 use App\Models\Shop;
+use App\Models\Reservation;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -291,6 +292,81 @@ class AdminController extends Controller
             'message' => $message,
             'is_sent' => $is_sent,
         ]);
+    }
+
+    // 予約詳細ページ表示 ===========================================================
+    public function showReservationDetail(Request $request) {
+        // 自身が作成した店舗の情報を取得
+        $managing_shops = Auth::user()->managingShops;
+
+        // 表示対象の店舗、予約情報を取得
+        $shop = Shop::find($request->shop_id);
+        $reservation = Reservation::find($request->reservation_id);
+
+        return view('admin.reservation_detail', compact('managing_shops', 'shop', 'reservation'));
+    }
+
+    // 予約編集ページ表示 ===========================================================
+    public function editReservation(Request $request) {
+        // 自身が作成した店舗の情報を取得
+        $managing_shops = Auth::user()->managingShops;
+
+        // 表示対象の店舗、予約情報を取得
+        $shop = Shop::find($request->shop_id);
+        $reservation = Reservation::find($request->reservation_id);
+
+        // 予約変更用パラメータの作成
+        $reservable_times = $shop->getReservableTimes('16:00', '21:00', 30);
+
+        return view(
+            'admin.reservation_edit',
+            compact(
+                'managing_shops',
+                'shop',
+                'reservation',
+                'reservable_times',
+        ));
+    }
+
+    // 予約詳細の編集処理 ===========================================================
+    public function updateReservation(Request $request) {
+        $start_at = $request->reserve_time;
+        $finish_at = (new carbon($start_at))->addHour(2)->format('H:i');
+
+        Reservation::find($request->reservation_id)
+        ->update([
+            'scheduled_on' => $request->reserve_date,
+            'start_at' => $start_at,
+            'finish_at' => $finish_at,
+            'number' => $request->reserve_number,
+        ]);
+
+        return redirect('/admin/reservation_list/' . $request->shop_id . '/detail/' . $request->reservation_id);
+    }
+
+    // 予約詳細の来店処理 ===========================================================
+    public function visitReservation(Request $request) {
+        // 予約ステータス変更
+        Reservation::find($request->reservation_id)->update([
+            'status' => 1,  // 0:来店前 1:来店済み 2:予約キャンセル
+        ]);
+
+        return back();
+    }
+
+    // 予約詳細のキャンセル処理 ======================================================
+    public function cancelReservation(Request $request) {
+        $reservation = Reservation::find($request->reservation_id);
+
+        //予約削除
+        $reservation->delete();
+
+        // 予約ステータス変更
+        $reservation->update([
+            'status' => 2,  // 0:来店前 1:来店済み 2:予約キャンセル
+        ]);
+
+        return redirect('/admin/reservation_list/' . $request->shop_id);
     }
 
 }
