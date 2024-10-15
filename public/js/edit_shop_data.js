@@ -59,6 +59,7 @@ function addCourse() {
 	var input = document.createElement('INPUT');
     input.classList.add('course-list-item__input');
     input.setAttribute('placeholder', 'コース名');
+    input.setAttribute('name', 'courses[' + child_count + '][name]');
 	li.appendChild(input);
 
 	// 時間入力欄
@@ -69,6 +70,7 @@ function addCourse() {
     input.setAttribute('max', '180');
     input.setAttribute('step', '30');
     input.setAttribute('value', '60');
+    input.setAttribute('name', 'courses[' + child_count + '][duration]');
 	li.appendChild(input);
 
 	var span = document.createElement('SPAN');
@@ -78,8 +80,11 @@ function addCourse() {
 	// 金額入力欄
 	var input = document.createElement('INPUT');
     input.classList.add('course-list-item__input');
-    input.setAttribute('placeholder', '0');
-    input.setAttribute('size', '5');
+    input.setAttribute('type', 'number');
+    input.setAttribute('min', '0');
+    input.setAttribute('step', '1');
+    input.setAttribute('value', '100');
+    input.setAttribute('name', 'courses[' + child_count + '][price]');
 	li.appendChild(input);
 
 	var span = document.createElement('SPAN');

@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Shop;
 use App\Models\Reservation;
+use App\Models\Course;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use Lang;
-use Mail;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Bus;
 use App\Jobs\SendAdminMail;
 
@@ -85,7 +85,14 @@ class AdminController extends Controller
             'genre' => ['required'],
             'detail' => ['required', 'string','max:1000'],
             'images' => ['required'],
+            'prepayment_enabled' => ['required'],
+            'courses.*.name' => ['required', 'string', 'max:50'],
+            'courses.*.duration' => ['required'],
+            'courses.*.price' => ['required'],
         ]);
+
+        dd($request->courses);
+
 
         // サムネイル画像の保存
         // （※複数ファイル選択時は1つ目の画像を保存）
@@ -93,17 +100,28 @@ class AdminController extends Controller
         $image_path = $images[0]->store('public/img');
         $image_path = str_replace("public/", "", $image_path);
 
-        // 店舗情報作成
+        // 店舗情報＆コース作成
         try {
             DB::transaction(function () use($request, $owner_id, $image_path) {
-                Shop::create([
+                $shop = Shop::create([
                     'owner_id' => $owner_id,
                     'name' => $request->name,
                     'area' => $request->area,
                     'genre' => $request->genre,
                     'detail' => $request->detail,
                     'image' => $image_path,
+                    'prepayment_enabled' => $request->prepayment_enabled,
                 ]);
+
+                $courses = $request->courses;
+                foreach($courses as $course) {
+                    Course::create([
+                        'shop_id' => $shop->id,
+                        'name' => $course['name'],
+                        'duration_minutes' => $course['duration'],
+                        'price' => $course['price'],
+                    ]);
+                }
             });
         } catch (\Exception $e) {
             Log::error($e);
