@@ -93,6 +93,44 @@
     margin-top: 20px;
 }
 
+.form-table__course-list {
+    margin-top: 0;
+    padding-left: 0;
+}
+
+.course-list-item {
+    display: flex;
+    align-items: center;
+}
+
+.course-list-item:not(:first-child) {
+    margin-top: 10px;
+}
+
+.course-list-item__input:not(:first-of-type) {
+    margin-left: 20px;
+}
+
+.form-table__add-course {
+    display: flex;
+    align-items: center;
+}
+
+.course-button {
+    margin-right: 4px;
+    width: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.form-table__input--radio {
+    accent-color: #434343;
+}
+
+.form-table__input--radio:not(:first-child) {
+    margin-left: 10px;
+}
+
 .form__button {
     margin: 20px 0;
     text-align: center;

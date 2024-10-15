@@ -83,6 +83,44 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <th>コース設定</th>
+                    <td>
+                        <ul class="form-table__course-list" id="js-add-course-target">
+                            <li class="course-list-item">
+                                <a href="#" class="course-button" onclick="deleteCourse(this)">
+                                    <img src="{{ asset('img/minus.svg') }}">
+                                </a>
+                                <input type="text" class="course-list-item__input" placeholder="コース名">
+                                <input type="number" class="course-list-item__input" name="" min="60" max="180" step="30" value="60">分
+                                <input type="text" class="course-list-item__input" placeholder="0" size="5">円
+                            </li>
+                        </ul>
+                        <div class="form-table__add-course">
+                            <a href="#" class="course-button" onclick="addCourse()">
+                                <img src="{{ asset('img/plus.svg') }}">
+                            </a>
+                            <span>コース追加</span>
+                        </div>
+                        <div class="form-table__error">
+                            @error('course')
+                            ※{{ $message }}
+                            @enderror
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>事前決済</th>
+                    <td>
+                        <input type="radio" class="form-table__input--radio" name="payment" value="false" checked>不可
+                        <input type="radio" class="form-table__input--radio" name="payment" value="true">可
+                        <div class="form-table__error">
+                            @error('payment')
+                            ※{{ $message }}
+                            @enderror
+                        </div>
+                    </td>
+                </tr>
             </table>
 
             <div class="form__button">

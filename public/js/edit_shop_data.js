@@ -33,3 +33,65 @@ input.addEventListener('change', function (e) {
 		document.getElementById('drop-area__text').classList.add('hidden');
 	}
 });
+
+let add_course_target = document.getElementById('js-add-course-target');
+
+// コース入力欄の追加
+function addCourse() {
+	let child_count = add_course_target.childElementCount;
+	console.log(child_count);
+
+	let li = document.createElement('LI');
+	li.classList.add('course-list-item');
+
+	// マイナスボタン
+	var a = document.createElement('A');
+    a.classList.add('course-button');
+	a.setAttribute('onclick', 'deleteCourse(this)');
+	
+	var img = document.createElement('IMG');
+	img.setAttribute('src', '/img/minus.svg');
+	a.appendChild(img);
+
+	li.appendChild(a);
+	
+	// コース名入力欄
+	var input = document.createElement('INPUT');
+    input.classList.add('course-list-item__input');
+    input.setAttribute('placeholder', 'コース名');
+	li.appendChild(input);
+
+	// 時間入力欄
+	var input = document.createElement('INPUT');
+    input.classList.add('course-list-item__input');
+    input.setAttribute('type', 'number');
+    input.setAttribute('min', '60');
+    input.setAttribute('max', '180');
+    input.setAttribute('step', '30');
+    input.setAttribute('value', '60');
+	li.appendChild(input);
+
+	var span = document.createElement('SPAN');
+	span.textContent = "分";
+	li.appendChild(span);
+
+	// 金額入力欄
+	var input = document.createElement('INPUT');
+    input.classList.add('course-list-item__input');
+    input.setAttribute('placeholder', '0');
+    input.setAttribute('size', '5');
+	li.appendChild(input);
+
+	var span = document.createElement('SPAN');
+	span.textContent = "円";
+	li.appendChild(span);
+
+	add_course_target.appendChild(li);
+}
+
+// コース入力欄の削除
+function deleteCourse(obj) {
+	let target = obj.closest('.course-list-item');
+	console.log(target);
+	target.remove();
+}
