@@ -87,12 +87,9 @@ class AdminController extends Controller
             'images' => ['required'],
             'prepayment_enabled' => ['required'],
             'courses.*.name' => ['required', 'string', 'max:50'],
-            'courses.*.duration' => ['required'],
+            'courses.*.duration_minutes' => ['required'],
             'courses.*.price' => ['required'],
         ]);
-
-        dd($request->courses);
-
 
         // サムネイル画像の保存
         // （※複数ファイル選択時は1つ目の画像を保存）
@@ -118,7 +115,7 @@ class AdminController extends Controller
                     Course::create([
                         'shop_id' => $shop->id,
                         'name' => $course['name'],
-                        'duration_minutes' => $course['duration'],
+                        'duration_minutes' => $course['duration_minutes'],
                         'price' => $course['price'],
                     ]);
                 }
@@ -149,9 +146,13 @@ class AdminController extends Controller
             'area' => ['required'],
             'genre' => ['required'],
             'detail' => ['required', 'string','max:1000'],
+            'prepayment_enabled' => ['required'],
+            'courses.*.name' => ['required', 'string', 'max:50'],
+            'courses.*.duration_minutes' => ['required'],
+            'courses.*.price' => ['required'],
         ]);
 
-        $shop_id = $request->shop_id;
+        $shop = Shop::find($request->shop_id);
 
         $param = [
             'name' => $request->name,
@@ -168,16 +169,50 @@ class AdminController extends Controller
             $param['image'] = str_replace("public/", "", $image_path);
         }
 
-        // 店舗情報更新
+        // 店舗情報＆コース情報の更新
         try {
-            DB::transaction(function () use($shop_id, $param) {
-                Shop::find($shop_id)->update($param);
+            DB::transaction(function () use($shop, $param, $request) {
+                // 店舗情報更新
+                $shop->update($param);
+
+                // 既存コースの更新 or 削除
+                $current_courses = $shop->courses->toArray();
+                $new_courses = $request->courses;
+
+                foreach ($current_courses as $current_course) {
+                    $is_updated = false;
+                    foreach ($new_courses as $new_course) {
+                        if (empty($new_course['id'])) { continue; }
+                        if ($current_course['id'] == $new_course['id']) {
+                            Course::find($current_course['id'])->update([
+                                'name' => $new_course['name'],
+                                'duration_minutes' => $new_course['duration_minutes'],
+                                'price' => $new_course['price'],
+                            ]);
+                            $is_updated = true;
+                        }
+                    }
+                    if ($is_updated) { continue; }
+                    Course::find($current_course['id'])->delete();
+                }
+
+                // 新規コースの登録
+                foreach($new_courses as $new_course) {
+                    if (empty($new_course['id'])) {
+                        Course::create([
+                            'shop_id' => $shop->id,
+                            'name' => $new_course['name'],
+                            'duration_minutes' => $new_course['duration_minutes'],
+                            'price' => $new_course['price'],
+                        ]);
+                    }
+                }
             });
         } catch (\Exception $e) {
             Log::error($e);
         }
 
-        return redirect('/admin/edit_shop_data/' . $shop_id);
+        return redirect('/admin/edit_shop_data/' . $shop->id);
     }
 
     // 予約一覧ページ表示 ==========================================================

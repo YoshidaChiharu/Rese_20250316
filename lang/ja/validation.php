@@ -160,7 +160,7 @@ return [
         'subject' => '件名',
         'main_text' => '本文',
         'courses.*.name' => 'コース名',
-        'courses.*.duration' => 'コース時間',
+        'courses.*.duration_minutes' => 'コース時間',
         'courses.*.price' => 'コース金額',
 ],
 

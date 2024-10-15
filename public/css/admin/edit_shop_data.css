@@ -87,17 +87,18 @@
 }
 
 .form-table__course-list {
-    margin-top: 0;
+    margin: 0;
     padding-left: 0;
 }
 
 .course-list-item {
+    margin: 10px 0;
     display: flex;
     align-items: center;
 }
 
-.course-list-item:not(:first-child) {
-    margin-top: 10px;
+.course-list-item__input[type=number] {
+    width: 5em;
 }
 
 .course-list-item__input:not(:first-of-type) {
@@ -114,6 +115,7 @@
     width: 18px;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .form-table__input--radio {
@@ -140,8 +142,13 @@
 }
 
 .form-table__error {
-    margin-top: 4px;
+    padding: 10px 20px;
+    background-color: #FEADB8;
     font-size: 14px;
     font-weight: bold;
     color: red;
+}
+
+.form-table__error ul {
+    margin: 0;
 }

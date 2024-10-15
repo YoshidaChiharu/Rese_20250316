@@ -48,6 +48,7 @@ function addCourse() {
 	var a = document.createElement('A');
     a.classList.add('course-button');
 	a.setAttribute('onclick', 'deleteCourse(this)');
+	a.setAttribute('href', 'javascript:void(0)');
 	
 	var img = document.createElement('IMG');
 	img.setAttribute('src', '/img/minus.svg');
@@ -70,7 +71,7 @@ function addCourse() {
     input.setAttribute('max', '180');
     input.setAttribute('step', '30');
     input.setAttribute('value', '60');
-    input.setAttribute('name', 'courses[' + child_count + '][duration]');
+    input.setAttribute('name', 'courses[' + child_count + '][duration_minutes]');
 	li.appendChild(input);
 
 	var span = document.createElement('SPAN');
