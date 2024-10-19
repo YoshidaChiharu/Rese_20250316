@@ -26,6 +26,7 @@ class ReservationFactory extends Factory
             'start_at' => $start . ':00',
             'finish_at' => $finish . ':00',
             'number' => $this->faker->numberBetween(1, 10),
+            'prepayment' => 0,
             'status' => 0,
         ];
     }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\User;
 use App\Models\Shop;
 use App\Models\Review;
+use App\Models\Course;
 use Carbon\Carbon;
 
 class Reservation extends Model
@@ -30,6 +31,11 @@ class Reservation extends Model
     public function review()
     {
         return $this->hasOne(Review::class);
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
     }
 
     /**

@@ -38,16 +38,19 @@
                 </p>
                 <p>
                     ■コース<br>
-                    （仮）120分飲み放題コース<br>
-                </p>
-                <p>
-                    ■お支払い予定金額<br>
-                    （仮）&yen;6,800 x {{ $reservation->number }}名様分<br>
-                    （仮）【合計】&yen;13,600（税込）<br>
+                    @if($reservation->course_id)
+                    コース名：{{ $reservation->course->name }} <br>
+                    お支払い予定金額：
+                    &yen;{{ $reservation->course->price }} x {{ $reservation->number }}名様分&emsp;
+                    【合計】&yen;{{ $reservation->course->price * $reservation->number }}（税込）<br>
+                    @else
+                    なし<br>
+                    @endif
                 </p>
                 <p>
                     ■お支払い方法<br>
-                    （仮）店舗でのお支払い<br>
+                    @if($reservation->prepayment == 0) 店舗でのお支払い<br> @endif
+                    @if($reservation->prepayment == 1) 事前決済<br> @endif
                 </p>
                 <p>
                     ■予約QRコード<br>

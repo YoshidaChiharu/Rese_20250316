@@ -162,6 +162,7 @@ return [
         'courses.*.name' => 'コース名',
         'courses.*.duration_minutes' => 'コース時間',
         'courses.*.price' => 'コース金額',
+        'reserve_prepayment' => 'お支払い方法',
 ],
 
     'values' => [

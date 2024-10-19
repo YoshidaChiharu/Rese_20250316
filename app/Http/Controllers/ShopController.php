@@ -8,6 +8,7 @@ use App\Models\Shop;
 use App\Models\Favorite;
 use App\Models\Reservation;
 use App\Models\Review;
+use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -161,7 +162,8 @@ class ShopController extends Controller
                 $user_id = Auth::user()->id;
                 $shop_id = $request->shop_id;
                 $start_at = $request->reserve_time;
-                $finish_at = (new carbon($start_at))->addHour(2)->format('H:i');
+                $course_duration = Course::find($request->reserve_course_id)->duration_minutes;
+                $finish_at = (new carbon($start_at))->addMinutes($course_duration)->format('H:i');
 
                 // 予約情報の登録
                 $reservation = Reservation::create([
@@ -171,6 +173,8 @@ class ShopController extends Controller
                     'start_at' => $start_at,
                     'finish_at' => $finish_at,
                     'number' => $request->reserve_number,
+                    'course_id' => $request->reserve_course_id,
+                    'prepayment' => $request->reserve_prepayment,
                     'status' => 0,
                 ]);
 
