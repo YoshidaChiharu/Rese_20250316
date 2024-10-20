@@ -5,6 +5,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PaymentController;
 
 // Route::post('/register', [RegisterController::class, 'store']);
 Route::get('/auth_first', [AuthController::class, 'showMailAnnounce']);
@@ -23,6 +24,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
     Route::post('/mypage', [ShopController::class, 'deleteMyData']);
     Route::post('/mypage/update_reserve', [ShopController::class, 'updateReserve']);
     Route::post('/mypage/review', [ShopController::class, 'storeReview']);
+    Route::get('/payment', [PaymentController::class, 'showPayment']);
 });
 
 Route::group(['prefix' => 'admin'], function () {

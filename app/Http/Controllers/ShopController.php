@@ -193,7 +193,7 @@ class ShopController extends Controller
                 SendReservedMail::dispatch($reservation, $qr_code);
             });
 
-            return redirect('/done');
+            return redirect('/done')->with('prepayment', $request->reserve_prepayment);
 
         } catch (\Exception $e) {
             Log::error($e);
