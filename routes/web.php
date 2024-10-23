@@ -24,7 +24,9 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
     Route::post('/mypage', [ShopController::class, 'deleteMyData']);
     Route::post('/mypage/update_reserve', [ShopController::class, 'updateReserve']);
     Route::post('/mypage/review', [ShopController::class, 'storeReview']);
-    Route::get('/payment', [PaymentController::class, 'showPayment']);
+    Route::get('/purchase/{reservation_id}', [PaymentController::class, 'create']);
+    Route::post('/purchase/{reservation_id}', [PaymentController::class, 'store']);
+    Route::get('/purchase_completed', [PaymentController::class, 'completed'])->name('payment.completed');
 });
 
 Route::group(['prefix' => 'admin'], function () {

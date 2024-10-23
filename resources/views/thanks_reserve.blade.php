@@ -15,7 +15,7 @@
         @if(session('prepayment') == 0)
         <a class="thanks-content__button" href="/">戻る</a>
         @elseif(session('prepayment') == 1)
-        <a class="thanks-content__button" href="/payment">事前決済へ</a>
+        <a class="thanks-content__button" href="/purchase/{{ session('reservation')->id }}">事前決済へ</a>
         @endif
     </div>
 </div>

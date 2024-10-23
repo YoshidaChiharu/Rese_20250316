@@ -158,45 +158,50 @@ class ShopController extends Controller
     // 予約登録処理 =======================================================
     public function reserve(ReserveRequest $request) {
         try {
-            DB::transaction(function () use($request) {
-                $user_id = Auth::user()->id;
-                $shop_id = $request->shop_id;
-                $start_at = $request->reserve_time;
-                $course_duration = Course::find($request->reserve_course_id)->duration_minutes;
-                $finish_at = (new carbon($start_at))->addMinutes($course_duration)->format('H:i');
+            DB::beginTransaction();
 
-                // 予約情報の登録
-                $reservation = Reservation::create([
-                    'user_id' => $user_id,
-                    'shop_id' => $shop_id,
-                    'scheduled_on' => $request->reserve_date,
-                    'start_at' => $start_at,
-                    'finish_at' => $finish_at,
-                    'number' => $request->reserve_number,
-                    'course_id' => $request->reserve_course_id,
-                    'prepayment' => $request->reserve_prepayment,
-                    'status' => 0,
-                ]);
+            $user_id = Auth::user()->id;
+            $shop_id = $request->shop_id;
+            $start_at = $request->reserve_time;
+            $course_duration = Course::find($request->reserve_course_id)->duration_minutes;
+            $finish_at = (new carbon($start_at))->addMinutes($course_duration)->format('H:i');
 
-                // 予約詳細ページへのURL
-                $url = request()->getSchemeAndHttpHost() . "/admin/reservation_list/" . $shop_id . "/detail/" . $reservation->id;
+            // 予約情報の登録
+            $reservation = Reservation::create([
+                'user_id' => $user_id,
+                'shop_id' => $shop_id,
+                'scheduled_on' => $request->reserve_date,
+                'start_at' => $start_at,
+                'finish_at' => $finish_at,
+                'number' => $request->reserve_number,
+                'course_id' => $request->reserve_course_id,
+                'prepayment' => $request->reserve_prepayment,
+                'status' => 0,
+            ]);
 
-                // 上記URLのQRコードを生成
-                $renderer = new ImageRenderer(
-                    new RendererStyle(200),
-                    new ImagickImageBackEnd()
-                );
-                $writer = new Writer($renderer);
-                $qr_code = base64_encode($writer->writeString($url));
+            // 予約詳細ページへのURL
+            $url = request()->getSchemeAndHttpHost() . "/admin/reservation_list/" . $shop_id . "/detail/" . $reservation->id;
 
-                // 予約完了メール送信
-                SendReservedMail::dispatch($reservation, $qr_code);
-            });
+            // 上記URLのQRコードを生成
+            $renderer = new ImageRenderer(
+                new RendererStyle(200),
+                new ImagickImageBackEnd()
+            );
+            $writer = new Writer($renderer);
+            $qr_code = base64_encode($writer->writeString($url));
 
-            return redirect('/done')->with('prepayment', $request->reserve_prepayment);
+            // 予約完了メール送信
+            SendReservedMail::dispatch($reservation, $qr_code);
 
+            DB::commit();
+
+            return redirect('/done')->with([
+                'prepayment' => $request->reserve_prepayment,
+                'reservation' => $reservation,
+            ]);
         } catch (\Exception $e) {
             Log::error($e);
+            DB::rollBack();
             return redirect(session('previous_page') ?? '/');
         }
 
