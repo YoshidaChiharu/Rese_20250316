@@ -32,11 +32,17 @@
             </tr>
             <tr>
                 <th>コース</th>
-                <td>120分飲み放題コース</td>
+                <td>{{ $reservation->course->name }}</td>
             </tr>
             <tr>
                 <th>事前決済</th>
-                <td>なし</td>
+                <td>
+                    @if($reservation->prepayment === 0)なし
+                    @elseif($reservation->prepayment === 1)決済前
+                    @elseif($reservation->prepayment === 2)決済完了
+                    @elseif($reservation->prepayment === 3)返金済み
+                    @endif
+                </td>
             </tr>
             <tr>
                 <th>ステータス</th>
