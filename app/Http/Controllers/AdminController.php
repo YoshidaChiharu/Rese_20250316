@@ -410,9 +410,19 @@ class AdminController extends Controller
     // 予約詳細のキャンセル処理 ======================================================
     public function cancelReservation(Request $request) {
         $reservation = Reservation::find($request->reservation_id);
+        $user = $reservation->user;
 
         //予約削除
         $reservation->delete();
+
+        // 返金処理＆事前決済フラグを「3:返金済み」へ変更
+        if($reservation->payment_intent_id !== NULL) {
+            $user->refund($reservation->payment_intent_id);
+
+            $reservation->update([
+                'prepayment' => 3,  // 0:なし 1:決済前 2:決済完了 3:返金済み
+            ]);
+        }
 
         // 予約ステータス変更
         $reservation->update([

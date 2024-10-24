@@ -45,14 +45,14 @@ class PaymentController extends Controller
             $total_price = $course_price * $number;
 
             // Stripe決済処理
-            $request->user()->charge($total_price, $request->paymentMethodId,[
+            $payment_intent = $request->user()->charge($total_price, $request->paymentMethodId,[
                 'return_url' => route('payment.completed'),
             ]);
 
             // 予約情報の更新
             $reservation->update([
                 'prepayment' => 2,
-                'payment_method_id' => $request->paymentMethodId,
+                'payment_intent_id' => $payment_intent->id,
             ]);
 
             // 予約完了メールの送信

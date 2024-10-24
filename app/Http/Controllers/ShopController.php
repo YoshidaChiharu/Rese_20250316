@@ -266,17 +266,32 @@ class ShopController extends Controller
     public function deleteMyData(Request $request) {
         try {
             DB::transaction(function () use($request) {
+                $reservation = Reservation::find($request->reservation_id);
+                $user = Auth::user();
+
                 // 予約削除
                 if ($request->has('reservation_id')) {
-                    Reservation::find($request->reservation_id)->delete();
+                    $reservation->delete();
+
+                    // 返金処理＆事前決済フラグを「3:返金済み」へ変更
+                    if($reservation->payment_intent_id !== NULL) {
+                        $user->refund($reservation->payment_intent_id);
+
+                        $reservation->update([
+                            'prepayment' => 3,  // 0:なし 1:決済前 2:決済完了 3:返金済み
+                        ]);
+                    }
+
+                    // 予約ステータス変更
+                    $reservation->update([
+                        'status' => 2,  // 0:来店前 1:来店済み 2:予約キャンセル
+                    ]);
                 }
 
                 // お気に入り削除
                 if ($request->has('favorite_shop_id')) {
-                    $user_id = Auth::user()->id;
-                    $shop_id = $request->favorite_shop_id;
-                    Favorite::where('user_id', $user_id)
-                        ->where('shop_id', $shop_id)
+                    Favorite::where('user_id', $user->id)
+                        ->where('shop_id', $request->favorite_shop_id)
                         ->delete();
                 }
             });
