@@ -86,9 +86,10 @@
                             <th>Payment</th>
                             <td>
                                 @if($reservation->prepayment == 0)店舗でのお支払い
-                                @elseif($reservation->prepayment == 1)[事前決済] 決済前
-                                @elseif($reservation->prepayment == 2)[事前決済] 決済完了
-                                @elseif($reservation->prepayment == 3)[事前決済] 返金済み
+                                @elseif($reservation->prepayment == 1)【事前決済】決済前
+                                <a href="/purchase/{{ $reservation->id }}" class="reserve-card__prepayment_link">決済page ></a>
+                                @elseif($reservation->prepayment == 2)【事前決済】決済完了
+                                @elseif($reservation->prepayment == 3)【事前決済】返金済み
                                 @else
                                 -
                                 @endif

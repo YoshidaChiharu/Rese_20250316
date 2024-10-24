@@ -87,6 +87,13 @@
     padding: 6px 0 6px 30px;
 }
 
+.reserve-card__prepayment_link {
+    margin-left: 20px;
+    color: #FFFC59;
+    font-size: 14px;
+    font-weight: bold;
+}
+
 .reserve-card__button--change {
     width: 100%;
     padding: 10px 0;
