@@ -53,37 +53,65 @@
                 <tr>
                     <th>予約人数</th>
                     <td>
+                        @if($reservation->prepayment < 2)
                         <input type="text" name="reserve_number" class="form__input--text" value="{{ old('reserve_number') ?? $reservation->number }}" size="2"> 名
                         <div class="form-table__error">
                             @error('reserve_number')
                             ※{{ $message }}
                             @enderror
                         </div>
+                        @else
+                        {{ $reservation->number }} 名&emsp;※決済済み変更不可
+                        @endif
                     </td>
                 </tr>
                 <tr>
                     <th>コース</th>
                     <td>
-                        <select name="reserve_course" class="form__input--select">
+                        @if($reservation->prepayment < 2)
+                        <select name="reserve_course_id" class="form__input--select">
                             <option value="">-</option>
-                            <option value="1">60分飲み放題コース</option>
-                            <option value="2">90分飲み放題コース</option>
-                            <option value="3">120分飲み放題コース</option>
+                            @foreach($shop->courses as $course)
+                            <option value="{{ $course->id }}" {{ old('reserve_course_id') ?? $reservation->course_id  == $course->id ? 'selected' : '' }}>
+                                {{ $course->name }}
+                            </option>
+                            @endforeach
                         </select>
                         <div class="form-table__error">
-                            @error('reserve_course')
+                            @error('reserve_course_id')
                             ※{{ $message }}
                             @enderror
                         </div>
+                        @else
+                        {{ $reservation->course->name }}&emsp;※決済済み変更不可
+                        @endif
                     </td>
                 </tr>
                 <tr>
                     <th>事前決済</th>
-                    <td>なし</td>
+                    <td>
+                        @if($reservation->prepayment < 2)
+                        <select name="reserve_prepayment" class="form__input--select">
+                            <option value="0">なし</option>
+                            @if($shop->prepayment_enabled == 1)
+                            <option value="1" {{ old('reserve_prepayment') ?? $reservation->prepayment  == 1 ? 'selected' : '' }}>
+                                決済前
+                            </option>
+                            @endif
+                        </select>
+                        @elseif($reservation->prepayment == 2)決済完了
+                        @elseif($reservation->prepayment == 3)返金済み
+                        @endif
+                    </td>
                 </tr>
                 <tr>
                     <th>ステータス</th>
-                    <td>来店前</td>
+                    <td>
+                        <select name="reserve_status" class="form__input--select">
+                            <option value="0">来店前</option>
+                            <option value="1" {{ old('reserve_status') ?? $reservation->status  == 1 ? 'selected' : '' }}>来店済み</option>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <th>操作</th>

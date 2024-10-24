@@ -392,6 +392,9 @@ class AdminController extends Controller
             'start_at' => $start_at,
             'finish_at' => $finish_at,
             'number' => $request->reserve_number,
+            'course_id' => $request->reserve_course_id,
+            'prepayment' => $request->reserve_prepayment,
+            'status' => $request->reserve_status,
         ]);
 
         return redirect('/admin/reservation_list/' . $request->shop_id . '/detail/' . $request->reservation_id);

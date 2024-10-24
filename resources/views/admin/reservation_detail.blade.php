@@ -32,7 +32,11 @@
             </tr>
             <tr>
                 <th>コース</th>
+                @if($reservation->course_id)
                 <td>{{ $reservation->course->name }}</td>
+                @else
+                <td>-</td>
+                @endif
             </tr>
             <tr>
                 <th>事前決済</th>

@@ -50,7 +50,49 @@
                         </tr>
                         <tr>
                             <th>Number</th>
-                            <td>{{ $reservation->number }}人</td>
+                            <td>{{ $reservation->number }} 名</td>
+                        </tr>
+                        <tr>
+                            <th>Course</th>
+                            <td>
+                                @if($reservation->course_id)
+                                {{ $reservation->course->name }}
+                                @else
+                                -
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Duration</th>
+                            <td>
+                                @if($reservation->course_id)
+                                {{ $reservation->course->duration_minutes }}分
+                                @else
+                                -
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Price</th>
+                            <td>
+                                @if($reservation->course_id)
+                                &yen;{{ $reservation->course->price }}&ensp;x&ensp;{{ $reservation->number }}名様
+                                @else
+                                -
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Payment</th>
+                            <td>
+                                @if($reservation->prepayment == 0)店舗でのお支払い
+                                @elseif($reservation->prepayment == 1)[事前決済] 決済前
+                                @elseif($reservation->prepayment == 2)[事前決済] 決済完了
+                                @elseif($reservation->prepayment == 3)[事前決済] 返金済み
+                                @else
+                                -
+                                @endif
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -95,12 +137,40 @@
                             <tr>
                                 <th>Number</th>
                                 <td>
+                                    @if($reservation->prepayment < 2)
                                     <select name="reserve_number">
                                         <option value="">-</option>
                                         @for ($i = 1; $i <= $reserve_max_number; $i++)
-                                            <option value="{{$i}}" {{ old('reserve_number') ?? $reservation->number == $i ? 'selected' : '' }}>{{$i}}</option>
-                                            @endfor
+                                        <option value="{{$i}}" {{ old('reserve_number') ?? $reservation->number == $i ? 'selected' : '' }}>{{$i}} 名</option>
+                                        @endfor
                                     </select>
+                                    @else
+                                    {{ $reservation->number }} 名&emsp;※決済済み変更不可
+                                    <input type="hidden" name="reserve_number" value="{{ $reservation->number }}">
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Course</th>
+                                <td>
+                                    @if($reservation->prepayment < 2)
+                                    <select name="reserve_course_id" class="form__input--select">
+                                        <option value="">-</option>
+                                        @foreach($reservation->shop->courses as $course)
+                                        <option value="{{ $course->id }}" {{ old('reserve_course_id') ?? $reservation->course_id  == $course->id ? 'selected' : '' }}>
+                                            {{ $course->name }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="form-table__error">
+                                        @error('reserve_course_id')
+                                        ※{{ $message }}
+                                        @enderror
+                                    </div>
+                                    @else
+                                    {{ $reservation->course->name }}&emsp;※決済済み変更不可
+                                    <input type="hidden" name="reserve_course_id" value="{{ $reservation->course_id }}">
+                                    @endif
                                 </td>
                             </tr>
                         </table>
@@ -116,6 +186,7 @@
                         @endif
                     </div>
                     <div>
+                        <input type="hidden" name="reserve_prepayment" value="{{ $reservation->prepayment }}">
                         <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
                         <button class="reserve-card__button--change button-orange">変更する</button>
                     </div>
