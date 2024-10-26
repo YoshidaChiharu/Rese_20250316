@@ -146,7 +146,7 @@
                                         @endfor
                                     </select>
                                     @else
-                                    {{ $reservation->number }} 名&emsp;※決済済み変更不可
+                                    <span>{{ $reservation->number }} 名</span>&emsp;<span>※変更不可</span>
                                     <input type="hidden" name="reserve_number" value="{{ $reservation->number }}">
                                     @endif
                                 </td>
@@ -169,7 +169,7 @@
                                         @enderror
                                     </div>
                                     @else
-                                    {{ $reservation->course->name }}&emsp;※決済済み変更不可
+                                    <span>{{ $reservation->course->name }}</span>&emsp;<span>※変更不可</span>
                                     <input type="hidden" name="reserve_course_id" value="{{ $reservation->course_id }}">
                                     @endif
                                 </td>

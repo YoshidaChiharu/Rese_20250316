@@ -90,7 +90,7 @@
                         </tr>
                         <tr>
                             <th>Number</th>
-                            <td id="confirm_number">{{ old('reserve_number') ?? '-' }}</td>
+                            <td id="confirm_number">{{ old('reserve_number') ?? '-' }} 名</td>
                         </tr>
                         <tr>
                             <th>Course</th>

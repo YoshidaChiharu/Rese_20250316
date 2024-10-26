@@ -79,12 +79,21 @@
 }
 
 .reserve-card__table {
+    width: 100%;
     margin-top: 20px;
     text-align: left;
 }
 
+.reserve-card__table tr {
+    width: 100%;
+}
+
+.reserve-card__table th {
+    width: 30%;
+}
+
 .reserve-card__table td {
-    padding: 6px 0 6px 30px;
+    padding: 6px 0;
 }
 
 .reserve-card__prepayment_link {
