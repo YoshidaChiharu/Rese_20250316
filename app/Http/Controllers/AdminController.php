@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Shop;
 use App\Models\Reservation;
+use App\Models\Course;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use Lang;
-use Mail;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Bus;
 use App\Jobs\SendAdminMail;
 
@@ -85,6 +85,10 @@ class AdminController extends Controller
             'genre' => ['required'],
             'detail' => ['required', 'string','max:1000'],
             'images' => ['required'],
+            'prepayment_enabled' => ['required'],
+            'courses.*.name' => ['required', 'string', 'max:50'],
+            'courses.*.duration_minutes' => ['required'],
+            'courses.*.price' => ['required'],
         ]);
 
         // サムネイル画像の保存
@@ -93,17 +97,28 @@ class AdminController extends Controller
         $image_path = $images[0]->store('public/img');
         $image_path = str_replace("public/", "", $image_path);
 
-        // 店舗情報作成
+        // 店舗情報＆コース作成
         try {
             DB::transaction(function () use($request, $owner_id, $image_path) {
-                Shop::create([
+                $shop = Shop::create([
                     'owner_id' => $owner_id,
                     'name' => $request->name,
                     'area' => $request->area,
                     'genre' => $request->genre,
                     'detail' => $request->detail,
                     'image' => $image_path,
+                    'prepayment_enabled' => $request->prepayment_enabled,
                 ]);
+
+                $courses = $request->courses;
+                foreach($courses as $course) {
+                    Course::create([
+                        'shop_id' => $shop->id,
+                        'name' => $course['name'],
+                        'duration_minutes' => $course['duration_minutes'],
+                        'price' => $course['price'],
+                    ]);
+                }
             });
         } catch (\Exception $e) {
             Log::error($e);
@@ -131,10 +146,15 @@ class AdminController extends Controller
             'area' => ['required'],
             'genre' => ['required'],
             'detail' => ['required', 'string','max:1000'],
+            'prepayment_enabled' => ['required'],
+            'courses.*.name' => ['required', 'string', 'max:50'],
+            'courses.*.duration_minutes' => ['required'],
+            'courses.*.price' => ['required'],
         ]);
 
-        $shop_id = $request->shop_id;
+        $shop = Shop::find($request->shop_id);
 
+        // 店名、エリア、ジャンル、紹介文
         $param = [
             'name' => $request->name,
             'area' => $request->area,
@@ -142,7 +162,7 @@ class AdminController extends Controller
             'detail' => $request->detail,
         ];
 
-        // サムネイル画像の保存
+        // サムネイル画像
         // （※複数ファイル選択時は1つ目の画像を保存）
         $images = $request->file('images');
         if ($images) {
@@ -150,16 +170,53 @@ class AdminController extends Controller
             $param['image'] = str_replace("public/", "", $image_path);
         }
 
-        // 店舗情報更新
+        // 事前決済
+        $param['prepayment_enabled'] = $request->prepayment_enabled;
+
+        // 店舗情報＆コース情報の更新
         try {
-            DB::transaction(function () use($shop_id, $param) {
-                Shop::find($shop_id)->update($param);
+            DB::transaction(function () use($shop, $param, $request) {
+                // 店舗情報更新
+                $shop->update($param);
+
+                // 既存コースの更新 or 削除
+                $current_courses = $shop->courses->toArray();
+                $new_courses = $request->courses;
+
+                foreach ($current_courses as $current_course) {
+                    $is_updated = false;
+                    foreach ($new_courses as $new_course) {
+                        if (empty($new_course['id'])) { continue; }
+                        if ($current_course['id'] == $new_course['id']) {
+                            Course::find($current_course['id'])->update([
+                                'name' => $new_course['name'],
+                                'duration_minutes' => $new_course['duration_minutes'],
+                                'price' => $new_course['price'],
+                            ]);
+                            $is_updated = true;
+                        }
+                    }
+                    if ($is_updated) { continue; }
+                    Course::find($current_course['id'])->delete();
+                }
+
+                // 新規コースの登録
+                foreach($new_courses as $new_course) {
+                    if (empty($new_course['id'])) {
+                        Course::create([
+                            'shop_id' => $shop->id,
+                            'name' => $new_course['name'],
+                            'duration_minutes' => $new_course['duration_minutes'],
+                            'price' => $new_course['price'],
+                        ]);
+                    }
+                }
             });
         } catch (\Exception $e) {
             Log::error($e);
         }
 
-        return redirect('/admin/edit_shop_data/' . $shop_id);
+        return redirect('/admin/edit_shop_data/' . $shop->id);
     }
 
     // 予約一覧ページ表示 ==========================================================
@@ -339,6 +396,9 @@ class AdminController extends Controller
             'start_at' => $start_at,
             'finish_at' => $finish_at,
             'number' => $request->reserve_number,
+            'course_id' => $request->reserve_course_id,
+            'prepayment' => $request->reserve_prepayment,
+            'status' => $request->reserve_status,
         ]);
 
         return redirect('/admin/reservation_list/' . $request->shop_id . '/detail/' . $request->reservation_id);
@@ -357,9 +417,19 @@ class AdminController extends Controller
     // 予約詳細のキャンセル処理 ======================================================
     public function cancelReservation(Request $request) {
         $reservation = Reservation::find($request->reservation_id);
+        $user = $reservation->user;
 
         //予約削除
         $reservation->delete();
+
+        // 返金処理＆事前決済フラグを「3:返金済み」へ変更
+        if($reservation->payment_intent_id !== NULL) {
+            $user->refund($reservation->payment_intent_id);
+
+            $reservation->update([
+                'prepayment' => 3,  // 0:なし 1:決済前 2:決済完了 3:返金済み
+            ]);
+        }
 
         // 予約ステータス変更
         $reservation->update([

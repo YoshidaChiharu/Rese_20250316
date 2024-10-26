@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Reservation;
 use App\Models\Favorite;
 use App\Models\Review;
+use App\Models\Course;
 use Carbon\Carbon;
 
 
@@ -49,6 +50,11 @@ class Shop extends Model
         }
 
         return $reviews;
+    }
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
     }
 
     // 店舗のレーティング値取得メソッド

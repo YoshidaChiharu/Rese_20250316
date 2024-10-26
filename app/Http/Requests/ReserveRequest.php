@@ -28,6 +28,7 @@ class ReserveRequest extends FormRequest
             'reserve_date' => ['required', 'date', 'after_or_equal:today'],
             'reserve_time' => ['required', 'date_format:H:i'],
             'reserve_number' => ['required', 'between:1,10'],
+            'reserve_prepayment' => ['required'],
         ];
     }
 
@@ -46,6 +47,16 @@ class ReserveRequest extends FormRequest
                         $validator->errors()->add(
                             'reserve_time',
                             '当日予約は来店時刻の3時間前までしか行えません'
+                        );
+                    }
+                }
+
+                // 事前決済時はコース選択必須
+                if ($this->input('reserve_prepayment') == 1) {
+                    if ($this->input('reserve_course_id') == null) {
+                        $validator->errors()->add(
+                            'reserve_course_id',
+                            '事前決済を行う場合はコースを選択してください'
                         );
                     }
                 }

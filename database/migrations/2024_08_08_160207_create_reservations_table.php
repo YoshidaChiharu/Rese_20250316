@@ -19,6 +19,9 @@ return new class extends Migration
             $table->time('start_at');
             $table->time('finish_at');
             $table->integer('number');
+            $table->foreignId('course_id')->nullable()->constrained();
+            $table->tinyInteger('prepayment');
+            $table->string('payment_intent_id', 255)->nullable();
             $table->tinyInteger('status');
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrent()->nullable();

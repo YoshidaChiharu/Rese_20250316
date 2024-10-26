@@ -18,3 +18,14 @@ window.onload = function () {
         readMore(content, button);
     });
 }
+
+// 選択されたコースの名前、時間、金額を表示
+function setCourseValue(courses, course_id) {
+    courses.forEach(function (course) {
+        if (course['id'] == course_id) {
+            document.getElementById('confirm_course').textContent = course['name'];
+            document.getElementById('confirm_duration').textContent = course['duration_minutes'] + ' 分';
+            document.getElementById('confirm_price').textContent = course['price'].toLocaleString() + ' 円 × 人数分';
+        }
+   });
+}

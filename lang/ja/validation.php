@@ -159,7 +159,11 @@ return [
         'images' => '画像',
         'subject' => '件名',
         'main_text' => '本文',
-    ],
+        'courses.*.name' => 'コース名',
+        'courses.*.duration_minutes' => 'コース時間',
+        'courses.*.price' => 'コース金額',
+        'reserve_prepayment' => 'お支払い方法',
+],
 
     'values' => [
         'reserve_date' => [

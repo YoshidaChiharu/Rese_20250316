@@ -43,7 +43,7 @@
                 </div>
                 <div class="form__input">
                     <select name="reserve_time" class="form__input--select" id="form_time" onchange="setValue(this.value, 'confirm_time')">
-                        <option value="">-</option>
+                        <option value="">予約時間を選択してください</option>
                         @foreach ($reservable_times as $reservable_time)
                         <option value="{{ $reservable_time }}" {{ old('reserve_time') == $reservable_time ? 'selected' : '' }}>{{ $reservable_time }}</option>
                         @endforeach
@@ -51,10 +51,27 @@
                 </div>
                 <div class="form__input">
                     <select name="reserve_number" class="form__input--select" id="form_number" onchange="setValue(this.value, 'confirm_number')">
-                        <option value="">-</option>
+                        <option value="">予約人数を選択してください</option>
                         @for ($i = 1; $i <= $reserve_max_number; $i++)
-                            <option value="{{$i}}" {{ old('reserve_number') == $i ? 'selected' : '' }}>{{$i}}</option>
-                            @endfor
+                        <option value="{{$i}}" {{ old('reserve_number') == $i ? 'selected' : '' }}>{{$i}}人</option>
+                        @endfor
+                    </select>
+                </div>
+                <div class="form__input">
+                    <select name="reserve_course_id" class="form__input--select" id="form_course" onchange="setCourseValue({{$shop->courses}}, this.value)">
+                        <option value="">コースを選択してください</option>
+                        @foreach ($shop->courses as $course)
+                        <option value="{{ $course->id }}" {{ old('reserve_course_id') == $course->id ? 'selected' : '' }}>{{ $course->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form__input">
+                    <select name="reserve_prepayment" class="form__input--select" id="form_prepayment" onchange="setValue(this.options[this.selectedIndex].textContent, 'confirm_prepayment')">
+                        <option value="">お支払い方法を選択してください</option>
+                        <option value=0 {{ old('reserve_prepayment') === "0" ? 'selected' : '' }}>店舗でのお支払い</option>
+                        @if($shop->prepayment_enabled == 1)
+                        <option value=1 {{ old('reserve_prepayment') === "1" ? 'selected' : '' }}>事前決済</option>
+                        @endif
                     </select>
                 </div>
                 <div class="form__confirm">
@@ -73,7 +90,57 @@
                         </tr>
                         <tr>
                             <th>Number</th>
-                            <td id="confirm_number">{{ old('reserve_number') ?? '-' }}</td>
+                            <td id="confirm_number">{{ old('reserve_number') ?? '-' }} 名</td>
+                        </tr>
+                        <tr>
+                            <th>Course</th>
+                            <td id="confirm_course">
+                            @if(old('reserve_course_id'))
+                            @foreach ($shop->courses as $course)
+                            {{ old('reserve_course_id') == $course->id ? $course->name : '' }}
+                            @endforeach
+                            @else
+                            -
+                            @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Duration</th>
+                            <td id="confirm_duration">
+                            @if(old('reserve_course_id'))
+                            @foreach ($shop->courses as $course)
+                            {{ old('reserve_course_id') == $course->id ? $course->duration_minutes : '' }}
+                            @endforeach
+                            分
+                            @else
+                            -
+                            @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Price</th>
+                            <td id="confirm_price">
+                            @if(old('reserve_course_id'))
+                            @foreach ($shop->courses as $course)
+                            {{ old('reserve_course_id') == $course->id ? number_format($course->price) : '' }}
+                            @endforeach
+                            円 × 人数分
+                            @else
+                            -
+                            @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Payment</th>
+                            <td id="confirm_prepayment">
+                                @if(old('reserve_prepayment') === "0")
+                                店舗でのお支払い
+                                @elseif(old('reserve_prepayment') === "1")
+                                事前決済
+                                @else
+                                -
+                                @endif
+                            </td>
                         </tr>
                     </table>
                 </div>

@@ -29,6 +29,7 @@ class ShopsTableSeeder extends Seeder
                 'genre' => $data[3],
                 'detail' => $data[4],
                 'image' => $data[5],
+                'prepayment_enabled' => false,
             ]);
         }
     }

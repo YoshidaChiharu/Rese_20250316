@@ -8,6 +8,7 @@ use App\Models\Shop;
 use App\Models\Favorite;
 use App\Models\Reservation;
 use App\Models\Review;
+use App\Models\Course;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -157,42 +158,50 @@ class ShopController extends Controller
     // 予約登録処理 =======================================================
     public function reserve(ReserveRequest $request) {
         try {
-            DB::transaction(function () use($request) {
-                $user_id = Auth::user()->id;
-                $shop_id = $request->shop_id;
-                $start_at = $request->reserve_time;
-                $finish_at = (new carbon($start_at))->addHour(2)->format('H:i');
+            DB::beginTransaction();
 
-                // 予約情報の登録
-                $reservation = Reservation::create([
-                    'user_id' => $user_id,
-                    'shop_id' => $shop_id,
-                    'scheduled_on' => $request->reserve_date,
-                    'start_at' => $start_at,
-                    'finish_at' => $finish_at,
-                    'number' => $request->reserve_number,
-                    'status' => 0,
-                ]);
+            $user_id = Auth::user()->id;
+            $shop_id = $request->shop_id;
+            $start_at = $request->reserve_time;
+            $course_duration = Course::find($request->reserve_course_id)->duration_minutes;
+            $finish_at = (new carbon($start_at))->addMinutes($course_duration)->format('H:i');
 
-                // 予約詳細ページへのURL
-                $url = request()->getSchemeAndHttpHost() . "/admin/reservation_list/" . $shop_id . "/detail/" . $reservation->id;
+            // 予約情報の登録
+            $reservation = Reservation::create([
+                'user_id' => $user_id,
+                'shop_id' => $shop_id,
+                'scheduled_on' => $request->reserve_date,
+                'start_at' => $start_at,
+                'finish_at' => $finish_at,
+                'number' => $request->reserve_number,
+                'course_id' => $request->reserve_course_id,
+                'prepayment' => $request->reserve_prepayment,
+                'status' => 0,
+            ]);
 
-                // 上記URLのQRコードを生成
-                $renderer = new ImageRenderer(
-                    new RendererStyle(200),
-                    new ImagickImageBackEnd()
-                );
-                $writer = new Writer($renderer);
-                $qr_code = base64_encode($writer->writeString($url));
+            // 予約詳細ページへのURL
+            $url = request()->getSchemeAndHttpHost() . "/admin/reservation_list/" . $shop_id . "/detail/" . $reservation->id;
 
-                // 予約完了メール送信
-                SendReservedMail::dispatch($reservation, $qr_code);
-            });
+            // 上記URLのQRコードを生成
+            $renderer = new ImageRenderer(
+                new RendererStyle(200),
+                new ImagickImageBackEnd()
+            );
+            $writer = new Writer($renderer);
+            $qr_code = base64_encode($writer->writeString($url));
 
-            return redirect('/done');
+            // 予約完了メール送信
+            SendReservedMail::dispatch($reservation, $qr_code);
 
+            DB::commit();
+
+            return redirect('/done')->with([
+                'prepayment' => $request->reserve_prepayment,
+                'reservation' => $reservation,
+            ]);
         } catch (\Exception $e) {
             Log::error($e);
+            DB::rollBack();
             return redirect(session('previous_page') ?? '/');
         }
 
@@ -257,17 +266,32 @@ class ShopController extends Controller
     public function deleteMyData(Request $request) {
         try {
             DB::transaction(function () use($request) {
+                $reservation = Reservation::find($request->reservation_id);
+                $user = Auth::user();
+
                 // 予約削除
                 if ($request->has('reservation_id')) {
-                    Reservation::find($request->reservation_id)->delete();
+                    $reservation->delete();
+
+                    // 返金処理＆事前決済フラグを「3:返金済み」へ変更
+                    if($reservation->payment_intent_id !== NULL) {
+                        $user->refund($reservation->payment_intent_id);
+
+                        $reservation->update([
+                            'prepayment' => 3,  // 0:なし 1:決済前 2:決済完了 3:返金済み
+                        ]);
+                    }
+
+                    // 予約ステータス変更
+                    $reservation->update([
+                        'status' => 2,  // 0:来店前 1:来店済み 2:予約キャンセル
+                    ]);
                 }
 
                 // お気に入り削除
                 if ($request->has('favorite_shop_id')) {
-                    $user_id = Auth::user()->id;
-                    $shop_id = $request->favorite_shop_id;
-                    Favorite::where('user_id', $user_id)
-                        ->where('shop_id', $shop_id)
+                    Favorite::where('user_id', $user->id)
+                        ->where('shop_id', $request->favorite_shop_id)
                         ->delete();
                 }
             });
@@ -291,6 +315,8 @@ class ShopController extends Controller
                         'start_at' => $start_at,
                         'finish_at' => $finish_at,
                         'number' => $request->reserve_number,
+                        'course_id' => $request->reserve_course_id,
+                        'prepayment' => $request->reserve_prepayment,
                     ]);
             });
         } catch (\Exception $e) {
