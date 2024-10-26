@@ -154,6 +154,7 @@ class AdminController extends Controller
 
         $shop = Shop::find($request->shop_id);
 
+        // 店名、エリア、ジャンル、紹介文
         $param = [
             'name' => $request->name,
             'area' => $request->area,
@@ -161,13 +162,16 @@ class AdminController extends Controller
             'detail' => $request->detail,
         ];
 
-        // サムネイル画像の保存
+        // サムネイル画像
         // （※複数ファイル選択時は1つ目の画像を保存）
         $images = $request->file('images');
         if ($images) {
             $image_path = $images[0]->store('public/img');
             $param['image'] = str_replace("public/", "", $image_path);
         }
+
+        // 事前決済
+        $param['prepayment_enabled'] = $request->prepayment_enabled;
 
         // 店舗情報＆コース情報の更新
         try {
