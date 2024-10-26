@@ -41,8 +41,8 @@
                     @if($reservation->course_id)
                     コース名：{{ $reservation->course->name }} <br>
                     お支払い予定金額：
-                    &yen;{{ $reservation->course->price }} x {{ $reservation->number }}名様分&emsp;
-                    【合計】&yen;{{ $reservation->course->price * $reservation->number }}（税込）<br>
+                    &yen;{{ number_format($reservation->course->price) }} x {{ $reservation->number }}名様分&emsp;
+                    【合計】&yen;{{ number_format($reservation->course->price * $reservation->number) }}（税込）<br>
                     @else
                     なし<br>
                     @endif

@@ -122,9 +122,9 @@
                             <td id="confirm_price">
                             @if(old('reserve_course_id'))
                             @foreach ($shop->courses as $course)
-                            {{ old('reserve_course_id') == $course->id ? $course->price : '' }}
+                            {{ old('reserve_course_id') == $course->id ? number_format($course->price) : '' }}
                             @endforeach
-                            円（税込）× 人数分
+                            円 × 人数分
                             @else
                             -
                             @endif

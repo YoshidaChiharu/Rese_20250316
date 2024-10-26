@@ -76,7 +76,7 @@
                             <th>Price</th>
                             <td>
                                 @if($reservation->course_id)
-                                &yen;{{ $reservation->course->price }}&ensp;x&ensp;{{ $reservation->number }}名様
+                                &yen;{{ number_format($reservation->course->price) }}&ensp;x&ensp;{{ $reservation->number }}名様
                                 @else
                                 -
                                 @endif

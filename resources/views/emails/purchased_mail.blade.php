@@ -33,8 +33,8 @@
                 </p>
                 <p>
                     ■お支払い金額<br>
-                    &yen;{{ $reservation->course->price }} x {{ $reservation->number }}名様分<br>
-                    【合計】&yen;{{ $reservation->course->price * $reservation->number }}（税込）<br>
+                    &yen;{{ number_format($reservation->course->price) }} x {{ $reservation->number }}名様分<br>
+                    【合計】&yen;{{ number_format($reservation->course->price * $reservation->number) }}（税込）<br>
                 </p>
                 <p>
                     ■決済方法<br>

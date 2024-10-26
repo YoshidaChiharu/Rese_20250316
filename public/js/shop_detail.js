@@ -25,7 +25,7 @@ function setCourseValue(courses, course_id) {
         if (course['id'] == course_id) {
             document.getElementById('confirm_course').textContent = course['name'];
             document.getElementById('confirm_duration').textContent = course['duration_minutes'] + ' 分';
-            document.getElementById('confirm_price').textContent = course['price'] + ' 円（税込）× 人数分';
+            document.getElementById('confirm_price').textContent = course['price'].toLocaleString() + ' 円 × 人数分';
         }
    });
 }
