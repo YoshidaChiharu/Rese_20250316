@@ -39,3 +39,17 @@
     font-size: 18px;
     color: #305dff;
 }
+
+/* レスポンシブ（タブレット） */
+@media screen and (max-width: 960px) {}
+
+/* レスポンシブ（スマホ） */
+@media screen and (max-width: 480px) {
+    .verify-email-wrapper {
+        padding-top: 100px;
+    }
+
+    .verify-email-content {
+        text-align: left;
+    }
+}

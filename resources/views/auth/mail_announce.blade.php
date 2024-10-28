@@ -20,7 +20,7 @@
             <div class="container__content">
                 <div class="announce-text">
                     <p>
-                        ご登録のメールアドレス&nbsp;{{ session('url') }}&nbsp;へログイン認証用のメールを送信しました。<br>
+                        ご登録のメールアドレス {{ session('url') }} へログイン認証用のメールを送信しました。<br>
                         ご確認いただき、メールに記載された URL をクリックして、ログインを完了してください。
                     </p>
                 </div>
