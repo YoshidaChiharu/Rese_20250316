@@ -344,6 +344,15 @@
 
 /* レスポンシブ（スマホ） */
 @media screen and (max-width: 480px) {
+    .confirm-table th, td{
+        width: 100%;
+        display: block;
+    }
+
+    .confirm-table td {
+        padding-left: 10px;
+    }
+
     .review-item {
         padding: 10px 0;
         border-top: solid 1px #aaa;
