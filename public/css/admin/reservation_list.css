@@ -96,6 +96,7 @@
 .calendar-content__table .table__data {
     padding: 10px 4px;
     border-right: solid 1px #959997;
+    vertical-align: top;
 }
 
 .calendar-content__table .table__data--gray {
@@ -221,4 +222,54 @@
     position: absolute;
     top: 5%;
     left: 0;
+}
+
+.display-only-sp {
+    display: none;
+}
+
+.time-schedule-sp {
+    margin-top: 10px;
+    border: solid 1px #959997;
+    border-radius: 6px;
+}
+
+.time-schedule-sp__top {
+    padding: 4px 20px;
+    background-color: #F4F4F4;
+    border-bottom: solid 1px #959997;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.time-schedule-sp__top-date {
+    font-weight: bold;
+}
+
+/* レスポンシブ（タブレット） */
+@media screen and (max-width: 960px) {
+    .table__button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* レスポンシブ（スマホ） */
+@media screen and (max-width: 480px) {
+    .calendar-top__year-month {
+        text-align: left;
+    }
+
+    .display-only-pc {
+        display: none;
+    }
+    .display-only-sp {
+        display: block;
+    }
+
+    .table__button span{
+        font-size: 10px;
+        padding: 6px 0;
+    }
 }

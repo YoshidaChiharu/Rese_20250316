@@ -30,3 +30,17 @@
     cursor: pointer;
     display: inline-block;
 }
+
+/* レスポンシブ（タブレット） */
+@media screen and (max-width: 960px) {}
+
+/* レスポンシブ（スマホ） */
+@media screen and (max-width: 480px) {
+    .thanks-wrapper {
+        padding-top: 100px;
+    }
+
+    .thanks-content__text {
+        text-align: left;
+    }
+}

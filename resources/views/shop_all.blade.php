@@ -33,6 +33,7 @@
         </div>
     </form>
 </div>
+<div class="pagination">{{ $shops->appends(request()->query())->links('vendor.pagination.default') }}</div>
 <div class="shop-list-section">
     @foreach($shops as $shop)
     <div class="shop-card">
