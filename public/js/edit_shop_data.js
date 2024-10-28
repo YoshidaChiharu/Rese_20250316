@@ -59,7 +59,8 @@ function addCourse() {
 	// コース名入力欄
 	var input = document.createElement('INPUT');
     input.classList.add('course-list-item__input');
-    input.setAttribute('placeholder', 'コース名');
+	input.setAttribute('type', 'text');
+	input.setAttribute('placeholder', 'コース名');
     input.setAttribute('name', 'courses[' + child_count + '][name]');
 	li.appendChild(input);
 
