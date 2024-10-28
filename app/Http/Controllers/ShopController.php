@@ -72,6 +72,15 @@ class ShopController extends Controller
             }
         }
 
+        // ページネーション
+        $shops = new LengthAwarePaginator(
+            $shops->forPage($request->page, 20),
+            $shops->count(),
+            20,
+            $request->page,
+            ['path' => $request->url()]
+        );
+
         return view(
             'shop_all',
             compact([
