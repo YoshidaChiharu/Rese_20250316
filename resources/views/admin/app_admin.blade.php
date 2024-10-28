@@ -31,6 +31,12 @@
         </div>
     </header>
     <main class="main">
+        <input type="checkbox" id="menu-checkbox">
+        <label for="menu-checkbox">
+            <div class="menu-button">
+                <img src="{{ asset('img/bars_square.png') }}" class="menu-button__icon" alt="menu">
+            </div>
+        </label>
         <div class="side-menu">
             <ul class="side-menu__list">
                 <li class="menu-list-item">
