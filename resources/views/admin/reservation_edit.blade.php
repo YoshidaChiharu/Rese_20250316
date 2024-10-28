@@ -9,7 +9,7 @@
     <div class="heading">
         <p class="heading__shop-name">{{ $shop->name }}</p>
     </div>
-    <div class="content">
+    <div class="reservation-edit-content">
         <div class="content__heading">
             <span>●&nbsp;2024/10/11&nbsp;:&nbsp;予約1</span>
         </div>

@@ -41,7 +41,6 @@
 }
 
 .side-menu {
-    width: 20%;
     max-width: 300px;
     min-height: calc(100vh - 80px);
     margin-top: 80px;
@@ -124,9 +123,6 @@ details[open] .open-close-icon {
 }
 
 @media screen and (max-width: 960px) {
-}
-
-@media screen and (max-width: 480px) {
     .header__logo h1 {
         font-size: 24px;
     }
@@ -136,13 +132,8 @@ details[open] .open-close-icon {
         font-weight: bold;
     }
 
-    .main {
-        /* width: 100%; */
-    }
-
     .side-menu {
         max-width: none;
-        width: 100%;
         height: calc(100vh - 80px);
         overflow-y: scroll;
         position: fixed;
@@ -162,5 +153,11 @@ details[open] .open-close-icon {
 
     #menu-checkbox:checked+label+.side-menu {
         left: 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .side-menu {
+        width: 100%;
     }
 }
