@@ -74,6 +74,7 @@
 
 .form__inner {
     padding: 30px;
+    padding-bottom: 100px;
 }
 
 .form__title h3 {
@@ -322,4 +323,39 @@
 
 .review-pagenation .active span {
     color: white;
+}
+
+/* レスポンシブ（タブレット） */
+@media screen and (max-width: 960px) {
+    .top-wrapper {
+        display: block;
+    }
+
+    .shop-info-section {
+        width: 100%;
+        margin-top: 80px;
+    }
+
+    .reserve-section {
+        margin-top: 40px;
+        width: 100%;
+    }
+}
+
+/* レスポンシブ（スマホ） */
+@media screen and (max-width: 480px) {
+    .review-item {
+        padding: 10px 0;
+        border-top: solid 1px #aaa;
+        display: block;
+    }
+
+    .review-item__reviewer {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .review-item__review-content {
+        width: 100%;
+    }
 }
