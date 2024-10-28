@@ -317,3 +317,76 @@
     cursor: pointer;
     display: block;
 }
+
+/* レスポンシブ（タブレット） */
+@media screen and (max-width: 960px) {
+    .heading {
+        margin-top: 80px;
+    }
+
+    .heading__inner {
+        width: 100%;
+        margin: 0;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 20px;
+    }
+
+    .favorite-section {
+        width: 100%;
+    }
+
+    .favorite-list {
+        gap: 20px 2%;
+    }
+
+    .shop-card {
+        width: 49%;
+    }
+
+    .reserve-section {
+        width: 100%;
+    }
+
+    .reserve-list,
+    .reserve-history-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 20px 2%;
+    }
+
+    .reserve-card {
+        width: 49%;
+    }
+}
+
+/* レスポンシブ（スマホ） */
+@media screen and (max-width: 480px) {
+    .heading__name,
+    .list-title {
+        font-size: 20px;
+    }
+
+    .favorite-list {
+        gap: 20px;
+    }
+
+    .shop-card {
+        width: 100%;
+    }
+
+    .reserve-list,
+    .reserve-history-list{
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+    }
+
+    .reserve-card {
+        width: 100%;
+    }
+}
