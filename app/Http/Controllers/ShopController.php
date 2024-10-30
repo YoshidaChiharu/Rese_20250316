@@ -172,7 +172,10 @@ class ShopController extends Controller
             $user_id = Auth::user()->id;
             $shop_id = $request->shop_id;
             $start_at = $request->reserve_time;
-            $course_duration = Course::find($request->reserve_course_id)->duration_minutes;
+            $course_duration = 120;     // コース未設定の場合は一律120分に設定
+            if($request->reserve_course_id) {
+                $course_duration = Course::find($request->reserve_course_id)->duration_minutes;
+            }
             $finish_at = (new carbon($start_at))->addMinutes($course_duration)->format('H:i');
 
             // 予約情報の登録
