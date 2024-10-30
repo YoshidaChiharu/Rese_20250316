@@ -38,7 +38,7 @@
                     <table class="reserve-card__table">
                         <tr>
                             <th>Shop</th>
-                            <td>{{ $reservation->shop_name }}</td>
+                            <td>{{ $reservation->shop->name }}</td>
                         </tr>
                         <tr>
                             <th>Date</th>
@@ -116,7 +116,7 @@
                         <table class="reserve-card__table">
                             <tr>
                                 <th>Shop</th>
-                                <td>{{ $reservation->shop_name }}</td>
+                                <td>{{ $reservation->shop->name }}</td>
                             </tr>
                             <tr>
                                 <th>Date</th>
@@ -129,7 +129,7 @@
                                 <td>
                                     <select name="reserve_time">
                                         <option value="">-</option>
-                                        @foreach ($reservable_times as $reservable_time)
+                                        @foreach ( $reservation->reservable_times as $reservable_time)
                                         <option value="{{ $reservable_time }}" {{ old('reserve_time') ?? $reservation->start_at == $reservable_time ? 'selected' : '' }}>{{ $reservable_time }}</option>
                                         @endforeach
                                     </select>
@@ -213,7 +213,7 @@
                     <table class="reserve-card__table">
                         <tr>
                             <th>Shop</th>
-                            <td>{{ $reservation->shop_name }}</td>
+                            <td>{{ $reservation->shop->name }}</td>
                         </tr>
                         <tr>
                             <th>Date</th>
@@ -271,7 +271,7 @@
                         <table class="reserve-card__table">
                             <tr>
                                 <th>Shop</th>
-                                <td>{{ $reservation->shop_name }}</td>
+                                <td>{{ $reservation->shop->name }}</td>
                             </tr>
                             <tr>
                                 <th>Date</th>
