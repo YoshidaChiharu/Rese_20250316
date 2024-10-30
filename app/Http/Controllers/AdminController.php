@@ -110,14 +110,16 @@ class AdminController extends Controller
                     'prepayment_enabled' => $request->prepayment_enabled,
                 ]);
 
-                $courses = $request->courses;
-                foreach($courses as $course) {
-                    Course::create([
-                        'shop_id' => $shop->id,
-                        'name' => $course['name'],
-                        'duration_minutes' => $course['duration_minutes'],
-                        'price' => $course['price'],
-                    ]);
+                if($request->courses) {
+                    $courses = $request->courses;
+                    foreach($courses as $course) {
+                        Course::create([
+                            'shop_id' => $shop->id,
+                            'name' => $course['name'],
+                            'duration_minutes' => $course['duration_minutes'],
+                            'price' => $course['price'],
+                        ]);
+                    }    
                 }
             });
         } catch (\Exception $e) {
