@@ -388,7 +388,11 @@ class AdminController extends Controller
     // 予約詳細の編集処理 ===========================================================
     public function updateReservation(Request $request) {
         $start_at = $request->reserve_time;
-        $finish_at = (new carbon($start_at))->addHour(2)->format('H:i');
+        $course_duration = 120;     // コース未設定の場合は一律120分に設定
+        if($request->reserve_course_id) {
+            $course_duration = Course::find($request->reserve_course_id)->duration_minutes;
+        }
+        $finish_at = (new carbon($start_at))->addMinutes($course_duration)->format('H:i');
 
         Reservation::find($request->reservation_id)
         ->update([
