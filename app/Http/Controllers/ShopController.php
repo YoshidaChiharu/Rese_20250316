@@ -129,7 +129,7 @@ class ShopController extends Controller
         $shop = Shop::find($request->shop_id);
 
         // 予約時間セレクトボックス用の選択肢作成
-        $reservable_times = $this->getEqualIntervalTimes('16:00', '21:00', 30);
+        $reservable_times = $shop->getReservableTimes('16:00', '21:00', 30);
 
         // 予約可能最大人数
         $reserve_max_number = 10;
@@ -235,8 +235,7 @@ class ShopController extends Controller
         $reservations = Reservation::where('user_id', $user->id)->get();
         foreach ($reservations as $reservation) {
             $reservation->start_at = (new Carbon($reservation->start_at))->format("H:i");
-            $shop_id = $reservation->shop_id;
-            $reservation->shop_name = Shop::find($shop_id)->name;
+            $reservation->reservable_times = $reservation->shop->getReservableTimes('16:00', '21:00', 30);
         }
 
         // 取得した予約情報を「過去or未来」振り分け
@@ -259,8 +258,7 @@ class ShopController extends Controller
         }
 
         // 予約変更用パラメータの作成
-        $reservable_times = $this->getEqualIntervalTimes('16:00', '21:00', 30);
-        $reserve_max_number = 10;
+        $reserve_max_number = 10;   // 予約人数上限値
 
         return view('mypage',
             compact([
@@ -268,7 +266,6 @@ class ShopController extends Controller
                 'reservations',
                 'past_reservations',
                 'favorite_shops',
-                'reservable_times',
                 'reserve_max_number',
             ])
         );
@@ -371,19 +368,4 @@ class ShopController extends Controller
 
         return redirect('/mypage');
     }
-
-    // 等間隔の時間配列取得メソッド ========================================
-    private function getEqualIntervalTimes($start_time, $end_time, $span_minute) {
-        $span_minute = 30;
-
-        $time = new Carbon($start_time);
-        $end = new Carbon($end_time);
-        while ($time <= $end) {
-            $equal_interval_times[] = $time->format('H:i');
-            $time->addMinutes($span_minute);
-        }
-
-        return $equal_interval_times;
-    }
-
 }
