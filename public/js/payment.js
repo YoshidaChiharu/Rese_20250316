@@ -1,9 +1,10 @@
-/* 基本設定*/
-const stripe_key = "pk_test_51QBad1Bli9nlS8GV0wskk4eK8OoTM6vLGUuQ7igRELuoB3B4YlbN4ubnUKFPaFeXeTqju80TN1vyXrMS7LWFY4zb00Pd2mQYT5"
+// 基本設定
+const stripe_key_element = document.getElementById('js-stripe-key');
+const stripe_key = stripe_key_element.getAttribute('stripe_key');
 const stripe = Stripe(stripe_key);
 const elements = stripe.elements();
-console.log(stripe_key);
 
+// カード番号
 var cardNumber = elements.create('cardNumber');
 cardNumber.mount('#card-number');
 cardNumber.on('change', function(event) {
@@ -15,6 +16,7 @@ cardNumber.on('change', function(event) {
     }
 });
 
+// カード有効期限
 var cardExpiry = elements.create('cardExpiry');
 cardExpiry.mount('#card-expiry');
 cardExpiry.on('change', function(event) {
@@ -26,6 +28,7 @@ cardExpiry.on('change', function(event) {
     }
 });
 
+// セキュリティーコード
 var cardCvc = elements.create('cardCvc');
 cardCvc.mount('#card-cvc');
 cardCvc.on('change', function(event) {
@@ -37,6 +40,7 @@ cardCvc.on('change', function(event) {
     }
 });
 
+// PaymentMethodIDを取得してフォーム送信
 var form = document.getElementById('card-form');
 form.addEventListener('submit', async function(event) {
     event.preventDefault();
@@ -57,9 +61,6 @@ form.addEventListener('submit', async function(event) {
         errorElement.textContent = result.error.message;
     } else {
         // PaymentMethod IDをサーバーに送信
-        console.log(result.paymentMethod.id);
-        console.log(result.paymentMethod.card?.brand);
-        console.log(result.paymentMethod.card?.last4);
         stripePaymentIdHandler(result.paymentMethod.id, result.paymentMethod.card?.brand, result.paymentMethod.card?.last4);
     }
 });

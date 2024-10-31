@@ -41,6 +41,7 @@
     </div>
 </div>
 
+<div id="js-stripe-key" stripe_key="{{ config('stripe.stripe_key') }}"></div>
 <script src="https://js.stripe.com/v3/"></script>
 <script src="{{ asset('js/payment.js') }}"></script>
 @endsection
