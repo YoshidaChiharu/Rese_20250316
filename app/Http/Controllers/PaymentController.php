@@ -23,18 +23,6 @@ class PaymentController extends Controller
 
     // 決済処理 ====================================================================
     public function store(Request $request) {
-        // \Stripe\Stripe::setApiKey(config('stripe.stripe_secret'));
-
-        // $intent = \Stripe\PaymentIntent::create([
-        //     'amount' => 100,
-        //     'currency' => 'jpy',
-        //     'payment_method_types' => ['card'],
-        //     'payment_method' => $request->paymentMethodId,
-        //     'confirmation_method' => 'manual',
-        //     'confirm' => true,
-        //     'return_url' => route('payment.completed'), // Replace with your actual return URL
-        // ]);
-
         try {
             DB::beginTransaction();
 
