@@ -50,6 +50,11 @@ class AuthController extends AuthenticatedSessionController
                 'expire_at' => $expire_at,
             ]);
 
+            // 管理者ユーザーのみメール認証を飛ばしてログイン処理へ
+            if($user->role_id === 1) {
+                return redirect("/auth_second?email=" . $user->email . "&token=" . $token);
+            }
+
             // メール送信
             $url = request()->getSchemeAndHttpHost() . "/auth_second?email=" . $user->email . "&token=" . $token;
             Mail::to($user->email)->send(new LoginMail($url));
