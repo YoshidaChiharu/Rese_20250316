@@ -1,0 +1,85 @@
+.container {
+    margin: 0 auto;
+    max-width: 1230px;
+}
+
+.heading__shop-name {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.reservation-detail-content {
+    margin: 0 auto;
+    max-width: 1000px;
+}
+
+.content__table {
+    width: 100%;
+}
+
+.content__table th {
+    width: 20%;
+    padding: 10px 20px;
+    border: solid 1px #959997;
+    font-weight: normal;
+    text-align: left;
+    background-color: #E0E5E3;
+}
+
+.content__table td {
+    padding: 10px 20px;
+    border: solid 1px #959997;
+}
+
+.operate-buttons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.form__button {
+    padding: 6px 20px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.form__button--edit {
+    background-color: #D68700;
+}
+
+.form__button--visit {
+    background-color: #305dff;
+}
+
+.form__button--cancel {
+    background-color: #FF3399;
+}
+
+/* レスポンシブ（タブレット） */
+@media screen and (max-width: 960px) {
+    .content__table th, td{
+        width: 100%;
+        display: block;
+    }
+
+    .content__table th {
+        padding: 4px 10px;
+        border-bottom: none;
+    }
+
+    .content__table td {
+        padding: 10px;
+        border-bottom: none;
+    }
+
+    .content__table tr:last-child {
+        border-bottom: solid 1px #959997;
+    }
+}
+
+/* レスポンシブ（スマホ） */
+@media screen and (max-width: 480px) {}

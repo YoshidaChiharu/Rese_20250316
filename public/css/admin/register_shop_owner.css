@@ -1,0 +1,90 @@
+.register-wrapper {
+    margin: 0 auto;
+    padding-top: 160px;
+    max-width: 480px;
+}
+
+.register-content {
+    border-radius: 6px;
+    box-shadow: 2px 2px 3px #aaa;
+}
+
+.register-content__heading {
+    padding: 20px;
+    background-color: #383838;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.register-content__heading h2 {
+    margin: 0;
+    color: white;
+    font-weight: normal;
+}
+
+.register-content__form {
+    padding: 30px;
+    background-color: white;
+    border: solid 1px #ddd;
+    border-top: none;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.form__group {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form__group--icon {
+    width: 8%;
+}
+
+.form__group--input {
+    width: 90%;
+}
+
+.form__group--icon img {
+    width: 100%;
+}
+
+.form__group--input input {
+    width: 100%;
+    font-size: 18px;
+    border: none;
+    border-bottom: solid 1px #757575;
+}
+
+.form__button {
+    text-align: right;
+}
+
+.form__button-submit {
+    padding: 8px 16px;
+    color: white;
+    background-color: #434343;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.form__error {
+    margin-left: 10%;
+    color: red;
+}
+
+/* レスポンシブ（タブレット） */
+@media screen and (max-width: 960px) {
+    .register-wrapper {
+        padding-top: 0;
+    }
+}
+
+/* レスポンシブ（スマホ） */
+@media screen and (max-width: 480px) {
+    .register-content__heading h2 {
+        font-size: 20px;
+    }
+}

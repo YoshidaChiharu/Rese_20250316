@@ -1,0 +1,163 @@
+* {
+    box-sizing: border-box;
+    font-family: "Noto Sans JP", sans-serif;
+}
+
+.header {
+    height: 80px;
+    width: 100%;
+    background-color: #eee;
+    border-bottom: solid 2px #434343;
+    position: fixed;
+    z-index: 1;
+}
+
+.header__inner {
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header__logo h1 {
+    margin: 0;
+}
+
+.header__logo a {
+    text-decoration: none;
+    color: #305dff;
+}
+
+.header__text,
+.header__role {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.main {
+    display: flex;
+}
+
+.side-menu {
+    max-width: 300px;
+    min-height: calc(100vh - 80px);
+    margin-top: 80px;
+    padding: 20px;
+    background-color: #383838;
+}
+
+.side-menu__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.menu-list-item {
+    margin-bottom: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-icon {
+    width: 24px;
+}
+
+.menu-list-item a {
+    text-decoration: none;
+    color: white;
+}
+
+.menu-list-item summary {
+    display: block;
+}
+
+.summary__inner,
+.summary__inner::-webkit-details-marker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.open-close-icon {
+    width: 16px;
+    transition: transform 0.2s;
+}
+
+details[open] .open-close-icon {
+    transform: rotate(180deg);
+}
+
+.shop-list {
+    list-style: none;
+}
+
+.shop-list li {
+    padding-top: 8px;
+}
+
+.content {
+    width: 80%;
+    margin-top: 80px;
+    padding: 40px;
+}
+
+.menu-button {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    z-index: 10;
+    display: none;
+}
+
+.menu-button__icon {
+    width: 30px;
+}
+
+#menu-checkbox {
+    display: none;
+}
+
+@media screen and (max-width: 960px) {
+    .header__logo h1 {
+        font-size: 24px;
+    }
+    .header__text,
+    .header__role {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .side-menu {
+        max-width: none;
+        height: calc(100vh - 80px);
+        overflow-y: scroll;
+        position: fixed;
+        left: -100%;
+        z-index: 1;
+        transition: left 0.4s;
+    }
+
+    .content {
+        width: 100%;
+        padding: 70px 20px 40px 20px;
+    }
+
+    .menu-button {
+        display: block;
+    }
+
+    #menu-checkbox:checked+label+.side-menu {
+        left: 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .side-menu {
+        width: 100%;
+    }
+}

@@ -1,0 +1,392 @@
+.heading {
+    margin-top: 100px;
+}
+
+.heading__inner {
+    width: 55%;
+    margin: 0 0 0 auto;
+}
+
+.heading__name {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.content {
+    display: flex;
+    gap: 8%;
+}
+
+.reserve-section {
+    width: 37%;
+}
+
+.title-margin {
+    margin-top: 30px;
+}
+
+.reserve-list,
+.reserve-history-list{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.reserve-section .list-title:not(:first-child) {
+    margin-top: 60px;
+}
+
+.reserve-card {
+    background-color: #305dff;
+    border-radius: 6px;
+    box-shadow: 2px 2px 3px #aaa;
+    color: white;
+}
+
+.bg-orange {
+    background-color: #D68700;
+}
+
+.bg-darkblue {
+    background-color: #00008B;
+}
+
+.reserve-card__inner {
+    padding: 30px;
+    padding-bottom: 10px;
+}
+
+.reserve-card__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reserve-card__image--clock {
+    width: 28px;
+    margin-right: 20px;
+}
+
+.reserve-card__image--dish {
+    width: 36px;
+    margin-right: 20px;
+}
+
+.reserve-card__button--delete {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.reserve-card__table {
+    width: 100%;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.reserve-card__table tr {
+    width: 100%;
+}
+
+.reserve-card__table th {
+    width: 30%;
+}
+
+.reserve-card__table td {
+    padding: 6px 0;
+}
+
+.reserve-card__prepayment_link {
+    margin-left: 20px;
+    color: #FFFC59;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.reserve-card__button--change {
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    font-size: 14px;
+    color: white;
+    background-color: #0538ff;
+    cursor: pointer;
+}
+
+.reserve-card__review {
+    padding: 10px 30px;
+    background-color: white;
+}
+
+.review__heading {
+    margin: 0;
+    color: #00008B;
+    font-weight: bold;
+}
+
+.review__heading:not(:first-child) {
+    margin-top: 10px;
+}
+
+.text-orange {
+    color: #D68700;
+}
+
+.review__title {
+    margin: 0;
+    color: #00008B;
+}
+
+.review__comment {
+    margin: 0;
+    height: auto;
+    max-height: 150px;
+    color: #00008B;
+    white-space: pre-wrap;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.6s;
+}
+
+.review__comment::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: 1s;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 40%, #fff 95%);
+}
+
+.review__comment.show:after,
+.review__comment.hidden:after {
+    z-index: -1;
+    opacity: 0;
+}
+
+.read-more-button {
+    margin: 0 auto;
+    margin-top: 10px;
+    border: none;
+    background-color: unset;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+}
+
+.read-more-button.hidden {
+    display: none;
+}
+
+.review__image--star,
+.review__input--star {
+    width: 24px;
+    margin-right: 4px;
+}
+
+.review__input {
+    width: 100%;
+    padding: 4px;
+    border: solid 1px #D68700;
+}
+
+.button-orange {
+    background-color: #BC7700;
+}
+
+.button-darkblue {
+    background-color: #000070;
+}
+
+.reserve-card__error {
+    color: red;
+    font-weight: bold;
+}
+
+.reserve-card__error ul {
+    margin-top: 0;
+}
+
+.favorite-section {
+    width: 55%;
+}
+
+.favorite-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 8%;
+}
+
+.shop-card {
+    width: 46%;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 3px #aaa;
+}
+
+.card-image,
+.card-image img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.card-content {
+    padding: 20px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.card-content__name h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.card-content__tag-list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.card-content__tag {
+    font-size: 14px;
+    list-style: none;
+}
+
+.card-content__rating {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.rating-value {
+    margin-left: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-content__rating .image--star {
+    width: 18px;
+}
+
+.card-content__info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.card-content__info img {
+    width: 14px;
+}
+
+.card-content__info span {
+    margin-right: 6px;
+    font-size: 14px;
+}
+
+.card-content__button {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-detail {
+    padding: 6px 16px;
+    font-size: 14px;
+    text-decoration: none;
+    color: white;
+    background-color: #305dff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.button-favorite {
+    margin: auto 0;
+    width: 32px;
+    cursor: pointer;
+    display: block;
+}
+
+/* レスポンシブ（タブレット） */
+@media screen and (max-width: 960px) {
+    .heading {
+        margin-top: 80px;
+    }
+
+    .heading__inner {
+        width: 100%;
+        margin: 0;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 20px;
+    }
+
+    .favorite-section {
+        width: 100%;
+    }
+
+    .favorite-list {
+        gap: 20px 2%;
+    }
+
+    .shop-card {
+        width: 49%;
+    }
+
+    .reserve-section {
+        width: 100%;
+    }
+
+    .reserve-list,
+    .reserve-history-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 20px 2%;
+    }
+
+    .reserve-card {
+        width: 49%;
+    }
+}
+
+/* レスポンシブ（スマホ） */
+@media screen and (max-width: 480px) {
+    .heading__name,
+    .list-title {
+        font-size: 20px;
+    }
+
+    .favorite-list {
+        gap: 20px;
+    }
+
+    .shop-card {
+        width: 100%;
+    }
+
+    .reserve-list,
+    .reserve-history-list{
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+    }
+
+    .reserve-card {
+        width: 100%;
+    }
+}

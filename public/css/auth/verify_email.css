@@ -1,0 +1,55 @@
+.verify-email-wrapper {
+    margin: 0 auto;
+    padding-top: 160px;
+    max-width: 600px;
+}
+
+.verify-email-content {
+    padding: 60px 40px;
+    text-align: center;
+    background-color: white;
+    border: solid 1px #ddd;
+    border-radius: 6px;
+    box-shadow: 2px 2px 3px #aaa;
+}
+
+.verify-email-content__heading {
+    margin: 0;
+    font-size: 24px;
+}
+
+.verify-email-content__text {
+    margin: 0;
+    margin-top: 40px;
+    font-size: 18px;
+}
+
+.form__mail-button {
+    margin-top: 40px;
+    padding: 8px 16px;
+    color: white;
+    background-color: #305dff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.verify-email-content__sent-email {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #305dff;
+}
+
+/* レスポンシブ（タブレット） */
+@media screen and (max-width: 960px) {}
+
+/* レスポンシブ（スマホ） */
+@media screen and (max-width: 480px) {
+    .verify-email-wrapper {
+        padding-top: 100px;
+    }
+
+    .verify-email-content {
+        text-align: left;
+    }
+}

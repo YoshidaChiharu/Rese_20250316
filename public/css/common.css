@@ -1,0 +1,105 @@
+* {
+    font-family: "Noto Sans JP", sans-serif;
+}
+
+body {
+    background-color: #eee;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1230px;
+    position: relative;
+}
+
+.menu {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.menu__icon {
+    width: 38px;
+    height: 38px;
+    background-color: #305dff;
+    border-radius: 6px;
+    box-shadow: 2px 2px 3px #aaa;
+    cursor: pointer;
+}
+
+.menu__icon img {
+    width: 100%;
+}
+
+.menu__logo h1 {
+    margin: 0;
+    line-height: 38px;
+}
+
+.menu__logo a {
+    text-decoration: none;
+    color: #305dff;
+}
+
+.modal {
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
+    background-color: #eee;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.modal:not(:target) {
+    display: none;
+}
+
+.modal:target {
+    display: block;
+}
+
+.modal__close-button {
+    width: 38px;
+    height: 38px;
+    background-color: #305dff;
+    border-radius: 6px;
+    box-shadow: 2px 2px 3px #aaa;
+    cursor: pointer;
+}
+
+.modal__close-button img {
+    width: 100%;
+}
+
+.modal__list ul {
+    margin-top: 160px;
+    padding: 0;
+    text-align: center;
+    list-style: none;
+}
+
+.modal__list li {
+    padding: 10px 0;
+}
+
+.modal__list a,
+.modal__list button {
+    border: none;
+    color: #305dff;
+    text-decoration: none;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.admin-menu a {
+    margin-top: 20px;
+    padding-top: 20px;
+    color: #666666;
+    border-top: solid 1px #666666;
+    display: inline-block;
+}
