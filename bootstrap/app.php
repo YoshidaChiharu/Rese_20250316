@@ -22,6 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'my_shops' => MyShopsMiddleware::class,
         ]);
     })
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustProxies(at: '*');
+    })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
