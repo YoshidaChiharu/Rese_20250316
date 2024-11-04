@@ -202,8 +202,14 @@ class ShopController extends Controller
             $writer = new Writer($renderer);
             $qr_code = base64_encode($writer->writeString($url));
 
+            // QRコードを保存
+            $reservation->update([
+                'qr_code' => $qr_code,
+            ]);
+
             // 予約完了メール送信
-            SendReservedMail::dispatch($reservation, $qr_code);
+            $url = request()->getSchemeAndHttpHost() . "/mypage/" . $reservation->id . "/qr";
+            SendReservedMail::dispatch($reservation, $url);
 
             DB::commit();
 
@@ -367,5 +373,11 @@ class ShopController extends Controller
         }
 
         return redirect('/mypage');
+    }
+
+    // QRコード表示 ========================================================
+    public function showReservationQR(Request $request) {
+        $qr_code = Reservation::find($request->reservation_id)->qr_code;
+        return view('reservation_qr', compact('qr_code'));
     }
 }

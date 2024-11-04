@@ -57,7 +57,11 @@
                     店舗側がお客様の予約情報を照会する為に使用するQRコードです<br>
                     ご来店の際、店舗にて以下QRコードをご提示下さい<br>
                 </p>
-                <img src="data:image/png;base64, {!! $qr_code !!} ">
+                <img src="data:image/png;base64, {!! $reservation->qr_code !!} ">
+                <p>
+                    ※メール内のQRコードが表示されない場合はこちら<br>
+                    <a href="{{ $url }}">{{ $url }}</a><br>
+                </p>
             </td>
         </tr>
         <tr>

@@ -28,6 +28,9 @@
                         <div>
                             <img class="reserve-card__image--clock" src="{{ asset('img/clock.svg') }}" alt="clock">
                             <span>予約{{ $loop->iteration }}</span>
+                            @if ($reservation->qr_code)
+                            <a class="reserve-card__qr-link" href="/mypage/{{ $reservation->id }}/qr">QRコード表示</a>
+                            @endif
                         </div>
                         <form action="/mypage" method="post">
                             @csrf
