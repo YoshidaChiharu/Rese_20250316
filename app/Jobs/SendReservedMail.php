@@ -17,15 +17,15 @@ class SendReservedMail implements ShouldQueue
     use Queueable, Batchable, Dispatchable;
 
     private $reservation;
-    private $qr_code;
+    private $url;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($reservation, $qr_code)
+    public function __construct($reservation, $url)
     {
         $this->reservation = $reservation;
-        $this->qr_code = $qr_code;
+        $this->url = $url;
     }
 
     /**
@@ -35,6 +35,6 @@ class SendReservedMail implements ShouldQueue
     {
         $user = $this->reservation->user;
         Log::info('予約完了メール送信:'.$user->email);
-        Mail::to($user->email)->send(new ReservedMail($this->reservation, $this->qr_code));
+        Mail::to($user->email)->send(new ReservedMail($this->reservation, $this->url));
     }
 }

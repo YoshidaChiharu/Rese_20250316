@@ -14,15 +14,15 @@ class ReservedMail extends Mailable
     use Queueable, SerializesModels;
 
     protected $reservation;
-    protected $qr_code;
+    protected $url;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($reservation, $qr_code)
+    public function __construct($reservation, $url)
     {
         $this->reservation = $reservation;
-        $this->qr_code = $qr_code;
+        $this->url = $url;
     }
 
     /**
@@ -44,7 +44,7 @@ class ReservedMail extends Mailable
             view: 'emails.reserved_mail',
             with: [
                 'reservation' => $this->reservation,
-                'qr_code' => $this->qr_code,
+                'url' => $this->url,
             ],
         );
     }

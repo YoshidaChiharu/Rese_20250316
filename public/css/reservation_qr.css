@@ -1,0 +1,24 @@
+.qr-wrapper {
+    margin: 0 auto;
+    padding-top: 160px;
+    max-width: 480px;
+}
+
+.qr-image {
+    margin: 0 auto;
+    width: 200px;
+}
+
+.qr-content img {
+    width: 100%;
+}
+
+/* レスポンシブ（タブレット） */
+@media screen and (max-width: 960px) {}
+
+/* レスポンシブ（スマホ） */
+@media screen and (max-width: 480px) {
+    .qr-wrapper {
+        padding-top: 100px;
+    }
+}

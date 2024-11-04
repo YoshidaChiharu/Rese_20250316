@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('course_id')->nullable()->constrained();
             $table->tinyInteger('prepayment');
             $table->string('payment_intent_id', 255)->nullable();
+            $table->text('qr_code')->nullable();
             $table->tinyInteger('status');
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrent()->nullable();

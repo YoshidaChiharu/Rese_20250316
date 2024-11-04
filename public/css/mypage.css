@@ -72,6 +72,12 @@
     margin-right: 20px;
 }
 
+.reserve-card__qr-link {
+    margin-left: 20px;
+    color: #FFFC59;
+    font-size: 14px;
+}
+
 .reserve-card__button--delete {
     width: 24px;
     height: 24px;
