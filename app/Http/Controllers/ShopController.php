@@ -62,12 +62,14 @@ class ShopController extends Controller
         }
 
         // お気に入り登録済み店舗の取得
-        $favorite_shops = Auth::user()->favoriteShops;
-        foreach ($shops as $shop) {
-            $shop->favorite_flag = 0;
-            foreach ($favorite_shops as $favorite_shop) {
-                if ($shop->id === $favorite_shop->id) {
-                    $shop->favorite_flag = 1;
+        if (Auth::user()) {
+            $favorite_shops = Auth::user()->favoriteShops;
+            foreach ($shops as $shop) {
+                $shop->favorite_flag = 0;
+                foreach ($favorite_shops as $favorite_shop) {
+                    if ($shop->id === $favorite_shop->id) {
+                        $shop->favorite_flag = 1;
+                    }
                 }
             }
         }

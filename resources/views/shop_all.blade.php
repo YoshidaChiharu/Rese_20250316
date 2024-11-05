@@ -53,12 +53,12 @@
                     @if($i <=$shop->rating)
                     <img src="{{ asset('img/star_on_gold.svg') }}" class="image--star" alt="star">
                     @elseif(($i - $shop->rating) < 0.5)
-                        <img src="{{ asset('img/star_on_half.png') }}" class="image--star" alt="star">
-                        @else
-                        <img src="{{ asset('img/star_on_gray.svg') }}" class="image--star" alt="star">
-                        @endif
-                        @endfor
-                        <span class="rating-value">{{ $shop->rating }}</span>
+                    <img src="{{ asset('img/star_on_half.png') }}" class="image--star" alt="star">
+                    @else
+                    <img src="{{ asset('img/star_on_gray.svg') }}" class="image--star" alt="star">
+                    @endif
+                @endfor
+                <span class="rating-value">{{ $shop->rating }}</span>
             </div>
             <div class="card-content__info">
                 <img src="{{ asset('img/speech_bubble_beige.svg') }}" alt="speech_bubble">
@@ -72,10 +72,10 @@
                     @csrf
                     <input type="hidden" name="shop_id" value="{{ $shop->id }}">
                     <input type="hidden" name="favorite_flag" value="{{ $shop->favorite_flag }}">
-                    @if ($shop->favorite_flag === 0)
-                    <input type="image" class="button-favorite" src="{{ asset('img/heart_gray.svg') }}" alt="favorite">
-                    @else
+                    @if ($shop->favorite_flag === 1)
                     <input type="image" class="button-favorite" src="{{ asset('img/heart_red.svg') }}" alt="favorite">
+                    @else
+                    <input type="image" class="button-favorite" src="{{ asset('img/heart_gray.svg') }}" alt="favorite">
                     @endif
                 </form>
             </div>
