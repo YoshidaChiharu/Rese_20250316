@@ -62,6 +62,7 @@
                         </div>
                         @else
                         {{ $reservation->number }} 名&emsp;※決済済み変更不可
+                        <input type="hidden" name="reserve_number" value="{{ $reservation->number }}">
                         @endif
                     </td>
                 </tr>
@@ -84,6 +85,7 @@
                         </div>
                         @else
                         {{ $reservation->course->name }}&emsp;※決済済み変更不可
+                        <input type="hidden" name="reserve_course_id" value="{{ $reservation->course_id }}">
                         @endif
                     </td>
                 </tr>
@@ -100,7 +102,9 @@
                             @endif
                         </select>
                         @elseif($reservation->prepayment == 2)決済完了
+                        <input type="hidden" name="reserve_prepayment" value="2">
                         @elseif($reservation->prepayment == 3)返金済み
+                        <input type="hidden" name="reserve_prepayment" value="3">
                         @endif
                     </td>
                 </tr>
