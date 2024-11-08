@@ -24,12 +24,17 @@
     font-weight: normal;
 }
 
-.login-content__form {
+.login-content__body {
     padding: 30px;
     border: solid 1px #ddd;
     border-top: none;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
+}
+
+.auth-error__text {
+    color: red;
+    font-weight: bold;
 }
 
 .form__group {
