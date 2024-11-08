@@ -71,7 +71,7 @@
                         </form>
                         <form action="/admin/reservation_list/{{ $shop->id }}/detail/{{ $reservation->id }}/cancel" method="post">
                             @csrf
-                            <button class="form__button form__button--cancel">予約キャンセル</button>
+                            <button class="form__button form__button--cancel" id="js-submit-button">予約キャンセル</button>
                         </form>
                     </div>
                 </td>

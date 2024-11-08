@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Models\Reservation;
 use App\Jobs\SendPurchasedMail;
 
@@ -23,6 +24,9 @@ class PaymentController extends Controller
 
     // 決済処理 ====================================================================
     public function store(Request $request) {
+        // 二重送信防止
+        $request->session()->regenerateToken();
+
         try {
             DB::beginTransaction();
 
