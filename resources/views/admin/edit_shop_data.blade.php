@@ -104,7 +104,7 @@
             </table>
 
             <div class="form__button">
-                <button class="form__button-submit">更新する</button>
+                <button class="form__button-submit" id="js-submit-button">更新する</button>
             </div>
         </form>
     </div>

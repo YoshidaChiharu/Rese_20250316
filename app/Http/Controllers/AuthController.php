@@ -36,9 +36,16 @@ class AuthController extends AuthenticatedSessionController
     public function authFirst(LoginRequest $request)
     {
         $user = User::where('email', $request->email)->first();
+
+        // 例外処理：メルアドに一致するユーザー無し
         if (empty($user)) {
             return redirect('/login')
                 ->with('message', Lang::get('message.ERR_USER_NOT_FOUND'));
+        }
+
+        // 例外処理：新規登録のメール認証が済んでいない
+        if (is_null($user->email_verified_at)) {
+            return view('auth.verify_email');
         }
 
         if (Hash::check($request->password, $user->password)) {
@@ -62,6 +69,7 @@ class AuthController extends AuthenticatedSessionController
             // メール送信済みページへリダイレクト
             return redirect('/auth_first')->with(['url' => $user->email]);
         } else {
+            // 例外処理：パスワードが一致しない
             return redirect('/login')
                 ->with('message', Lang::get('message.ERR_PASSWORD_MISMATCH'));
         }

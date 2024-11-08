@@ -43,7 +43,7 @@
                 </div>
                 <div class="form__input">
                     <select name="reserve_time" class="form__input--select" id="form_time" onchange="setValue(this.value, 'confirm_time')">
-                        <option value="">予約時間を選択してください</option>
+                        <option value="">予約時間</option>
                         @foreach ($reservable_times as $reservable_time)
                         <option value="{{ $reservable_time }}" {{ old('reserve_time') == $reservable_time ? 'selected' : '' }}>{{ $reservable_time }}</option>
                         @endforeach
@@ -51,7 +51,7 @@
                 </div>
                 <div class="form__input">
                     <select name="reserve_number" class="form__input--select" id="form_number" onchange="setValue(this.value, 'confirm_number')">
-                        <option value="">予約人数を選択してください</option>
+                        <option value="">予約人数</option>
                         @for ($i = 1; $i <= $reserve_max_number; $i++)
                         <option value="{{$i}}" {{ old('reserve_number') == $i ? 'selected' : '' }}>{{$i}}人</option>
                         @endfor
@@ -59,7 +59,7 @@
                 </div>
                 <div class="form__input">
                     <select name="reserve_course_id" class="form__input--select" id="form_course" onchange="setCourseValue({{$shop->courses}}, this.value)">
-                        <option value="">コースを選択してください</option>
+                        <option value="">コース</option>
                         @foreach ($shop->courses as $course)
                         <option value="{{ $course->id }}" {{ old('reserve_course_id') == $course->id ? 'selected' : '' }}>{{ $course->name }}</option>
                         @endforeach
@@ -67,7 +67,7 @@
                 </div>
                 <div class="form__input">
                     <select name="reserve_prepayment" class="form__input--select" id="form_prepayment" onchange="setValue(this.options[this.selectedIndex].textContent, 'confirm_prepayment')">
-                        <option value="">お支払い方法を選択してください</option>
+                        <option value="">お支払い方法</option>
                         <option value=0 {{ old('reserve_prepayment') === "0" ? 'selected' : '' }}>店舗でのお支払い</option>
                         @if($shop->prepayment_enabled == 1)
                         <option value=1 {{ old('reserve_prepayment') === "1" ? 'selected' : '' }}>事前決済</option>
@@ -90,7 +90,7 @@
                         </tr>
                         <tr>
                             <th>Number</th>
-                            <td id="confirm_number">{{ old('reserve_number') ?? '-' }} 名</td>
+                            <td id="confirm_number">{{ old('reserve_number') ?? '-' }}</td>
                         </tr>
                         <tr>
                             <th>Course</th>
@@ -161,7 +161,7 @@
 
             </div>
             <div class="form__button">
-                <button class="form__button--submit">予約する</button>
+                <button class="form__button--submit" id="js-submit-button">予約する</button>
             </div>
         </form>
     </div>

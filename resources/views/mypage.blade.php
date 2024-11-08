@@ -192,7 +192,7 @@
                     <div>
                         <input type="hidden" name="reserve_prepayment" value="{{ $reservation->prepayment }}">
                         <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
-                        <button class="reserve-card__button--change button-orange">変更する</button>
+                        <button class="reserve-card__button--change button-orange" id="js-submit-button">変更する</button>
                     </div>
                 </form>
             </div>
@@ -321,7 +321,7 @@
                     </div>
                     <div>
                         <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
-                        <button class="reserve-card__button--change button-orange">送信</button>
+                        <button class="reserve-card__button--change button-orange" id="js-submit-button">送信</button>
                     </div>
                 </form>
             </div>

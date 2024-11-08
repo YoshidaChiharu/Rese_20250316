@@ -62,6 +62,7 @@
 
 .shop-info__description p {
     margin: 0;
+    white-space: pre-wrap;
 }
 
 .reserve-section {
@@ -351,6 +352,15 @@
 
     .confirm-table td {
         padding-left: 10px;
+    }
+
+    .review-section__body .body-top {
+        display: block;
+    }
+
+    .review-pagenation {
+        margin-top: 10px;
+        text-align: right;
     }
 
     .review-item {
