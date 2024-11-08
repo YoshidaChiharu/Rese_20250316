@@ -35,7 +35,7 @@
                     <div id="card-cvc" class="form-control"></div>
                 </div>
                 <div id="card-errors" class="text-danger"></div>
-                <button class="form-button">支払い</button>
+                <button class="form-button" id="card-button">支払い</button>
             </form>
         </div>
     </div>

@@ -94,7 +94,7 @@
             </table>
 
             <div class="form__button">
-                <button class="form__button-submit">登録</button>
+                <button class="form__button-submit" id="js-submit-button">登録</button>
             </div>
         </form>
     </div>

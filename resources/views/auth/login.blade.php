@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="form__button">
-                    <button class="form__button-submit">ログイン</button>
+                    <button class="form__button-submit" id="js-submit-button">ログイン</button>
                 </div>
             </form>
         </div>

@@ -120,7 +120,7 @@
                 <tr>
                     <th>操作</th>
                     <td>
-                        <button class="form__button">更新する</button>
+                        <button class="form__button" id="js-submit-button">更新する</button>
                     </td>
                 </tr>
             </table>

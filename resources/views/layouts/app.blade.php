@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
     @yield('css')
-    <script src="{{ asset('js/util.js') }}"></script>
-    @yield('script')
     <title>Rese</title>
 </head>
 
@@ -70,6 +68,9 @@
 
         </div>
     </main>
+
+    <script src="{{ asset('js/util.js') }}"></script>
+    @yield('script')
 </body>
 
 </html>

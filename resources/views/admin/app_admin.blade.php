@@ -105,6 +105,8 @@
             @yield('content')
         </div>
     </main>
+
+    <script src="{{ asset('js/util_admin.js') }}"></script>
 </body>
 
 </html>

@@ -20,7 +20,7 @@
         </p>
         <form class="verify-email-content__form" action="/email/verification-notification" method="post">
             @csrf
-            <button class="form__mail-button">メール再送信</button>
+            <button class="form__mail-button" id="js-submit-button">メール再送信</button>
         </form>
         @if (session('status') == 'verification-link-sent')
         <div class="verify-email-content__sent-email">

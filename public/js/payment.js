@@ -42,11 +42,19 @@ cardCvc.on('change', function(event) {
 
 // PaymentMethodIDを取得してフォーム送信
 var form = document.getElementById('card-form');
-form.addEventListener('submit', async function(event) {
+form.addEventListener('submit', async function (event) {
+    // submitイベントをキャンセル
     event.preventDefault();
+
+    // 二重押下防止のためボタン非活性
+    document.getElementById('card-button').disabled = true;
+
     var errorElement = document.getElementById('card-errors');
     if (event.error) {
+        // エラーメッセージを表示
         errorElement.textContent = event.error.message;
+        // ボタン活性
+        document.getElementById('card-button').disabled = false;
     } else {
         errorElement.textContent = '';
     }
@@ -59,6 +67,8 @@ form.addEventListener('submit', async function(event) {
     if (result.error) {
         // エラーメッセージを表示
         errorElement.textContent = result.error.message;
+        // ボタン活性
+        document.getElementById('card-button').disabled = false;
     } else {
         // PaymentMethod IDをサーバーに送信
         stripePaymentIdHandler(result.paymentMethod.id, result.paymentMethod.card?.brand, result.paymentMethod.card?.last4);

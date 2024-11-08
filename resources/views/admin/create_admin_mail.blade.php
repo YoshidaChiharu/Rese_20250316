@@ -43,7 +43,7 @@
             </table>
 
             <div class="form__button">
-                <button class="form__button-submit">送信</button>
+                <button class="form__button-submit" id="js-submit-button">送信</button>
             </div>
         </form>
     </div>

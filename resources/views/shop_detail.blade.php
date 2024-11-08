@@ -161,7 +161,7 @@
 
             </div>
             <div class="form__button">
-                <button class="form__button--submit">予約する</button>
+                <button class="form__button--submit" id="js-submit-button">予約する</button>
             </div>
         </form>
     </div>
