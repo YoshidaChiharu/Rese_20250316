@@ -6,12 +6,16 @@
 
 @section('content')
 <div class="card-wrapper">
-    @if (session('flash_alert'))
-        <div class="alert alert-danger">{{ session('flash_alert') }}</div>
-    @elseif(session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
+    @if (session('message'))
+    <div class="error-message">
+        <div class="error-message__title">
+            <img src="{{ asset('img/error.svg') }}" alt="error">
+            <span>決済エラー</span>
         </div>
+        <div class="error-message__text">
+            {{ __(session('message')) ?? session('message') }}
+        </div>
+    </div>
     @endif
     <div class="card">
         <div class="card-header">Stripe決済</div>
