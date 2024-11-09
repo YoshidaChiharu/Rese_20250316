@@ -54,6 +54,7 @@ class PaymentController extends Controller
         } catch (\Exception $e) {
             Log::error($e);
             DB::rollBack();
+            return back()->with('message', $e->getMessage());
         }
 
         return redirect('/purchase_completed');
