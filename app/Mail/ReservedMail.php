@@ -9,6 +9,12 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * 「予約完了メール」送信用のMailクラス
+ *
+ * @var mixed $reservation 予約情報
+ * @var mixed $url 予約QRコード表示ページのURL
+ */
 class ReservedMail extends Mailable
 {
     use Queueable, SerializesModels;

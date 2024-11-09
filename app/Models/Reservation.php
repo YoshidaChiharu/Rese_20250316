@@ -18,21 +18,33 @@ class Reservation extends Model
 
     protected $guarded = ['id'];
 
+    /**
+     * 予約したユーザーを取得
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * 予約した店舗を取得
+     */
     public function shop()
     {
         return $this->belongsTo(Shop::class);
     }
 
+    /**
+     * 予約に紐づく口コミ情報を取得
+     */
     public function review()
     {
         return $this->hasOne(Review::class);
     }
 
+    /**
+     * 予約したコースの情報を取得
+     */
     public function course()
     {
         return $this->belongsTo(Course::class);

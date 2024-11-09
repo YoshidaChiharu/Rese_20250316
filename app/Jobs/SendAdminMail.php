@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\Log;
 use Mail;
 use App\Mail\AdminMail;
 
+/**
+ * 管理者から利用者へ「お知らせメール」送信用のJobクラス
+ *
+ * @var mixed $user メール送信対象ユーザー
+ * @var mixed $subject メール題名
+ * @var mixed $main_text メール本文
+ */
 class SendAdminMail implements ShouldQueue
 {
     use Queueable, Batchable, Dispatchable;

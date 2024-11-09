@@ -10,7 +10,12 @@ use App\Jobs\SendPurchasedMail;
 
 class PaymentController extends Controller
 {
-    // 決済ページ表示 ===============================================================
+    /**
+     * 決済ページ表示
+     *
+     * @param Request $request
+     * @return void
+     */
     public function create(Request $request) {
         $reservation = Reservation::find($request->reservation_id);
 
@@ -22,7 +27,12 @@ class PaymentController extends Controller
         return view('payment', compact('reservation'));
     }
 
-    // 決済処理 ====================================================================
+    /**
+     * 決済処理
+     *
+     * @param Request $request
+     * @return void
+     */
     public function store(Request $request) {
         // 二重送信防止
         $request->session()->regenerateToken();
@@ -47,7 +57,7 @@ class PaymentController extends Controller
                 'payment_intent_id' => $payment_intent->id,
             ]);
 
-            // 予約完了メールの送信
+            // 決済完了メールの送信
             SendPurchasedMail::dispatch($reservation, $request->cardBrand, $request->cardLast4);
 
             DB::commit();
@@ -61,7 +71,12 @@ class PaymentController extends Controller
 
     }
 
-    // 決済完了ページ表示 ===========================================================
+    /**
+     * 決済完了ページ表示
+     *
+     * @param Request $request
+     * @return void
+     */
     public function completed(Request $request) {
         return view('purchase_completed');
     }

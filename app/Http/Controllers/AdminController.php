@@ -20,12 +20,21 @@ use App\Jobs\SendAdminMail;
 
 class AdminController extends Controller
 {
-    // 店舗代表者アカウント作成ページ表示 ==========================================
+    /**
+     * 店舗代表者アカウント作成ページ表示
+     *
+     * @return void
+     */
     public function createShopOwner() {
         return view('admin.register_shop_owner');
     }
 
-    // 店舗代表者アカウント登録処理 ================================================
+    /**
+     * 店舗代表者アカウント登録処理
+     *
+     * @param Request $request
+     * @return void
+     */
     public function storeShopOwner(Request $request) {
         // バリデーション
         $request->validate([
@@ -65,7 +74,12 @@ class AdminController extends Controller
         return redirect('/admin/register_shop_owner');
     }
 
-    // 店舗情報作成ページ表示 ======================================================
+    /**
+     * 店舗情報作成ページ表示
+     *
+     * @param Request $request
+     * @return void
+     */
     public function createShopData(Request $request) {
         // 自身が作成した店舗の情報を取得
         $managing_shops = Auth::user()->managingShops;
@@ -73,7 +87,12 @@ class AdminController extends Controller
         return view('admin.register_shop_data', compact('managing_shops'));
     }
 
-    // 店舗情報登録処理 ============================================================
+    /**
+     * 店舗情報登録処理
+     *
+     * @param Request $request
+     * @return void
+     */
     public function storeShopData(Request $request)
     {
         $owner_id = Auth::user()->id;
@@ -129,7 +148,12 @@ class AdminController extends Controller
         return redirect('/admin/register_shop_data');
     }
 
-    // 店舗情報編集ページ表示 ======================================================
+    /**
+     * 店舗情報編集ページ表示
+     *
+     * @param Request $request
+     * @return void
+     */
     public function editShopData(Request $request) {
         // 自身が作成した店舗の情報を取得
         $managing_shops = Auth::user()->managingShops;
@@ -140,7 +164,12 @@ class AdminController extends Controller
         return view('admin.edit_shop_data', compact('managing_shops', 'shop'));
     }
 
-    // 店舗情報編集処理 ============================================================
+    /**
+     * 店舗情報編集処理
+     *
+     * @param Request $request
+     * @return void
+     */
     public function updateShopData(Request $request) {
         // バリデーション
         $request->validate([
@@ -221,7 +250,12 @@ class AdminController extends Controller
         return redirect('/admin/edit_shop_data/' . $shop->id);
     }
 
-    // 予約一覧ページ表示 ==========================================================
+    /**
+     * 予約一覧ページ表示
+     *
+     * @param Request $request
+     * @return void
+     */
     public function showReservationList(Request $request) {
         // 自身が作成した店舗の情報を取得
         $managing_shops = Auth::user()->managingShops;
@@ -242,7 +276,7 @@ class AdminController extends Controller
 
         // タイムスケジュールを表示する日にちを決定（nullの場合は非表示）
         $time_schedule = null;
-        if($request->has('time_schedule')) {
+        if ($request->has('time_schedule')) {
             $time_schedule['year'] = $request->time_schedule_year;
             $time_schedule['month'] = $request->time_schedule_month;
             $time_schedule['day'] = $request->time_schedule_day;
@@ -262,8 +296,8 @@ class AdminController extends Controller
             // 過去／現在フラグの設定
             $calendar[$i]['is_today'] = false;
             $calendar[$i]['is_past'] = false;
-            if($base_date->format('Y-m-d') == $now->format('Y-m-d')) { $calendar[$i]['is_today'] = true; }
-            if($base_date->format('Y-m-d') < $now->format('Y-m-d')) { $calendar[$i]['is_past'] = true; }
+            if ($base_date->format('Y-m-d') == $now->format('Y-m-d')) { $calendar[$i]['is_today'] = true; }
+            if ($base_date->format('Y-m-d') < $now->format('Y-m-d')) { $calendar[$i]['is_past'] = true; }
 
             // 予約組数＆人数
             $reservations = $shop->reservations
@@ -277,7 +311,7 @@ class AdminController extends Controller
             }
 
             // タイムスケジュール表示用の予約情報を保存
-            if($time_schedule) {
+            if ($time_schedule) {
                 if($time_schedule_date == $base_date) {
                     $time_schedule['reservations'] = $reservations;
                     $time_schedule['group_num'] = $calendar[$i]['reservation_group_num'];
@@ -316,12 +350,21 @@ class AdminController extends Controller
         );
     }
 
-    // お知らせメール作成ページ表示 =================================================
+    /**
+     * お知らせメール作成ページ表示
+     *
+     * @return void
+     */
     public function createAdminMail() {
         return view('admin.create_admin_mail');
     }
 
-    // お知らせメール送信処理 =======================================================
+    /**
+     * お知らせメール送信処理
+     *
+     * @param Request $request
+     * @return void
+     */
     public function sendAdminMail(Request $request) {
         // バリデーション
         $request->validate([
@@ -353,7 +396,12 @@ class AdminController extends Controller
         ]);
     }
 
-    // 予約詳細ページ表示 ===========================================================
+    /**
+     * 予約詳細ページ表示
+     *
+     * @param Request $request
+     * @return void
+     */
     public function showReservationDetail(Request $request) {
         // 自身が作成した店舗の情報を取得
         $managing_shops = Auth::user()->managingShops;
@@ -365,7 +413,12 @@ class AdminController extends Controller
         return view('admin.reservation_detail', compact('managing_shops', 'shop', 'reservation'));
     }
 
-    // 予約編集ページ表示 ===========================================================
+    /**
+     * 予約編集ページ表示
+     *
+     * @param Request $request
+     * @return void
+     */
     public function editReservation(Request $request) {
         // 自身が作成した店舗の情報を取得
         $managing_shops = Auth::user()->managingShops;
@@ -387,7 +440,12 @@ class AdminController extends Controller
         ));
     }
 
-    // 予約詳細の編集処理 ===========================================================
+    /**
+     * 予約詳細の編集処理
+     *
+     * @param Request $request
+     * @return void
+     */
     public function updateReservation(Request $request) {
         $start_at = $request->reserve_time;
         $course_duration = 120;     // コース未設定の場合は一律120分に設定
@@ -410,7 +468,12 @@ class AdminController extends Controller
         return redirect('/admin/reservation_list/' . $request->shop_id . '/detail/' . $request->reservation_id);
     }
 
-    // 予約詳細の来店処理 ===========================================================
+    /**
+     * 予約詳細の来店処理
+     *
+     * @param Request $request
+     * @return void
+     */
     public function visitReservation(Request $request) {
         // 予約ステータス変更
         Reservation::find($request->reservation_id)->update([
@@ -420,7 +483,12 @@ class AdminController extends Controller
         return back();
     }
 
-    // 予約詳細のキャンセル処理 ======================================================
+    /**
+     * 予約詳細のキャンセル処理
+     *
+     * @param Request $request
+     * @return void
+     */
     public function cancelReservation(Request $request) {
         $reservation = Reservation::find($request->reservation_id);
         $user = $reservation->user;
