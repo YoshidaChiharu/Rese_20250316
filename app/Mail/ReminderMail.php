@@ -9,6 +9,12 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * 予約情報の「リマインドメール」送信用のMailクラス
+ *
+ * @var mixed $name メール送信対象ユーザーの名前
+ * @var mixed $reservation 予約情報
+ */
 class ReminderMail extends Mailable
 {
     use Queueable, SerializesModels;

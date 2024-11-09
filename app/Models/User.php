@@ -51,11 +51,17 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    /**
+     * お気に入り登録している全ての店舗を取得
+     */
     public function favoriteShops() : BelongsToMany
     {
         return $this->belongsToMany(Shop::class, 'favorites');
     }
 
+    /**
+     * 自身が作成した店舗情報を全て取得（店舗代表者用）
+     */
     public function managingShops()
     {
         return $this->hasMany(Shop::class, 'owner_id');

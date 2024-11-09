@@ -1,9 +1,14 @@
-// 基本設定
+/**
+ * 基本設定
+ */
 const stripe_key_element = document.getElementById('js-stripe-key');
 const stripe_key = stripe_key_element.getAttribute('stripe_key');
 const stripe = Stripe(stripe_key);
 const elements = stripe.elements();
 
+/**
+ * カード情報入力欄の作成
+ */
 // カード番号
 var cardNumber = elements.create('cardNumber');
 cardNumber.mount('#card-number');
@@ -40,7 +45,9 @@ cardCvc.on('change', function(event) {
     }
 });
 
-// PaymentMethodIDを取得してフォーム送信
+/**
+ * PaymentMethodIDを取得してフォーム送信
+ */
 var form = document.getElementById('card-form');
 form.addEventListener('submit', async function (event) {
     // submitイベントをキャンセル
@@ -75,7 +82,12 @@ form.addEventListener('submit', async function (event) {
     }
 });
 
-// paymentMethodId送信メソッド
+/**
+ * paymentMethodId送信メソッド
+ * @param {string} paymentMethodId paymentMethodのID
+ * @param {string} cardBrand 入力されたカードのブランド名（決済完了メールに表記するため取得）
+ * @param {string} cardLast4 入力されたカード番号の下４桁（決済完了メールに表記するため取得）
+ */
 function stripePaymentIdHandler(paymentMethodId, cardBrand, cardLast4) {
     const form = document.getElementById('card-form');
 

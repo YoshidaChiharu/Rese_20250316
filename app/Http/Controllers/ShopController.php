@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Shop;
 use App\Models\Favorite;
 use App\Models\Reservation;
@@ -25,7 +24,12 @@ use BaconQrCode\Writer;
 
 class ShopController extends Controller
 {
-    // 飲食店一覧ページ表示 ================================================
+    /**
+     * 飲食店一覧ページ表示
+     *
+     * @param Request $request
+     * @return void
+     */
     public function index(Request $request) {
         $shops = Shop::all();
 
@@ -96,7 +100,12 @@ class ShopController extends Controller
         );
     }
 
-    // お気に入り更新処理 ==================================================
+    /**
+     * お気に入り更新処理
+     *
+     * @param Request $request
+     * @return void
+     */
     public function updateFavorites(Request $request) {
         try {
             DB::transaction(function () use($request) {
@@ -126,7 +135,12 @@ class ShopController extends Controller
         return redirect(session('previous_page'));
     }
 
-    // 飲食店詳細ページ表示 ================================================
+    /**
+     * 飲食店詳細ページ表示
+     *
+     * @param Request $request
+     * @return void
+     */
     public function showShopDetail(Request $request) {
         $shop = Shop::find($request->shop_id);
 
@@ -166,7 +180,12 @@ class ShopController extends Controller
         );
     }
 
-    // 予約登録処理 =======================================================
+    /**
+     * 予約登録処理
+     *
+     * @param ReserveRequest $request
+     * @return void
+     */
     public function reserve(ReserveRequest $request) {
         try {
             DB::beginTransaction();
@@ -227,12 +246,21 @@ class ShopController extends Controller
 
     }
 
-    // 予約完了ページ表示 ==================================================
+    /**
+     * 予約完了ページ表示
+     *
+     * @return void
+     */
     public function showThanksReserve() {
         return view('thanks_reserve');
     }
 
-    // マイページ表示 ======================================================
+    /**
+     * マイページ表示
+     *
+     * @param Request $request
+     * @return void
+     */
     public function showMypage(Request $request) {
         $user = Auth::user();
         $user_name = $user->name;
@@ -279,7 +307,12 @@ class ShopController extends Controller
         );
     }
 
-    // 予約／お気に入りの削除処理 ==========================================
+    /**
+     * 予約／お気に入りの削除処理
+     *
+     * @param Request $request
+     * @return void
+     */
     public function deleteMyData(Request $request) {
         try {
             DB::transaction(function () use($request) {
@@ -319,7 +352,12 @@ class ShopController extends Controller
         return redirect('/mypage');
     }
 
-    // 予約変更処理 ========================================================
+    /**
+     * 予約変更処理
+     *
+     * @param ReserveRequest $request
+     * @return void
+     */
     public function updateReserve(ReserveRequest $request) {
         try {
             DB::transaction(function () use ($request) {
@@ -347,7 +385,12 @@ class ShopController extends Controller
         return redirect('/mypage');
     }
 
-    // 口コミ投稿／更新処理 ========================================================
+    /**
+     * 口コミ投稿／更新処理
+     *
+     * @param ReviewRequest $request
+     * @return void
+     */
     public function storeReview(ReviewRequest $request) {
         try {
             DB::transaction(function () use ($request) {
@@ -377,7 +420,12 @@ class ShopController extends Controller
         return redirect('/mypage');
     }
 
-    // QRコード表示 ========================================================
+    /**
+     * QRコード表示
+     *
+     * @param Request $request
+     * @return void
+     */
     public function showReservationQR(Request $request) {
         $qr_code = Reservation::find($request->reservation_id)->qr_code;
         return view('reservation_qr', compact('qr_code'));

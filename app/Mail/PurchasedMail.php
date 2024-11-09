@@ -9,6 +9,13 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * 「決済完了メール」送信用のMailクラス
+ *
+ * @var mixed $reservation 決済対象の予約情報
+ * @var mixed $card_brand 決済に使用したカードのブランド名
+ * @var mixed $card_last4 決済に使用したカード番号下4桁
+ */
 class PurchasedMail extends Mailable
 {
     use Queueable, SerializesModels;

@@ -1,3 +1,6 @@
+/**
+ * 「もっと見る」ボタンで口コミ欄を開閉する為のアクション登録
+ */
 window.onload = function () {
     var reviews = document.getElementsByClassName('review-item');
 
@@ -19,7 +22,11 @@ window.onload = function () {
     });
 }
 
-// 選択されたコースの名前、時間、金額を表示
+/**
+ * 予約フォームで選択されたコースの名前、時間、金額を確認欄に表示
+ * @param {string[][]} courses 全コース情報の配列
+ * @param {number} course_id フォームで選択されたコースのID
+ */
 function setCourseValue(courses, course_id) {
     courses.forEach(function (course) {
         if (course['id'] == course_id) {

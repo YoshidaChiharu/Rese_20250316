@@ -1,4 +1,6 @@
-// 予約時間に応じて黄色BOXの幅を決定
+/**
+ * 予約時間に応じて黄色BOXの幅を決定
+ */
 window.addEventListener("load", function () {
     const reservations = document.getElementsByClassName('reservation-box');
 

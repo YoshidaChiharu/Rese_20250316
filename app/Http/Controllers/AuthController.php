@@ -15,24 +15,42 @@ use App\Mail\LoginMail;
 
 class AuthController extends AuthenticatedSessionController
 {
-    // 登録完了ページ表示 ==================================================================
+    /**
+     * 登録完了ページ表示
+     *
+     * @return void
+     */
     public function showThanksRegister () {
         return view('auth.thanks_register');
     }
 
-    // メール送信済みページ表示 ============================================================
+    /**
+     * メール送信済みページ表示
+     *
+     * @return void
+     */
     public function showMailAnnounce()
     {
         return view('auth.mail_announce');
     }
 
-    // 認証エラーページ表示 ================================================================
+    /**
+     * 認証エラーページ表示
+     *
+     * @param Request $request
+     * @return void
+     */
     public function showAuthError(Request $request)
     {
         return view('auth.auth_error');
     }
 
-    // 認証処理：第1段階目(メルアド、パスワードでの認証) =====================================
+    /**
+     * 認証処理：第1段階目(メルアド、パスワードでの認証)
+     *
+     * @param LoginRequest $request
+     * @return void
+     */
     public function authFirst(LoginRequest $request)
     {
         $user = User::where('email', $request->email)->first();
@@ -58,7 +76,7 @@ class AuthController extends AuthenticatedSessionController
             ]);
 
             // 管理者ユーザーのみメール認証を飛ばしてログイン処理へ
-            if($user->role_id === 1) {
+            if ($user->role_id === 1) {
                 return redirect("/auth_second?email=" . $user->email . "&token=" . $token);
             }
 
@@ -75,7 +93,12 @@ class AuthController extends AuthenticatedSessionController
         }
     }
 
-    // 認証処理：第2段階目(メール送付URLでの認証) ==========================================
+    /**
+     * 認証処理：第2段階目(メール送付URLでの認証)
+     *
+     * @param Request $request
+     * @return void
+     */
     public function authSecond(Request $request)
     {
         $user = User::where('email', $request->email)->first();

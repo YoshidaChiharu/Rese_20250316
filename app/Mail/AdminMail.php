@@ -9,6 +9,13 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * 管理者から利用者へ「お知らせメール」送信用のMailクラス
+ *
+ * @var mixed $subject メール題名
+ * @var mixed $main_text メール本文
+ * @var mixed $name メール送信対象ユーザーの名前
+ */
 class AdminMail extends Mailable
 {
     use Queueable, SerializesModels;

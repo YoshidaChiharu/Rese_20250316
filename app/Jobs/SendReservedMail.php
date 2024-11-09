@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Log;
 use Mail;
 use App\Mail\ReservedMail;
 
+/**
+ * 「予約完了メール」送信用のJobクラス
+ *
+ * @var mixed $reservation 予約情報
+ * @var mixed $url 予約QRコード表示ページのURL
+ */
 class SendReservedMail implements ShouldQueue
 {
     use Queueable, Batchable, Dispatchable;

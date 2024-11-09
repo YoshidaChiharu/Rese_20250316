@@ -1,4 +1,8 @@
-// 評価用★アイコンクリック時のアクション
+/**
+ * 評価用★アイコンクリック時のアクション
+ * @param {number} value 何番目の★がクリックされたかを表す数値
+ * @returns false ★クリック時にフォーム送信されないよう常にfalseを返す
+ */
 function changeStar(value) {
     // 星画像の変更
     const stars = document.getElementsByClassName('review__input--star');
@@ -18,8 +22,10 @@ function changeStar(value) {
     return false;
 }
 
+/**
+ * 「もっと見る」ボタンで口コミ欄を開閉する為のアクション登録
+ */
 window.onload = function () {
-    // 「もっと見る」ボタン押下時のアクション
     var reviews = document.getElementsByClassName('reserve-card__review');
 
     reviews = Array.from(reviews);
