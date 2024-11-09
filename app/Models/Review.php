@@ -13,11 +13,17 @@ class Review extends Model
 
     protected $guarded = ['id'];
 
+    /**
+     * 口コミに紐づく予約情報を取得
+     */
     public function reservation()
     {
         return $this->belongsTo(Reservation::class);
     }
 
+    /**
+     * 口コミ登録したユーザーを取得
+     */
     public function reviewer()
     {
         return $this->reservation->user;

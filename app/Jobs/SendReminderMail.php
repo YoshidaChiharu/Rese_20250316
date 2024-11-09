@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Log;
 use Mail;
 use App\Mail\ReminderMail;
 
+/**
+ * 予約情報の「リマインドメール」送信用のJobクラス
+ *
+ * @var mixed $reservation 予約情報
+ * @var mixed $user メール送信対象ユーザー
+ */
 class SendReminderMail implements ShouldQueue
 {
     use Queueable, Batchable, Dispatchable;

@@ -1,12 +1,22 @@
+//********************************************************************
+// 画像登録欄：画像をドラッグ＆ドロップで登録
+//********************************************************************
+
 let target = document.getElementById('drop-target');
 let input = document.getElementById("input-file");
 
+/**
+ * 画像ドラッグ時
+ */
 target.addEventListener('dragover', function (e) {
 	e.preventDefault();
 	e.stopPropagation();
 	e.dataTransfer.dropEffect = 'copy';
 });
 
+/**
+ * 画像ドロップ時
+ */
 target.addEventListener('drop', function (e) {
 	e.stopPropagation();
     e.preventDefault();
@@ -25,6 +35,9 @@ target.addEventListener('drop', function (e) {
 	reader.readAsDataURL(files[0]);
 });
 
+/**
+ * 画像変更時
+ */
 input.addEventListener('change', function (e) {
 	const [file] = e.target.files;
 	if (file) {
@@ -34,9 +47,15 @@ input.addEventListener('change', function (e) {
 	}
 });
 
+//********************************************************************
+// コース登録欄：【+】【-】ボタンでコース入力欄を追加／削除
+//********************************************************************
+
 let add_course_target = document.getElementById('js-add-course-target');
 
-// コース入力欄の追加
+/**
+ * 【+】ボタン押下でコース入力欄を追加
+ */
 function addCourse() {
 	let child_count = add_course_target.childElementCount;
 	console.log(child_count);
@@ -96,7 +115,9 @@ function addCourse() {
 	add_course_target.appendChild(li);
 }
 
-// コース入力欄の削除
+/**
+ * 【-】ボタン押下でコース入力欄を削除
+ */
 function deleteCourse(obj) {
 	let target = obj.closest('.course-list-item');
 	console.log(target);
