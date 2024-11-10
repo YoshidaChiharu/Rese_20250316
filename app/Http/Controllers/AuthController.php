@@ -80,6 +80,11 @@ class AuthController extends AuthenticatedSessionController
                 return redirect("/auth_second?email=" . $user->email . "&token=" . $token);
             }
 
+            // 店舗代表者ダミーアカウントはメール認証を飛ばしてログイン処理へ
+            if ($user->email == 'dummy_shop_owner@example.com') {
+                return redirect("/auth_second?email=" . $user->email . "&token=" . $token);
+            }
+
             // メール送信
             $url = request()->getSchemeAndHttpHost() . "/auth_second?email=" . $user->email . "&token=" . $token;
             Mail::to($user->email)->send(new LoginMail($url));
