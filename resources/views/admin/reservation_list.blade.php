@@ -6,6 +6,11 @@
 
 @section('content')
 <div class="container">
+    @if(session('result') === true)
+    <div class="message result--true">{{ session('message') }}</div>
+    @elseif(session('result') === false)
+    <div class="message result--false">{{ session('message') }}</div>
+    @endif
     <div class="heading-section">
         <p class="heading__shop-name">{{ $shop->name }}</p>
     </div>

@@ -67,11 +67,18 @@ class AdminController extends Controller
                 ];
                 DB::table('users')->insert($shop_owner);
             });
+            $message = Lang::get('message.COMPLETE_REGISTER');
+            $result = true;
         } catch (\Exception $e) {
+            $message = Lang::get('message.ERR_REGISTER');
+            $result = false;
             Log::error($e);
         }
 
-        return redirect('/admin/register_shop_owner');
+        return redirect('/admin/register_shop_owner')->with([
+            'message' => $message,
+            'result' => $result,
+        ]);
     }
 
     /**
@@ -141,11 +148,18 @@ class AdminController extends Controller
                     }    
                 }
             });
+            $message = Lang::get('message.COMPLETE_REGISTER');
+            $result = true;
         } catch (\Exception $e) {
+            $message = Lang::get('message.ERR_REGISTER');
+            $result = false;
             Log::error($e);
         }
 
-        return redirect('/admin/register_shop_data');
+        return redirect('/admin/register_shop_data')->with([
+            'message' => $message,
+            'result' => $result,
+        ]);
     }
 
     /**
@@ -454,16 +468,20 @@ class AdminController extends Controller
         }
         $finish_at = (new carbon($start_at))->addMinutes($course_duration)->format('H:i');
 
-        Reservation::find($request->reservation_id)
-        ->update([
-            'scheduled_on' => $request->reserve_date,
-            'start_at' => $start_at,
-            'finish_at' => $finish_at,
-            'number' => $request->reserve_number,
-            'course_id' => $request->reserve_course_id,
-            'prepayment' => $request->reserve_prepayment,
-            'status' => $request->reserve_status,
-        ]);
+        try {
+            Reservation::find($request->reservation_id)
+            ->update([
+                'scheduled_on' => $request->reserve_date,
+                'start_at' => $start_at,
+                'finish_at' => $finish_at,
+                'number' => $request->reserve_number,
+                'course_id' => $request->reserve_course_id,
+                'prepayment' => $request->reserve_prepayment,
+                'status' => $request->reserve_status,
+            ]);
+        } catch (\Exception $e) {
+            Log::error($e);
+        }
 
         return redirect('/admin/reservation_list/' . $request->shop_id . '/detail/' . $request->reservation_id);
     }
@@ -475,10 +493,14 @@ class AdminController extends Controller
      * @return void
      */
     public function visitReservation(Request $request) {
-        // 予約ステータス変更
-        Reservation::find($request->reservation_id)->update([
-            'status' => 1,  // 0:来店前 1:来店済み 2:予約キャンセル
-        ]);
+        try {
+            // 予約ステータス変更
+            Reservation::find($request->reservation_id)->update([
+                'status' => 1,  // 0:来店前 1:来店済み 2:予約キャンセル
+            ]);
+        } catch (\Exception $e) {
+            Log::error($e);
+        }
 
         return back();
     }
@@ -490,27 +512,40 @@ class AdminController extends Controller
      * @return void
      */
     public function cancelReservation(Request $request) {
-        $reservation = Reservation::find($request->reservation_id);
-        $user = $reservation->user;
+        try {
+            DB::transaction(function () use($request) {
+                $reservation = Reservation::find($request->reservation_id);
+                $user = $reservation->user;
 
-        //予約削除
-        $reservation->delete();
+                //予約削除
+                $reservation->delete();
 
-        // 返金処理＆事前決済フラグを「3:返金済み」へ変更
-        if($reservation->payment_intent_id !== NULL) {
-            $user->refund($reservation->payment_intent_id);
+                // 返金処理＆事前決済フラグを「3:返金済み」へ変更
+                if($reservation->payment_intent_id !== NULL) {
+                    $user->refund($reservation->payment_intent_id);
 
-            $reservation->update([
-                'prepayment' => 3,  // 0:なし 1:決済前 2:決済完了 3:返金済み
-            ]);
+                    $reservation->update([
+                        'prepayment' => 3,  // 0:なし 1:決済前 2:決済完了 3:返金済み
+                    ]);
+                }
+
+                // 予約ステータス変更
+                $reservation->update([
+                    'status' => 2,  // 0:来店前 1:来店済み 2:予約キャンセル
+                ]);
+            });
+            $message = Lang::get('message.COMPLETE_DELETE');
+            $result = true;
+        } catch (\Exception $e) {
+            $message = Lang::get('message.ERR_DELETE');
+            $result = false;
+            Log::error($e);
         }
 
-        // 予約ステータス変更
-        $reservation->update([
-            'status' => 2,  // 0:来店前 1:来店済み 2:予約キャンセル
+        return redirect('/admin/reservation_list/' . $request->shop_id)->with([
+            'message' => $message,
+            'result' => $result,
         ]);
-
-        return redirect('/admin/reservation_list/' . $request->shop_id);
     }
 
 }

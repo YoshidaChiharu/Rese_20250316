@@ -18,6 +18,11 @@
     <!-- 予約状況/来店履歴セクション -->
     <div class="reserve-section">
         <h2 class="list-title">予約状況</h2>
+        @if(session('result') === true)
+        <div class="message result--true">{{ session('message') }}</div>
+        @elseif(session('result') === false)
+        <div class="message result--false">{{ session('message') }}</div>
+        @endif
         <div class="reserve-list">
             @foreach($reservations as $reservation)
             @if (Request::get('change_id') != $reservation->id)
