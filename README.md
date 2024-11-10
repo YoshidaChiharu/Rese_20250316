@@ -55,7 +55,7 @@
 - 店舗代表者 : 自店舗の予約一覧参照
 - 店舗代表者 : 予約の詳細情報の参照
 - 店舗代表者 : 予約情報の編集
-- 店舗代表者 : 予約情報の削除
+- 店舗代表者 : 予約情報の削除（決済済み予約の場合は同時に返金処理を実行）
 
 ## 使用技術一覧
 
@@ -162,7 +162,7 @@ docker-compose restart
         メールアドレス：dummy_shop_owner@example.com\
         パスワード：password\
     ※上記２つのアカウントのみメール認証無しでログイン出来るようにしております。動作確認にご使用下さい
-- Stripeテスト用クレジットカード
-    [https://docs.stripe.com/testing?locale=ja-JP](https://docs.stripe.com/testing?locale=ja-JP)
+- Stripeテスト用クレジットカード\
+    [https://docs.stripe.com/testing?locale=ja-JP#cards](https://docs.stripe.com/testing?locale=ja-JP#cards)
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
