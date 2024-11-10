@@ -6,6 +6,11 @@
 
 @section('content')
 <div class="register-wrapper">
+    @if(session('result') === true)
+    <div class="message result--true">{{ session('message') }}</div>
+    @elseif(session('result') === false)
+    <div class="message result--false">{{ session('message') }}</div>
+    @endif
     <div class="register-content">
         <div class="register-content__heading">
             <h2>新規登録</h2>
