@@ -9,7 +9,7 @@
 5. [テーブル設計](#テーブル設計)
 6. [ER図](#ER図)
 7. [環境構築手順](#環境構築手順)
-8. [補足情報](#補足情報)
+8. [補足事項](#補足事項)
 
 ## アプリケーション概要
 
@@ -46,7 +46,7 @@
 - 予約QRコード表示
 - 予約時の事前決済（Stripeを使用したクレジットカード決済）
 - リマインダーメール送信（予約当日のAM10:00に一斉送信）
-- 管理画面表示
+- 管理画面表示\
 ↓ 以下管理画面機能
 - 管理者 : 店舗代表者のアカウント作成
 - 管理者 : 利用者へ向けたお知らせメールの一斉送信
@@ -109,45 +109,45 @@ cd ..
 ```
 docker-compose up -d --build
 ```
-6. **`composer install` コマンドでパッケージをインストール**
+7. **`composer install` コマンドでパッケージをインストール**
 ```
 docker-compose exec php-fpm bash
 ```
 ```
 composer install --ignore-platform-req=ext-bcmath
 ```
-7. **.envファイルを作成**
+8. **.envファイルを作成**
 ```
 cp .env.local .env
 ```
-8. **アプリケーションキーを生成**
+9. **アプリケーションキーを生成**
 ```
 php artisan key:generate
 ```
-9. **シンボリックリンクの作成**
+10. **シンボリックリンクの作成**
 ```
 php artisan storage:link
 ```
-10. **テーブル作成**
+11. **テーブル作成**
 ```
 php artisan migrate
 ```
-11. **ダミーデータ作成**
+12. **ダミーデータ作成**
 ```
 php artisan db:seed
 ```
-12. **ログファイル作成**
+13. **ログファイル作成**
 ```
 touch storage/logs/laravel.log
 ```
 ```
 exit
 ```
-13. **パーミッションを変更**
+14. **パーミッションを変更**
 ```
 sudo chmod -R 777 src/*
 ```
-14. **Dockerコンテナを再起動**
+15. **Dockerコンテナを再起動**
 ```
 docker-compose restart
 ```
@@ -155,12 +155,12 @@ docker-compose restart
 ## 補足事項
 
 - 動作確認用アカウント情報
-    - 管理者アカウント
-        メールアドレス：admin@example.com
+    - 管理者アカウント\
+        メールアドレス：admin@example.com\
         パスワード：password
-    - 店舗代表者のダミーアカウント
-        メールアドレス：dummy_shop_owner@example.com
-        パスワード：password
+    - 店舗代表者のダミーアカウント\
+        メールアドレス：dummy_shop_owner@example.com\
+        パスワード：password\
     ※上記２つのアカウントのみメール認証無しでログイン出来るようにしております。動作確認にご使用下さい
 - Stripeテスト用クレジットカード
     [https://docs.stripe.com/testing?locale=ja-JP](https://docs.stripe.com/testing?locale=ja-JP)
