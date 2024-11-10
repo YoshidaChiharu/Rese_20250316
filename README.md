@@ -1,67 +1,168 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div id="top"></div>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 目次
 
-## About Laravel
+1. [アプリケーション概要](#アプリケーション概要)
+2. [アプリケーションURL](#アプリケーションURL)
+3. [機能一覧](#機能一覧)
+4. [使用技術一覧](#使用技術一覧)
+5. [テーブル設計](#テーブル設計)
+6. [ER図](#ER図)
+7. [環境構築手順](#環境構築手順)
+8. [補足事項](#補足事項)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## アプリケーション概要
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+アプリケーション名 : Rese（リーズ）<br>
+概要：飲食店予約サービス<br>
+![Rese_top](/Rese_top.png)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## アプリケーションURL
 
-## Learning Laravel
+- 開発環境：[http://localhost/](http://localhost/)
+    - phpMyAdmin：[http://localhost:8888/](http://localhost:8888/)
+- 本番環境：[http://ec2-57-180-170-88.ap-northeast-1.compute.amazonaws.com](http://ec2-57-180-170-88.ap-northeast-1.compute.amazonaws.com)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 機能一覧
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- 会員登録（メール認証）
+- ログイン（メール認証）
+- ログアウト
+- ユーザー情報取得
+- ユーザー飲食店お気に入り一覧取得
+- ユーザー飲食店予約情報取得
+- 飲食店一覧取得
+- 飲食店詳細取得
+- 飲食店お気に入り追加
+- 飲食店お気に入り削除
+- 飲食店予約情報追加
+- 飲食店予約情報削除
+- 飲食店予約情報変更
+- エリアで検索する
+- ジャンルで検索する
+- 店名で検索する
+- 5段階での飲食店評価
+- 口コミ投稿
+- 予約QRコード表示
+- 予約時の事前決済（Stripeを使用したクレジットカード決済）
+- リマインダーメール送信（予約当日のAM10:00に一斉送信）
+- 管理画面表示\
+↓ 以下管理画面機能
+- 管理者 : 店舗代表者のアカウント作成
+- 管理者 : 利用者へ向けたお知らせメールの一斉送信
+- 店舗代表者 : 新規店舗情報の登録
+- 店舗代表者 : 店舗情報の編集
+- 店舗代表者 : 自店舗の予約一覧参照
+- 店舗代表者 : 予約の詳細情報の参照
+- 店舗代表者 : 予約情報の編集
+- 店舗代表者 : 予約情報の削除（決済済み予約の場合は同時に返金処理を実行）
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 使用技術一覧
 
-## Laravel Sponsors
+| 言語・フレームワーク  | バージョン |
+| --------------------- | ---------- |
+| Laravel               | 11.27.2    |
+| PHP                   | 8.3.7      |
+| NGINX                 | 1.26.0     |
+| MySQL                 | 8.0.37     |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## テーブル設計
 
-### Premium Partners
+![Rese_tables](/Rese_tables.png)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## ER図
 
-## Contributing
+![er_rese](/er_rese.png)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 環境構築手順
 
-## Code of Conduct
+1. **Dockerテンプレートのリモートリポジトリをクローンする**
+```
+git clone git@github.com:YoshidaChiharu/docker-template-LEMP-supervisor-cron.git
+```
+2. **ディレクトリを移動し、srcディレクトリを作成**
+```
+cd docker-template-LEMP-supervisor-cron
+```
+```
+mkdir src
+```
+3. **srcディレクトリのパーミッションを変更**
+```
+sudo chmod 777 src
+```
+4. **ディレクトリを移動し、本プロジェクトのリモートリポジトリをクローンする**
+```
+cd src
+```
+```
+git clone git@github.com:YoshidaChiharu/Rese_20240724.git
+```
+5. **ディレクトリ名を変更**
+```
+sudo mv Rese_20240724 Rese
+```
+6. **ディレクトリを移動し、Dockerコンテナを作成**
+```
+cd ..
+```
+```
+docker-compose up -d --build
+```
+7. **`composer install` コマンドでパッケージをインストール**
+```
+docker-compose exec php-fpm bash
+```
+```
+composer install --ignore-platform-req=ext-bcmath
+```
+8. **.envファイルを作成**
+```
+cp .env.local .env
+```
+9. **アプリケーションキーを生成**
+```
+php artisan key:generate
+```
+10. **シンボリックリンクの作成**
+```
+php artisan storage:link
+```
+11. **テーブル作成**
+```
+php artisan migrate
+```
+12. **ダミーデータ作成**
+```
+php artisan db:seed
+```
+13. **ログファイル作成**
+```
+touch storage/logs/laravel.log
+```
+```
+exit
+```
+14. **パーミッションを変更**
+```
+sudo chmod -R 777 src/*
+```
+15. **Dockerコンテナを再起動**
+```
+docker-compose restart
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 補足事項
 
-## Security Vulnerabilities
+- 動作確認用アカウント情報
+    - 管理者アカウント\
+        メールアドレス：admin@example.com\
+        パスワード：password
+    - 店舗代表者のダミーアカウント\
+        メールアドレス：dummy_shop_owner@example.com\
+        パスワード：password\
+    ※上記２つのアカウントのみメール認証無しでログイン出来るようにしております。動作確認にご使用下さい
+- Stripeテスト用クレジットカード\
+    [https://docs.stripe.com/testing?locale=ja-JP#cards](https://docs.stripe.com/testing?locale=ja-JP#cards)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# Rese_20240724
+<p align="right">(<a href="#top">トップへ</a>)</p>

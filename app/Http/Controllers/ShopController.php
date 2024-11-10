@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Lang;
 use App\Http\Requests\ReserveRequest;
 use App\Http\Requests\ReviewRequest;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -314,13 +315,13 @@ class ShopController extends Controller
      * @return void
      */
     public function deleteMyData(Request $request) {
-        try {
-            DB::transaction(function () use($request) {
-                $reservation = Reservation::find($request->reservation_id);
-                $user = Auth::user();
+        $user = Auth::user();
 
-                // 予約削除
-                if ($request->has('reservation_id')) {
+        // 予約削除
+        if ($request->has('reservation_id')) {
+            try {
+                DB::transaction(function () use($request, $user) {
+                    $reservation = Reservation::find($request->reservation_id);
                     $reservation->delete();
 
                     // 返金処理＆事前決済フラグを「3:返金済み」へ変更
@@ -336,20 +337,33 @@ class ShopController extends Controller
                     $reservation->update([
                         'status' => 2,  // 0:来店前 1:来店済み 2:予約キャンセル
                     ]);
-                }
+                });
+                $message = Lang::get('message.COMPLETE_DELETE');
+                $result = true;
+            } catch (\Exception $e) {
+                $message = Lang::get('message.ERR_DELETE');
+                $result = false;
+                Log::error($e);
+            }
 
-                // お気に入り削除
-                if ($request->has('favorite_shop_id')) {
-                    Favorite::where('user_id', $user->id)
-                        ->where('shop_id', $request->favorite_shop_id)
-                        ->delete();
-                }
-            });
-        } catch (\Exception $e) {
-            Log::error($e);
+            return redirect('/mypage')->with([
+                'message' => $message,
+                'result' => $result,
+            ]);
         }
 
-        return redirect('/mypage');
+        // お気に入り削除
+        if ($request->has('favorite_shop_id')) {
+            try {
+                Favorite::where('user_id', $user->id)
+                        ->where('shop_id', $request->favorite_shop_id)
+                        ->delete();
+            } catch (\Exception $e) {
+                Log::error($e);
+            }
+
+            return redirect('/mypage');
+        }
     }
 
     /**

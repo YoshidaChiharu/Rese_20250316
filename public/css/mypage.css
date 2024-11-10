@@ -21,8 +21,24 @@
     width: 37%;
 }
 
-.title-margin {
-    margin-top: 30px;
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+.result--true {
+    color: #9CBAAB;
+    background-color: #BCE1CF;
+    border: solid 1px #9CBAAB;
+    border-radius: 6px;
+}
+
+.result--false {
+    color: #FF475F;
+    background-color: #FEADB8;
+    border: solid 1px #FF475F;
+    border-radius: 6px;
 }
 
 .reserve-list,

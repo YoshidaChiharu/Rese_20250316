@@ -3,6 +3,26 @@
     max-width: 1230px;
 }
 
+.message {
+    margin-bottom: 10px;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.result--true {
+    color: #9CBAAB;
+    background-color: #BCE1CF;
+    border: solid 1px #9CBAAB;
+    border-radius: 6px;
+}
+
+.result--false {
+    color: #FF475F;
+    background-color: #FEADB8;
+    border: solid 1px #FF475F;
+    border-radius: 6px;
+}
+
 .heading__shop-name {
     margin: 0;
     font-size: 24px;

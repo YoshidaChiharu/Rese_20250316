@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
             [
                 'role_id' => '1',
                 'name' => 'admin',
-                'email' => 'gmsp1000.3624@gmail.com',
+                'email' => 'admin@example.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'remember_token' => Str::random(10),
@@ -28,7 +28,7 @@ class UsersTableSeeder extends Seeder
             [
                 'role_id' => '2',
                 'name' => 'dummy_shop_owner',
-                'email' => 'test@gmail.com',
+                'email' => 'dummy_shop_owner@example.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'remember_token' => Str::random(10),
