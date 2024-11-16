@@ -155,7 +155,7 @@
                                     <select name="reserve_time">
                                         <option value="">-</option>
                                         @foreach ( $reservation->reservable_times as $reservable_time)
-                                        <option value="{{ $reservable_time }}" {{ old('reserve_time') ?? $reservation->start_at == $reservable_time ? 'selected' : '' }}>{{ $reservable_time }}</option>
+                                        <option value="{{ $reservable_time }}" {{ old('reserve_time', $reservation->start_at) == $reservable_time ? 'selected' : '' }}>{{ $reservable_time }}</option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -167,7 +167,7 @@
                                     <select name="reserve_number">
                                         <option value="">-</option>
                                         @for ($i = 1; $i <= $reserve_max_number; $i++)
-                                        <option value="{{$i}}" {{ old('reserve_number') ?? $reservation->number == $i ? 'selected' : '' }}>{{$i}} 名</option>
+                                        <option value="{{$i}}" {{ old('reserve_number', $reservation->number) == $i ? 'selected' : '' }}>{{$i}} 名</option>
                                         @endfor
                                     </select>
                                     @else
@@ -183,16 +183,11 @@
                                     <select name="reserve_course_id" class="form__input--select">
                                         <option value="">-</option>
                                         @foreach($reservation->shop->courses as $course)
-                                        <option value="{{ $course->id }}" {{ old('reserve_course_id') ?? $reservation->course_id  == $course->id ? 'selected' : '' }}>
+                                        <option value="{{ $course->id }}" {{ old('reserve_course_id', $reservation->course_id) == $course->id ? 'selected' : '' }}>
                                             {{ $course->name }}
                                         </option>
                                         @endforeach
                                     </select>
-                                    <div class="form-table__error">
-                                        @error('reserve_course_id')
-                                        ※{{ $message }}
-                                        @enderror
-                                    </div>
                                     @else
                                     <span>{{ $reservation->course->name }}</span>&emsp;<span>※変更不可</span>
                                     <input type="hidden" name="reserve_course_id" value="{{ $reservation->course_id }}">

@@ -16,7 +16,7 @@
         <p class="verify-email-content__notification">
             ＜注意事項＞<br>
             ボタン押下時、メールアプリや別のブラウザでページ表示される場合、認証処理が完了出来ません。
-            その場合はメール最下部に記載されているURLをコピーし、このブラウザのURL入力欄に直接貼り付けて認証を行って下さい。
+            その場合はメール最下部のURLをコピーし、このブラウザのURL入力欄に直接貼り付けて認証を行って下さい。
         </p>
         <form class="verify-email-content__form" action="/email/verification-notification" method="post">
             @csrf
