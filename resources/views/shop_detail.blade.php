@@ -37,7 +37,7 @@
                 <div class="form__title">
                     <h3>予約</h3>
                 </div>
-                <input type="hidden" name="shop_id" value="{{ $shop->id }}">
+                <input type="hidden" name="shop_id" id="js_shop_id" value="{{ $shop->id }}">
                 <div class="form__input">
                     <input type="date" name="reserve_date" class="form__input--date" id="form_date" value="{{ old('reserve_date') }}" onchange="setValue(this.value, 'confirm_date')">
                 </div>
