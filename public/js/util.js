@@ -12,37 +12,6 @@ function setValue(value, id) {
 }
 
 //********************************************************************
-// ページのスクロール位置を保存しておき、同ページが表示された際に復元する
-//********************************************************************
-
-/**
- * @type {number} scrollPosition ページスクロール位置
- * @type {string} STORAGE_KEY スクロール位置保存時のキー
- */
-var scrollPosition;
-const STORAGE_KEY = "scrollY";
-
-/**
- * スクロール位置保存メソッド
- */
-function saveScrollPosition(){
-    scrollPosition = window.scrollY;
-    localStorage.setItem(STORAGE_KEY, scrollPosition);
-}
-
-/**
- * ページがロードされた際に保存していたスクロール位置を復元
- */
-window.addEventListener("load", function(){
-    scrollPosition = localStorage.getItem(STORAGE_KEY);
-    if(scrollPosition !== null){
-        scrollTo(0, scrollPosition);
-    }
-    // ページスクロールされる度にスクロール位置を保存
-    window.addEventListener("scroll", saveScrollPosition, false);
-});
-
-//********************************************************************
 // 「もっと見る」ボタン押下時に隠れていた部分を展開する為のアクション登録
 //********************************************************************
 
