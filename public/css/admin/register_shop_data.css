@@ -113,6 +113,11 @@
     margin-top: 20px;
 }
 
+.form-table__notice {
+    font-size: 14px;
+    color: red;
+}
+
 .form-table__course-list {
     margin: 0;
     padding-left: 0;
