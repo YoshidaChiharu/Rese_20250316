@@ -4,6 +4,10 @@
 <link rel="stylesheet" href="{{ asset('css/shop_all.css') }}">
 @endsection
 
+@section('script')
+<script src="{{ asset('js/shop_all.js') }}"></script>
+@endsection
+
 @section('content')
 <div class="search-section">
     <form action="" class="search-form">
