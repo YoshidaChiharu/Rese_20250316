@@ -340,6 +340,80 @@
     display: block;
 }
 
+/* 予約削除確認モーダル */
+.reservation-delete-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(0 0 0 / 60%);
+}
+
+.reservation-delete-modal:target {
+    display: flex;
+}
+
+.reservation-delete-modal-outer {
+    width: 90%;
+    max-width: 400px;
+    max-height: 70%;
+    margin: auto;
+    padding: 20px;
+    background-color: #eee;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.reservation-delete-modal__message {
+    margin: 0;
+    color: black;
+    font-weight: bold;
+}
+
+.reservation-delete-modal__message span {
+    color: #D68700;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.reservation-delete-modal__button-wrapper {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.reservation-delete-modal__button-wrapper form {
+    width: 40%;
+}
+
+.reservation-delete-modal__button--submit {
+    width: 100%;
+    padding: 6px 16px;
+    font-size: 14px;
+    text-decoration: none;
+    color: white;
+    background-color: #305dff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.reservation-delete-modal__button--cancel {
+    width: 40%;
+    padding: 6px;
+    font-size: 14px;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    border: solid 1px black;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
 /* レスポンシブ（タブレット） */
 @media screen and (max-width: 960px) {
     .heading {
@@ -410,5 +484,9 @@
 
     .reserve-card {
         width: 100%;
+    }
+
+    .reservation-delete-modal-outer {
+        text-align: left;
     }
 }

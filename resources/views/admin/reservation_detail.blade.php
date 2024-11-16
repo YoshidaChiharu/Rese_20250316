@@ -69,14 +69,33 @@
                             @csrf
                             <button class="form__button form__button--visit">来店処理</button>
                         </form>
-                        <form action="/admin/reservation_list/{{ $shop->id }}/detail/{{ $reservation->id }}/cancel" method="post">
+                        <!-- <form action="/admin/reservation_list/{{ $shop->id }}/detail/{{ $reservation->id }}/cancel" method="post">
                             @csrf
-                            <button class="form__button form__button--cancel" id="js-submit-button">予約キャンセル</button>
-                        </form>
+                            <button class="form__button form__button--cancel" id="js-submit-button">予約削除</button>
+                        </form> -->
+                        <a href="#reservation-delete-modal-{{ $reservation->id }}"  class="form__button form__button--cancel">予約削除</a>
                     </div>
                 </td>
             </tr>
         </table>
+        <!-- 予約削除確認モーダル -->
+        <div class="reservation-delete-modal" id="reservation-delete-modal-{{ $reservation->id }}">
+            <div class="reservation-delete-modal-outer">
+                <div class="reservation-delete-modal-inner">
+                    <p class="reservation-delete-modal__message">
+                        予約を削除します。よろしいですか？<br>
+                        <span>※事前決済予約の場合、返金処理も同時に行われます</span>
+                    </p>
+                    <div class="reservation-delete-modal__button-wrapper">
+                        <form action="/admin/reservation_list/{{ $shop->id }}/detail/{{ $reservation->id }}/cancel" method="post">
+                            @csrf
+                            <button class="reservation-delete-modal__button--submit" id="js-submit-button">OK</button>
+                        </form>
+                        <a href="#" class="reservation-delete-modal__button--cancel">キャンセル</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
