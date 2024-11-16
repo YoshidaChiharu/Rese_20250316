@@ -75,6 +75,7 @@
                             <img class="drop-area__preview" id="drop-area__preview" src="">
                         </div>
                         <input class="form-table__input--file" id="input-file" type="file" accept="image/*" name="images[]">
+                        <br><span class="form-table__notice">（※画像サイズ制限 : 10MB）</span>
                     </td>
                 </tr>
                 <tr>
