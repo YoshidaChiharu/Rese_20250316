@@ -37,11 +37,9 @@
                             <a class="reserve-card__qr-link" href="/mypage/{{ $reservation->id }}/qr">QRコード表示</a>
                             @endif
                         </div>
-                        <form action="/mypage" method="post">
-                            @csrf
-                            <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
-                            <input type="image" class="reserve-card__button--delete" src="{{ asset('img/cross.svg') }}" alt="cross button">
-                        </form>
+                        <a href="#reservation-delete-modal-{{ $reservation->id }}">
+                            <img src="{{ asset('img/cross.svg') }}" alt="cross button" class="reserve-card__button--delete">
+                        </a>
                     </div>
                     <table class="reserve-card__table">
                         <tr>
@@ -107,6 +105,25 @@
                 </div>
                 <div>
                     <button class="reserve-card__button--change" onclick="location.href='/mypage?change_id={{ $reservation->id }}'">予約内容の変更</button>
+                </div>
+                <!-- 予約削除確認モーダル -->
+                <div class="reservation-delete-modal" id="reservation-delete-modal-{{ $reservation->id }}">
+                    <div class="reservation-delete-modal-outer">
+                        <div class="reservation-delete-modal-inner">
+                            <p class="reservation-delete-modal__message">
+                                [予約{{ $loop->iteration }}] を削除します。よろしいですか？<br>
+                                <span>※事前決済予約の場合、返金処理も同時に行われます</span>
+                            </p>
+                            <div class="reservation-delete-modal__button-wrapper">
+                                <form action="/mypage" method="post">
+                                    @csrf
+                                    <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
+                                    <button class="reservation-delete-modal__button--submit">OK</button>
+                                </form>
+                                <a href="#" class="reservation-delete-modal__button--cancel">キャンセル</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             @else
