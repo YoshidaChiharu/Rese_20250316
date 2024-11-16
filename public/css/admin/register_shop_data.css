@@ -144,10 +144,13 @@
 
 .course-button {
     margin-right: 4px;
-    width: 18px;
     display: flex;
     align-items: center;
     cursor: pointer;
+}
+
+.course-button img {
+    width: 18px;
 }
 
 .form-table__input--radio {
