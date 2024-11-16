@@ -37,7 +37,7 @@
                         <select name="reserve_time" class="form__input--select">
                             <option value="">-</option>
                             @foreach ($reservable_times as $reservable_time)
-                            <option value="{{ $reservable_time }}" {{ old('reserve_time') ?? substr($reservation->start_at, 0, 5)  == $reservable_time ? 'selected' : '' }}>
+                            <option value="{{ $reservable_time }}" {{ old('reserve_time', substr($reservation->start_at, 0, 5)) == $reservable_time ? 'selected' : '' }}>
                                 {{ $reservable_time }}
                             </option>
                             @endforeach
@@ -73,7 +73,7 @@
                         <select name="reserve_course_id" class="form__input--select">
                             <option value="">-</option>
                             @foreach($shop->courses as $course)
-                            <option value="{{ $course->id }}" {{ old('reserve_course_id') ?? $reservation->course_id  == $course->id ? 'selected' : '' }}>
+                            <option value="{{ $course->id }}" {{ old('reserve_course_id', $reservation->course_id) == $course->id ? 'selected' : '' }}>
                                 {{ $course->name }}
                             </option>
                             @endforeach
@@ -96,7 +96,7 @@
                         <select name="reserve_prepayment" class="form__input--select">
                             <option value="0">なし</option>
                             @if($shop->prepayment_enabled == 1)
-                            <option value="1" {{ old('reserve_prepayment') ?? $reservation->prepayment  == 1 ? 'selected' : '' }}>
+                            <option value="1" {{ old('reserve_prepayment', $reservation->prepayment) == 1 ? 'selected' : '' }}>
                                 決済前
                             </option>
                             @endif
@@ -113,7 +113,7 @@
                     <td>
                         <select name="reserve_status" class="form__input--select">
                             <option value="0">来店前</option>
-                            <option value="1" {{ old('reserve_status') ?? $reservation->status  == 1 ? 'selected' : '' }}>来店済み</option>
+                            <option value="1" {{ old('reserve_status', $reservation->status) == 1 ? 'selected' : '' }}>来店済み</option>
                         </select>
                     </td>
                 </tr>
