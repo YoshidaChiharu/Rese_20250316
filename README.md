@@ -140,14 +140,14 @@ php artisan db:seed
 ```
 touch storage/logs/laravel.log
 ```
+14. **パーミッションを変更**
+```
+chmod -R 777 *
+```
+15. **Dockerコンテナを再起動**
 ```
 exit
 ```
-14. **パーミッションを変更**
-```
-sudo chmod -R 777 src/*
-```
-15. **Dockerコンテナを再起動**
 ```
 docker-compose restart
 ```
