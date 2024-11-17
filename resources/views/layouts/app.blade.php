@@ -19,7 +19,7 @@
 
             <div class="menu">
                 <div class="menu__icon">
-                    <a href="#modal">
+                    <a href="#modal-wrapper">
                         <img src="{{ asset('img/bars_1.png') }}" alt="menu">
                     </a>
                 </div>
@@ -28,40 +28,43 @@
                 </div>
             </div>
 
-            <div class="modal" id="modal">
-                <div class="modal__close-button">
-                    <a href="">
-                        <img src="{{ asset('img/cross_1.png') }}" alt="close">
-                    </a>
+            <div class="modal-wrapper" id="modal-wrapper">
+                <div class="non-scroll"></div>
+                <div class="modal">
+                    <div class="modal__close-button">
+                        <a href="">
+                            <img src="{{ asset('img/cross_1.png') }}" alt="close">
+                        </a>
+                    </div>
+                    @if (Auth::check())
+                    <div class="modal__list">
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li>
+                                <form action="/logout" method="post">
+                                    @csrf
+                                    <button>Logout</button>
+                                </form>
+                            </li>
+                            <li><a href="/mypage">Mypage</a></li>
+                            @if (Auth::user()->role_id == 1)
+                            <li class="admin-menu"><a href="/admin/register_shop_owner">administration page</a></li>
+                            @endif
+                            @if (Auth::user()->role_id == 2)
+                            <li class="admin-menu"><a href="/admin/register_shop_data">administration page</a></li>
+                            @endif
+                        </ul>
+                    </div>
+                    @else
+                    <div class="modal__list">
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/register">Registration</a></li>
+                            <li><a href="/login">Login</a></li>
+                        </ul>
+                    </div>
+                    @endif
                 </div>
-                @if (Auth::check())
-                <div class="modal__list">
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li>
-                            <form action="/logout" method="post">
-                                @csrf
-                                <button>Logout</button>
-                            </form>
-                        </li>
-                        <li><a href="/mypage">Mypage</a></li>
-                        @if (Auth::user()->role_id == 1)
-                        <li class="admin-menu"><a href="/admin/register_shop_owner">administration page</a></li>
-                        @endif
-                        @if (Auth::user()->role_id == 2)
-                        <li class="admin-menu"><a href="/admin/register_shop_data">administration page</a></li>
-                        @endif
-                    </ul>
-                </div>
-                @else
-                <div class="modal__list">
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/register">Registration</a></li>
-                        <li><a href="/login">Login</a></li>
-                    </ul>
-                </div>
-                @endif
             </div>
 
             @yield('content')

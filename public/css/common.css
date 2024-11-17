@@ -43,23 +43,37 @@ body {
     color: #305dff;
 }
 
-.modal {
-    width: 100%;
-    height: 100vh;
-    padding: 20px;
-    background-color: #eee;
-    position: absolute;
+.modal-wrapper {
+    position: fixed;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #eee;
     z-index: 1;
+    overscroll-behavior: contain;
+    overflow-y: scroll;
 }
 
-.modal:not(:target) {
+.non-scroll {
+    height: calc(100vh + 1px);
+    width: 1px;
+    background-color: transparent;
+}
+
+.modal {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1230px;
+}
+
+.modal-wrapper:not(:target) {
     display: none;
 }
 
-.modal:target {
-    display: block;
+.modal-wrapper:target {
+    display: flex;
 }
 
 .modal__close-button {
