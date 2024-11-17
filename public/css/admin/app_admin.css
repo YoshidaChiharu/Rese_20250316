@@ -135,6 +135,7 @@ details[open] .open-close-icon {
     .side-menu {
         max-width: none;
         height: calc(100vh - 80px);
+        overscroll-behavior: contain;
         overflow-y: scroll;
         position: fixed;
         left: -100%;
