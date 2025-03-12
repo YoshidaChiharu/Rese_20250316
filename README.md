@@ -96,11 +96,11 @@ sudo chmod 777 src
 cd src
 ```
 ```
-git clone git@github.com:YoshidaChiharu/Rese_20240724.git
+git clone git@github.com:YoshidaChiharu/Rese_20250316.git
 ```
 5. **ディレクトリ名を変更**
 ```
-sudo mv Rese_20240724 Rese
+sudo mv Rese_20250316 Rese
 ```
 6. **ディレクトリを移動し、Dockerコンテナを作成**
 ```
@@ -136,15 +136,14 @@ php artisan migrate
 ```
 php artisan db:seed
 ```
-13. **ログファイル作成**
-```
-touch storage/logs/laravel.log
-```
-14. **パーミッションを変更**
+13. **パーミッションを変更**
 ```
 chmod -R 777 *
 ```
-15. **Dockerコンテナを再起動**
+```
+chmod -R 2777 storage/
+```
+14. **Dockerコンテナを再起動**
 ```
 exit
 ```
