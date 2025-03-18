@@ -41,6 +41,7 @@ class ShopController extends Controller
         $genres = array_unique($genres);
 
         // 検索処理
+        $input_sort = $request->sort;
         $input_area = $request->area;
         $input_genre = $request->genre;
         $input_name = $request->name;
@@ -79,6 +80,19 @@ class ShopController extends Controller
             }
         }
 
+        // ソート処理
+        if ( !empty($input_sort) ) {
+            if ($input_sort === 'ランダム') { $shops = $shops->shuffle(); }
+            if ($input_sort === '評価が高い順') { $shops = $shops->sortByDesc('rating'); }
+            if ($input_sort === '評価が低い順') {
+                $shops = $shops->sortBy('rating');
+                list($review_not_empty, $review_empty) = $shops->partition(function($shop){
+                    return ($shop->rating > 0);
+                });
+                $shops = $review_not_empty->merge($review_empty);
+            }
+        }
+
         // ページネーション
         $shops = new LengthAwarePaginator(
             $shops->forPage($request->page, 20),
@@ -94,6 +108,7 @@ class ShopController extends Controller
                 'shops',
                 'areas',
                 'genres',
+                'input_sort',
                 'input_area',
                 'input_genre',
                 'input_name',

@@ -4,7 +4,6 @@
 }
 
 .search-form {
-    width: 50%;
     padding: 10px;
     background-color: white;
     border: solid 1px #ddd;
@@ -12,24 +11,24 @@
     box-shadow: 2px 2px 3px #aaa;
     display: flex;
     align-items: center;
+    font-size: 14px;
 }
 
+.form__sort,
 .form__area,
 .form__genre {
-    width: 20%;
+    display: flex;
     padding: 0 8px;
-    text-align: center;
     border-right: solid 1px #ddd;
 }
 
+.form__sort select,
 .form__area select,
 .form__genre select {
     border: none;
-    width: 100%;
 }
 
 .form__name {
-    width: 60%;
     padding-left: 8px;
     display: flex;
     align-items: center;
@@ -41,8 +40,14 @@
 }
 
 .form__name input {
-    width: 90%;
     border: none;
+}
+
+.shop-list-top {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .shop-list-section {
@@ -150,7 +155,6 @@
 
 /* ページネーションカスタマイズ */
 .pagination {
-    margin-top: 20px;
     text-align: right;
 }
 
@@ -190,8 +194,18 @@
 
 /* レスポンシブ（タブレット） */
 @media screen and (max-width: 960px) {
+    .search-section {
+        margin-top: 60px;
+    }
+
     .search-form {
-        width: 70%;
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .shop-list-top {
+        display: block;
     }
 
     .shop-card {
@@ -212,17 +226,16 @@
     }
 
     .search-form {
-        width: 100%;
-        flex-wrap: wrap;
-        gap: 10px;
+        display: block;
     }
 
+    .form__sort,
     .form__area,
     .form__genre {
-        width: 40%;
-        padding: 0 10px 0 0;
+        padding: 0 0 4px 0;
+        margin-bottom: 4px;
         border: none;
-        border-right: solid 1px #ddd;
+        border-bottom: solid 1px #ddd;
     }
     .form__name {
         width: 100%;
@@ -236,7 +249,8 @@
         width: 100%;
     }
 
-    .pagination {
-        text-align: center;
+    .pagination a,
+    .pagination span {
+        padding: 4px 10px;
     }
 }
