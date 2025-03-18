@@ -6,6 +6,8 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\Shop;
 
 class ReviewsTableSeeder extends Seeder
 {
@@ -29,16 +31,23 @@ class ReviewsTableSeeder extends Seeder
             ];
         }
 
-        $data_num = 400;
-        for ($i = 0; $i < $data_num; $i++) {
-            $random_num = fake()->numberBetween(0, count($review_data) - 1);
+        // user_id と shop_id の組み合わせを被りなくランダム取得
+        $data_num = 200; // 作成するダミーデータの数
+        $user_ids = User::all()->pluck('id');
+        $shop_ids = Shop::all()->pluck('id');
+        $matrix = $user_ids->crossJoin($shop_ids);
+        $key_pairs = fake()->unique()->randomElements($matrix, $data_num);
 
-            DB::table('reviews')->insert([
-                'reservation_id' => fake()->unique()->numberBetween(1, 500),
+        foreach ($key_pairs as $key_pair) {
+            $random_num = fake()->numberBetween(0, count($review_data) - 1);
+            $param = [
+                'user_id' => $key_pair[0],
+                'shop_id' => $key_pair[1],
                 'rating' => $review_data[$random_num]['rating'],
-                'title' => $review_data[$random_num]['title'],
                 'comment' => $review_data[$random_num]['comment'],
-            ]);
+                'image' => 'img/dummy_review_image.jpg',
+            ];
+            DB::table('reviews')->insert($param);
         }
     }
 }

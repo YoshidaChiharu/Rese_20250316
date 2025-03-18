@@ -35,14 +35,6 @@ class Reservation extends Model
     }
 
     /**
-     * 予約に紐づく口コミ情報を取得
-     */
-    public function review()
-    {
-        return $this->hasOne(Review::class);
-    }
-
-    /**
      * 予約したコースの情報を取得
      */
     public function course()

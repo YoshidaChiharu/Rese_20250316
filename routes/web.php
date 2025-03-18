@@ -22,11 +22,18 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
     Route::get('/mypage', [ShopController::class, 'showMypage']);
     Route::post('/mypage', [ShopController::class, 'deleteMyData']);
     Route::post('/mypage/update_reserve', [ShopController::class, 'updateReserve']);
-    Route::post('/mypage/review', [ShopController::class, 'storeReview']);
     Route::get('/mypage/{reservation_id}/qr', [ShopController::class, 'showReservationQR']);
     Route::get('/purchase/{reservation_id}', [PaymentController::class, 'create']);
     Route::post('/purchase/{reservation_id}', [PaymentController::class, 'store']);
     Route::get('/purchase_completed', [PaymentController::class, 'completed'])->name('payment.completed');
+});
+
+Route::group(['middleware' => ['verified', 'auth', 'general_user']], function () {
+    Route::get('/review/{shop_id}', [ShopController::class, 'createReview']);
+    Route::post('/review/{shop_id}', [ShopController::class, 'storeReview']);
+});
+Route::group(['middleware' => ['verified', 'auth']], function () {
+    Route::delete('/review/{shop_id}', [ShopController::class, 'destroyReview']);
 });
 
 Route::group(['prefix' => 'admin'], function () {
