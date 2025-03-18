@@ -23,16 +23,22 @@ class ReviewRequest extends FormRequest
     {
         return [
             'rating' => ['required', 'integer', 'between:1,5'],
-            'title' => ['string', 'max:50', 'nullable'],
-            'comment' => ['string','max:2000', 'nullable'],
+            'comment' => ['required', 'string', 'max:400'],
+            'images.*' => [
+                'extensions:jpeg,jpg,png',
+                'mimes:jpeg,jpg,png',
+                'max:10240'
+            ],
         ];
     }
 
     public function messages()
     {
         return [
-            'rating.required' => '星を選択して評価してください',
-            'rating.between' => '星を選択して評価してください',
+            'rating.required' => '星を選択して評価してください。',
+            'rating.between' => '星を選択して評価してください。',
+            'images.*.mimes' => 'jpeg, jpg, png形式のファイルを指定してください。',
+            'images.*.extensions' => '拡張子が「.jpeg」「.jpg」「.png」何れかのファイルを指定して下さい。',
         ];
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Middleware\AuthAdminMiddleware;
 use App\Http\Middleware\AuthAdministratorMiddleware;
 use App\Http\Middleware\AuthShopOwnerMiddleware;
 use App\Http\Middleware\MyShopsMiddleware;
+use App\Http\Middleware\AuthGeneralUserMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -20,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'administrator' => AuthAdministratorMiddleware::class,
             'shop_owner' => AuthShopOwnerMiddleware::class,
             'my_shops' => MyShopsMiddleware::class,
+            'general_user' => AuthGeneralUserMiddleware::class,
         ]);
     })
     ->withMiddleware(function (Middleware $middleware) {
