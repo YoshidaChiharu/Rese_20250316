@@ -283,7 +283,13 @@
                                 <img src="{{ asset('img/star_on_gray.svg') }}" class="image--star" alt="star">
                                 @endif
                                 @endfor
-                                <span class="rating-value">{{ $shop->rating }}</span>
+                                <span class="rating-value">
+                                    @if($shop->rating == 0)
+                                    投稿なし
+                                    @else
+                                    {{ $shop->rating }}
+                                    @endif
+                                </span>
                     </div>
                     <div class="card-content__info">
                         <img src="{{ asset('img/speech_bubble_beige.svg') }}" alt="speech_bubble">

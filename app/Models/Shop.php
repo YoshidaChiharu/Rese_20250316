@@ -76,17 +76,20 @@ class Shop extends Model
         $count_num = 0;
 
         $reviews = $this->reviews;
-        if ($reviews) {
+        if ($reviews->isNotEmpty()) {
             foreach ($reviews as $review) {
                 $total_review_rating += ($review->rating ?? 0);
                 $count_num++;
             }
-        }
 
-        $shop_rating = (($standard_value * $weight) + $total_review_rating) / ($weight + $count_num);
-        // 小数点第3位を四捨五入＆小数点以下2桁で揃える
-        $shop_rating = round($shop_rating, 2);
-        $shop_rating = number_format($shop_rating, 2);
+            $shop_rating = (($standard_value * $weight) + $total_review_rating) / ($weight + $count_num);
+            // 小数点第3位を四捨五入＆小数点以下2桁で揃える
+            $shop_rating = round($shop_rating, 2);
+            $shop_rating = number_format($shop_rating, 2);
+        } else {
+            $shop_rating = 0;
+            $shop_rating = number_format($shop_rating, 2);
+        }
 
         return $shop_rating;
     }
