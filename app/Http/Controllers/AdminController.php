@@ -11,12 +11,14 @@ use App\Models\Course;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Bus;
 use App\Jobs\SendAdminMail;
+use App\Http\Requests\ShopDataFromCSVRequest;
 
 class AdminController extends Controller
 {
@@ -76,6 +78,102 @@ class AdminController extends Controller
         }
 
         return redirect('/admin/register_shop_owner')->with([
+            'message' => $message,
+            'result' => $result,
+        ]);
+    }
+
+    /**
+     * お知らせメール作成ページ表示
+     *
+     * @return void
+     */
+    public function createAdminMail() {
+        return view('admin.create_admin_mail');
+    }
+
+    /**
+     * お知らせメール送信処理
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function sendAdminMail(Request $request) {
+        // バリデーション
+        $request->validate([
+            'subject' => ['required'],
+            'main_text' => ['required'],
+        ]);
+
+        try {
+            // 送信対象は全ユーザー
+            $users = User::all();
+
+            // 全ユーザー分のメール送信ジョブを作成してディスパッチ
+            $jobs = $users->map(function ($user) use ($request) {
+                return new SendAdminMail($user, $request->subject, $request->main_text);
+            });
+            $batch = Bus::batch($jobs)->dispatch();
+
+            $message = Lang::get('message.SENT_MAIL');
+            $is_sent = true;
+        } catch (\Exception $e) {
+            $message = Lang::get('message.ERR_MAIL');
+            $is_sent = false;
+            Log::error($e);
+        }
+
+        return redirect('/admin/admin_mail')->with([
+            'message' => $message,
+            'is_sent' => $is_sent,
+        ]);
+    }
+
+    /**
+     * CSVインポートページ表示
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function createShopDataCSV(Request $request) {
+        return view('/admin/register_shop_from_csv');
+    }
+
+    /**
+     * CSVインポートによる店舗一括登録処理
+     *
+     * @param ShopDataFromCSVRequest $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
+    public function storeShopDataCSV(ShopDataFromCSVRequest $request) {
+        // csvファイル読み込み
+        $shop_data = $request->shop_data;
+
+        // 店舗＆画像ファイル登録
+        try {
+            DB::beginTransaction();
+
+            // 店舗登録
+            Shop::insert($shop_data);
+
+            // 画像保存
+            $images = $request->file('images');
+            foreach ($images as $image) {
+                $file_name = $image->getClientOriginalName();
+                Storage::disk('public')->putFileAs('img', $image, $file_name);
+            }
+
+            DB::commit();
+            $message = Lang::get('message.COMPLETE_REGISTER');
+            $result = true;
+        } catch (\Exception $e) {
+            $message = Lang::get('message.ERR_REGISTER');
+            $result = false;
+            Log::error($e);
+            DB::rollBack();
+        }
+
+        return redirect('/admin/register_shop_from_csv')->with([
             'message' => $message,
             'result' => $result,
         ]);
@@ -362,52 +460,6 @@ class AdminController extends Controller
                 'next_month',
             ]),
         );
-    }
-
-    /**
-     * お知らせメール作成ページ表示
-     *
-     * @return void
-     */
-    public function createAdminMail() {
-        return view('admin.create_admin_mail');
-    }
-
-    /**
-     * お知らせメール送信処理
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function sendAdminMail(Request $request) {
-        // バリデーション
-        $request->validate([
-            'subject' => ['required'],
-            'main_text' => ['required'],
-        ]);
-
-        try {
-            // 送信対象は全ユーザー
-            $users = User::all();
-
-            // 全ユーザー分のメール送信ジョブを作成してディスパッチ
-            $jobs = $users->map(function ($user) use ($request) {
-                return new SendAdminMail($user, $request->subject, $request->main_text);
-            });
-            $batch = Bus::batch($jobs)->dispatch();
-
-            $message = Lang::get('message.SENT_MAIL');
-            $is_sent = true;
-        } catch (\Exception $e) {
-            $message = Lang::get('message.ERR_MAIL');
-            $is_sent = false;
-            Log::error($e);
-        }
-
-        return redirect('/admin/admin_mail')->with([
-            'message' => $message,
-            'is_sent' => $is_sent,
-        ]);
     }
 
     /**

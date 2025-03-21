@@ -42,6 +42,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/register_shop_owner', [AdminController::class, 'storeShopOwner']);
         Route::get('/admin_mail', [AdminController::class, 'createAdminMail']);
         Route::post('/admin_mail', [AdminController::class, 'sendAdminMail']);
+        Route::get('/register_shop_from_csv', [AdminController::class, 'createShopDataCSV']);
+        Route::post('/register_shop_from_csv', [AdminController::class, 'storeShopDataCSV']);
     });
 
     Route::group(['middleware' => ['verified', 'auth', 'shop_owner']], function () {
