@@ -29,7 +29,7 @@ inputCSV.addEventListener('change', function (e) {
     resetImageFiles();
 
     // csv読み込み＆中身のプレビュー
-    if (file.type === 'text/csv') {
+    if (file.type === 'text/csv' || file.type === 'application/vnd.ms-excel') {
         reader.onload = () => {
             // csv読み込み
             const data = reader.result.trim().split('\n').map((row) => row.trim().split(','));
