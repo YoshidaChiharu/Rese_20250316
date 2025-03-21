@@ -94,3 +94,14 @@ function setCommentLength() {
         span.classList.remove('comment-length--red');
     }
 }
+
+//********************************************************************
+// フォームの多重送信防止
+//********************************************************************
+
+const form = document.getElementById('review-from');
+const submitButton = document.getElementById('button-submit');
+
+form.addEventListener('submit', function () {
+    submitButton.disabled = true;
+});

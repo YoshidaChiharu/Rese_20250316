@@ -126,6 +126,6 @@
     </div>
 </div>
 <div class="bottom-wrapper">
-    <button class="button-submit" form="review-from">口コミを投稿</button>
+    <button class="button-submit" form="review-from" id="button-submit">口コミを投稿</button>
 </div>
 @endsection
