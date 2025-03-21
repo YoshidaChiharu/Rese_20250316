@@ -523,7 +523,6 @@ class ShopController extends Controller
         $review = Review::where('user_id', $user_id)->where('shop_id', $shop_id)->first();
         // 新規登録
         if ($review === null) {
-            $request->validate(['images' => 'required']);
             try {
                 Review::create($param);
             } catch (\Exception $e) {
