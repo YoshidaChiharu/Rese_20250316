@@ -116,7 +116,7 @@
                             @endif
                         </div>
                     </label>
-                    <input class="hidden" id="input-file" type="file" accept="image/*" name="images[]">
+                    <input class="hidden" id="input-file" type="file" accept="image/png, image/jpeg" name="images[]">
                     <div class="input-notice">
                         <span>最大サイズ : 10MB</span>
                     </div>
@@ -126,6 +126,6 @@
     </div>
 </div>
 <div class="bottom-wrapper">
-    <button class="button-submit" form="review-from">口コミを投稿</button>
+    <button class="button-submit" form="review-from" id="button-submit">口コミを投稿</button>
 </div>
 @endsection

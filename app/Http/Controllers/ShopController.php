@@ -505,39 +505,29 @@ class ShopController extends Controller
         $user_id = $request->user()->id;
         $shop_id = $request->shop_id;
 
-        $param = [
-            'user_id' => $user_id,
-            'shop_id' => $shop_id,
-            'rating' => $request->rating,
-            'comment' => $request->comment,
-        ];
+        try {
+            $param = [
+                'user_id' => $user_id,
+                'shop_id' => $shop_id,
+                'rating' => $request->rating,
+                'comment' => $request->comment,
+            ];
 
-        if ($request->file('images')) {
-            // サムネイル画像の保存
-            // （※複数ファイル選択時は1つ目の画像を保存）
-            $images = $request->file('images');
-            $image_path = $images[0]->store('public/img');
-            $param['image'] = str_replace("public/", "", $image_path);
-        }
-
-        $review = Review::where('user_id', $user_id)->where('shop_id', $shop_id)->first();
-        // 新規登録
-        if ($review === null) {
-            $request->validate(['images' => 'required']);
-            try {
-                Review::create($param);
-            } catch (\Exception $e) {
-                Log::error($e);
+            if ($request->file('images')) {
+                // サムネイル画像の保存
+                // （※複数ファイル選択時は1つ目の画像を保存）
+                $images = $request->file('images');
+                $image_path = $images[0]->store('public/img');
+                $param['image'] = str_replace("public/", "", $image_path);
             }
-        }
 
-        // 既存口コミの更新
-        if ($review) {
-            try {
-                $review->update($param);
-            } catch (\Exception $e) {
-                Log::error($e);
-            }
+            $review = Review::where('user_id', $user_id)->where('shop_id', $shop_id)->first();
+            // 新規登録
+            if ($review === null) { Review::create($param); }
+            // 既存口コミの更新
+            if ($review) { $review->update($param); }
+        } catch (\Exception $e) {
+            Log::error($e);
         }
 
         return redirect('/detail/'. $shop_id);
