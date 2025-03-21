@@ -40,29 +40,33 @@
         <div class="side-menu">
             <ul class="side-menu__list">
                 <li class="menu-list-item">
-                    <img class="menu-icon" src="{{ asset('img/home.svg') }}" alt="home">
+                    <img class="menu-icon" src="{{ asset('img/home.svg') }}" alt="">
                     <a href="/">サイトトップへ</a>
                 </li>
                 @if (Auth::user()->role_id == 1)
                 <li class="menu-list-item">
-                    <img class="menu-icon" src="{{ asset('img/register.svg') }}" alt="home">
+                    <img class="menu-icon" src="{{ asset('img/register.svg') }}" alt="">
                     <a href="/admin/register_shop_owner">店舗代表者登録</a>
                 </li>
                 <li class="menu-list-item">
-                    <img class="menu-icon" src="{{ asset('img/mail_white.svg') }}" alt="home">
+                    <img class="menu-icon" src="{{ asset('img/mail_white.svg') }}" alt="">
                     <a href="/admin/admin_mail">お知らせメール</a>
+                </li>
+                <li class="menu-list-item">
+                    <img class="menu-icon" src="{{ asset('img/shop.svg') }}" alt="">
+                    <a href="/admin/register_shop_from_csv">店舗一括登録</a>
                 </li>
                 @endif
                 @if (Auth::user()->role_id == 2)
                 <li class="menu-list-item">
-                    <img class="menu-icon"  src="{{ asset('img/register.svg') }}" alt="home">
+                    <img class="menu-icon"  src="{{ asset('img/register.svg') }}" alt="">
                     <a href="/admin/register_shop_data">新規登録</a>
                 </li>
                 <li class="menu-list-item">
                     <details>
                         <summary>
                             <span class="summary__inner">
-                                <img class="menu-icon"  src="{{ asset('img/shop.svg') }}" alt="home">
+                                <img class="menu-icon"  src="{{ asset('img/shop.svg') }}" alt="">
                                 店舗情報の編集
                                 <img class="open-close-icon" src="{{ asset('img/arrow.svg') }}">
                             </span>
@@ -82,7 +86,7 @@
                     <details>
                         <summary>
                             <span class="summary__inner">
-                                <img class="menu-icon"  src="{{ asset('img/reservation.svg') }}" alt="home">
+                                <img class="menu-icon"  src="{{ asset('img/reservation.svg') }}" alt="">
                                 予約一覧
                                 <img class="open-close-icon" src="{{ asset('img/arrow.svg') }}">
                             </span>
