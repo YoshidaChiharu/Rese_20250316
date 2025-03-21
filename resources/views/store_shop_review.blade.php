@@ -116,7 +116,7 @@
                             @endif
                         </div>
                     </label>
-                    <input class="hidden" id="input-file" type="file" accept="image/*" name="images[]">
+                    <input class="hidden" id="input-file" type="file" accept="image/png, image/jpeg" name="images[]">
                     <div class="input-notice">
                         <span>最大サイズ : 10MB</span>
                     </div>
