@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Reservation;
 use App\Models\Favorite;
 use App\Models\Course;
+use App\Models\Review;
 use Carbon\Carbon;
 
 
@@ -47,20 +48,7 @@ class Shop extends Model
      */
     public function reviews()
     {
-        $reservations = $this->reservations;
-        foreach ($reservations as $reservation) {
-            if ($reservation->review) {
-                $reviews[] = $reservation->review;
-            }
-        }
-
-        if (isset($reviews)) {
-            $reviews = collect($reviews);
-        } else {
-            $reviews = collect(null);
-        }
-
-        return $reviews;
+        return $this->hasMany(Review::class);
     }
 
     /**
@@ -87,18 +75,21 @@ class Shop extends Model
         $total_review_rating = 0;
         $count_num = 0;
 
-        $reviews = $this->reviews();
-        if ($reviews) {
+        $reviews = $this->reviews;
+        if ($reviews->isNotEmpty()) {
             foreach ($reviews as $review) {
                 $total_review_rating += ($review->rating ?? 0);
                 $count_num++;
             }
-        }
 
-        $shop_rating = (($standard_value * $weight) + $total_review_rating) / ($weight + $count_num);
-        // 小数点第3位を四捨五入＆小数点以下2桁で揃える
-        $shop_rating = round($shop_rating, 2);
-        $shop_rating = number_format($shop_rating, 2);
+            $shop_rating = (($standard_value * $weight) + $total_review_rating) / ($weight + $count_num);
+            // 小数点第3位を四捨五入＆小数点以下2桁で揃える
+            $shop_rating = round($shop_rating, 2);
+            $shop_rating = number_format($shop_rating, 2);
+        } else {
+            $shop_rating = 0;
+            $shop_rating = number_format($shop_rating, 2);
+        }
 
         return $shop_rating;
     }
@@ -110,7 +101,7 @@ class Shop extends Model
      */
     public function getReviewsQuantity()
     {
-        return $this->reviews()->count();
+        return $this->reviews->count();
     }
 
     /**

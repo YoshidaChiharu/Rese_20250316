@@ -1,0 +1,244 @@
+.register-wrapper {
+    margin: 0 auto;
+    max-width: 1000px;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 10px 0;
+    text-align: center;
+    white-space: pre-wrap;
+}
+
+.result--true {
+    color: #9CBAAB;
+    background-color: #BCE1CF;
+    border: solid 1px #9CBAAB;
+    border-radius: 6px;
+}
+
+.result--false {
+    color: #FF475F;
+    background-color: #FEADB8;
+    border: solid 1px #FF475F;
+    border-radius: 6px;
+}
+
+.register-content {
+    width: 100%;
+    border: solid 1px #959997;
+    border-radius: 8px;
+    box-shadow: 2px 2px 3px #aaa;
+}
+
+.register-content__heading {
+    padding: 4px;
+    background-color: #383838;
+    border-bottom: solid 1px #959997;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.register-content__heading h2 {
+    margin: 0;
+    color: white;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    text-align: center;
+}
+
+.form-table {
+    width: 100%;
+}
+
+.form-table tr {
+    border-bottom: solid 1px #959997;
+}
+
+.form-table th {
+    width: 20%;
+    padding: 10px 20px;
+    border-right: solid 1px #959997;
+    font-weight: normal;
+    text-align: left;
+    background-color: #E0E5E3;
+}
+
+.form-table td {
+    width: 80%;
+    padding: 10px 20px;
+}
+
+.csv-preview__box {
+    margin-top: 10px;
+    width: 100%;
+    font-size: 14px;
+    border: solid 1px #959997;
+}
+
+.csv-preview__head {
+    padding: 0 8px;
+    background-color: #E0E5E3;
+    border-bottom: solid 1px #959997;
+}
+
+.csv-preview__body {
+    min-height: 100px;
+    max-height: 400px;
+    padding: 0 10px;
+    font-size: 14px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+}
+
+.csv-error-message {
+    margin-top: 10px;
+}
+
+.drop-area {
+    margin-bottom: 20px;
+    width: 100%;
+    aspect-ratio: 4/1;
+    background-color: #f4f4f4;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.drop-area__text {
+    margin: 10px 0 0 0;
+    font-size: 16px;
+}
+
+.drop-area__preview {
+    width: 100%;
+}
+
+.form-table__notice {
+    font-size: 14px;
+    color: red;
+}
+
+.input-image-button {
+    padding: 1px 6px;
+    font-size: 14px;
+    border: solid 1px #767676;
+    border-radius: 3px;
+    background-color: #efefef;
+}
+
+.input-image-reset-button {
+    margin-left: 10px;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.image-name-preview {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.image-name-preview__box {
+    width: 50%;
+    font-size: 14px;
+    border: solid 1px #959997;
+    display: flex;
+    flex-direction: column;
+}
+
+.image-name-preview__head {
+    padding: 0 8px;
+    background-color: #E0E5E3;
+    border-bottom: solid 1px #959997;
+}
+
+.image-name-preview__body {
+    min-height: 100px;
+    max-height: 400px;
+    overflow: auto;
+    flex-grow: 1;
+}
+
+.input-image-error {
+    color: red;
+}
+
+.hidden {
+    display: none;
+}
+
+.image-name-preview--false {
+    background-color: #FEADB8;
+}
+
+.image-name-preview--true {
+    background-color: #BCE1CF;
+}
+
+.form__button {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.form__button-submit {
+    width: 40%;
+    padding: 8px 0;
+    color: white;
+    background-color: #434343;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.form__button-submit:disabled {
+    background-color: #959997;
+    cursor: default;
+}
+
+.form-table__error {
+    padding: 10px 20px;
+    background-color: #FEADB8;
+    font-size: 14px;
+    font-weight: bold;
+    color: red;
+}
+
+.form-table__error ul {
+    margin: 0;
+}
+
+/* レスポンシブ（タブレット） */
+@media screen and (max-width: 960px) {
+    .form-table th,
+    .form-table td {
+        width: 100%;
+        display: block;
+    }
+
+    .form-table th {
+        padding: 4px 10px;
+        border-bottom: solid 1px #959997;
+        border-right: none;
+    }
+
+    .form-table td {
+        padding: 10px;
+    }
+}
+
+/* レスポンシブ（スマホ） */
+@media screen and (max-width: 480px) {
+    .image-name-preview {
+        display: block;
+    }
+
+    .image-name-preview__box {
+        margin-top: 10px;
+        width: 100%;
+    }
+}

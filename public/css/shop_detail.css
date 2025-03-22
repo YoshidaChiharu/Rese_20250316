@@ -3,8 +3,11 @@
     gap: 8%;
 }
 
+.left-block, .right-block {
+    width: 50%;
+}
+
 .shop-info-section {
-    width: 96%;
     margin-top: 100px;
 }
 
@@ -65,8 +68,15 @@
     white-space: pre-wrap;
 }
 
+.shop-info__review-link {
+    margin-top: 30px;
+}
+
+.shop-info__review-link a {
+    color: black;
+}
+
 .reserve-section {
-    width: 96%;
     background-color: #305dff;
     border-radius: 6px;
     box-shadow: 2px 2px 3px #aaa;
@@ -152,14 +162,7 @@
 }
 
 .review-section {
-    background-color: white;
-    border: solid 1px #aaa;
-    border-radius: 6px;
-    box-shadow: 2px 2px 3px #aaa;
-}
-
-.review-section__heading {
-    padding: 4px;
+    margin-top: 40px;
 }
 
 .heading__text {
@@ -170,38 +173,21 @@
     color: white;
 }
 
-.review-section__body {
-    padding: 14px;
-}
-
-.shop-rating {
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
-
-.shop-rating .image--star {
-    width: 20px;
-}
-
-.shop-rating__value {
-    font-size: 18px;
-    margin-left: 10px;
-}
-
 .review-section__body > div:nth-child(2) {
     margin-top: 14px;
 }
 
-.review-section__body .body-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.review-pagination {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.review-section__heading {
+    text-align: center;
 }
 
 .review-item {
-    padding: 10px 0;
+    padding-bottom: 10px;
     border-top: solid 1px #aaa;
     display: flex;
 }
@@ -210,21 +196,24 @@
     border-bottom: solid 1px #aaa;
 }
 
-.review-item__reviewer {
-    width: 15%;
-}
-
 .review-item__review-content {
-    width: 85%;
+    width: 100%;
 }
 
 .review-item__review-content > div {
-    margin-top: 6px;
+    margin: 6px 0;
 }
 
-.review-content__title {
-    margin: 0;
-    font-size: 18px;
+.review-content__edit-delete {
+    display: flex;
+    justify-content: right;
+    align-items: end;
+    gap: 16px;
+}
+
+.edit-delete__button {
+    font-size: 14px;
+    color: black;
 }
 
 .review-content__rating {
@@ -234,7 +223,8 @@
 }
 
 .review-content__rating .image--star {
-    width: 14px;
+    width: 24px;
+    margin-right: 4px;
 }
 
 .review-date {
@@ -242,61 +232,94 @@
     font-size: 14px;
 }
 
-.review-content__comment {
-    height: auto;
-    max-height: 200px;
-    overflow: hidden;
-    position: relative;
-    transition: max-height 0.6s;
-}
-
 .review-content__comment p {
     white-space: pre-wrap;
 }
 
-.review-content__comment::after {
-    content: "";
-    position: absolute;
+.review-content__image img {
+    width: 100%;
+}
+
+/* 口コミ削除確認モーダル */
+.review-delete-modal {
+    position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
-    display: block;
-    width: 100%;
-    height: 100%;
-    transition: 1s;
-    background: linear-gradient(to bottom, rgba(255,255,255,0) 40%, #fff 95%);
-}
-
-.review-content__comment.show:after,
-.review-content__comment.hidden:after {
-    z-index: -1;
-    opacity: 0;
-}
-
-.review-content__visit-date {
-    font-size: 14px;
-}
-
-.read-more-button {
-    margin: 0 auto;
-    margin-top: 10px;
-    border: none;
-    background-color: unset;
-    font-weight: bold;
-    cursor: pointer;
-    display: block;
-}
-
-.read-more-button.hidden {
+    z-index: 10;
     display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(0 0 0 / 60%);
+}
+
+.review-delete-modal:target {
+    display: flex;
+}
+
+.review-delete-modal-outer {
+    width: 90%;
+    max-width: 400px;
+    max-height: 70%;
+    margin: auto;
+    padding: 20px;
+    background-color: #eee;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.review-delete-modal__message {
+    margin: 0;
+    color: black;
+    font-weight: bold;
+}
+
+.review-delete-modal__message span {
+    color: #D68700;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.review-delete-modal__button-wrapper {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.review-delete-modal__button-wrapper form {
+    width: 40%;
+}
+
+.review-delete-modal__button--submit {
+    width: 100%;
+    padding: 6px 16px;
+    font-size: 14px;
+    text-decoration: none;
+    color: white;
+    background-color: #305dff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.review-delete-modal__button--cancel {
+    width: 40%;
+    padding: 6px;
+    font-size: 14px;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    border: solid 1px black;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 /* ページネーションのカスタマイズ */
-.review-pagenation nav {
+.review-pagination nav {
     display: inline-block;
 }
 
-.review-pagenation ul {
+.review-pagination ul {
     margin: 0;
     border: solid 1px #e0dfde;
     border-radius: 5px;
@@ -304,8 +327,8 @@
     display: flex;
 }
 
-.review-pagenation a,
-.review-pagenation span {
+.review-pagination a,
+.review-pagination span {
     padding: 0 10px;
     text-decoration: none;
     font-size: 16px;
@@ -314,15 +337,15 @@
     cursor: pointer;
 }
 
-.review-pagenation li:not(:last-child) {
+.review-pagination li:not(:last-child) {
     border-right: solid 1px #e0dfde;
 }
 
-.review-pagenation .active {
+.review-pagination .active {
     background-color: #305dff;
 }
 
-.review-pagenation .active span {
+.review-pagination .active span {
     color: white;
 }
 
@@ -332,12 +355,11 @@
         display: block;
     }
 
-    .shop-info-section {
+    .left-block {
         width: 100%;
-        margin-top: 80px;
     }
 
-    .reserve-section {
+    .right-block {
         margin-top: 40px;
         width: 100%;
     }
@@ -352,15 +374,6 @@
 
     .confirm-table td {
         padding-left: 10px;
-    }
-
-    .review-section__body .body-top {
-        display: block;
-    }
-
-    .review-pagenation {
-        margin-top: 10px;
-        text-align: right;
     }
 
     .review-item {

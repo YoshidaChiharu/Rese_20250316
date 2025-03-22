@@ -11,6 +11,15 @@
 @section('content')
 <div class="search-section">
     <form action="" class="search-form">
+        <div class="form__sort">
+            <span>並び替え：</span>
+            <select name="sort" onchange="submit(this.form)">
+                <option value=""></option>
+                <option value="ランダム" {{ $input_sort == 'ランダム' ? 'selected' : '' }}>ランダム</option>
+                <option value="評価が高い順" {{ $input_sort == '評価が高い順' ? 'selected' : '' }}>評価が高い順</option>
+                <option value="評価が低い順" {{ $input_sort == '評価が低い順' ? 'selected' : '' }}>評価が低い順</option>
+            </select>
+        </div>
         <div class="form__area">
             <select name="area" onchange="submit(this.form)">
                 <option value="">All area</option>
@@ -37,7 +46,18 @@
         </div>
     </form>
 </div>
-<div class="pagination">{{ $shops->appends(request()->query())->links('vendor.pagination.default') }}</div>
+<div class="shop-list-top">
+    <div class="search-info">
+        @if($input_sort || $input_area || $input_genre || $input_name)
+        <span>検索情報：</span>
+        @endif
+        @if($input_sort) <span>"{{ $input_sort }}"&nbsp;</span> @endif
+        @if($input_area) <span>"{{ $input_area }}"&nbsp;</span> @endif
+        @if($input_genre) <span>"{{ $input_genre }}"&nbsp;</span> @endif
+        @if($input_name) <span>"{{ $input_name }}"</span> @endif
+        </div>
+    <div class="pagination">{{ $shops->appends(request()->query())->onEachSide(1)->links('vendor.pagination.default') }}</div>
+</div>
 <div class="shop-list-section">
     @foreach($shops as $shop)
     <div class="shop-card">
@@ -62,7 +82,13 @@
                     <img src="{{ asset('img/star_on_gray.svg') }}" class="image--star" alt="star">
                     @endif
                 @endfor
-                <span class="rating-value">{{ $shop->rating }}</span>
+                <span class="rating-value">
+                    @if($shop->rating == 0)
+                    投稿なし
+                    @else
+                    {{ $shop->rating }}
+                    @endif
+                </span>
             </div>
             <div class="card-content__info">
                 <img src="{{ asset('img/speech_bubble_beige.svg') }}" alt="speech_bubble">

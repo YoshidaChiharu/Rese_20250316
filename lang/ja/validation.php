@@ -163,6 +163,12 @@ return [
         'courses.*.duration_minutes' => 'コース時間',
         'courses.*.price' => 'コース金額',
         'reserve_prepayment' => 'お支払い方法',
+        'shop_data.*.owner_id' => '店舗のオーナーID',
+        'shop_data.*.name' => '店舗名',
+        'shop_data.*.area' => '店舗の地域',
+        'shop_data.*.genre' => '店舗のジャンル',
+        'shop_data.*.detail' => '店舗の説明文',
+        'shop_data.*.image' => '店舗の画像ファイル名',
 ],
 
     'values' => [

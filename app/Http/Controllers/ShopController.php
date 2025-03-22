@@ -32,7 +32,29 @@ class ShopController extends Controller
      * @return void
      */
     public function index(Request $request) {
-        $shops = Shop::all();
+        $input_sort = $request->sort;
+        $input_area = $request->area;
+        $input_genre = $request->genre;
+        $input_name = $request->name;
+
+        // 店舗情報取得（"並び替え:ランダム"の場合のみランダム取得）
+        if ($input_sort !== 'ランダム') {
+            $shops = Shop::all();
+        }
+        if ($input_sort === 'ランダム') {
+            // ページネーション表示でない場合に新規seed値生成
+            if ($request->page === null) {
+                session(['random_seed' => time()]);
+            }
+            // ページネーション表示中だがセッションが空の場合に新規seed値生成
+            // （※ブックマークから直接遷移した場合などの対策）
+            if ($request->page !== null && session('random_seed') === null) {
+                session(['random_seed' => time()]);
+            }
+            // セッションのseed値を使ってランダム取得
+            $seed = session('random_seed');
+            $shops = Shop::inRandomOrder($seed)->get();
+        }
 
         // area,genreを抽出してそれぞれ配列作成
         $areas = $shops->pluck('area')->toArray();
@@ -41,9 +63,6 @@ class ShopController extends Controller
         $genres = array_unique($genres);
 
         // 検索処理
-        $input_area = $request->area;
-        $input_genre = $request->genre;
-        $input_name = $request->name;
         if ( !empty($input_area) ) {
             $shops = $shops->where('area', $input_area);
         }
@@ -79,6 +98,20 @@ class ShopController extends Controller
             }
         }
 
+        // 店舗レーティングによるソート
+        if ( !empty($input_sort) ) {
+            if ($input_sort === '評価が高い順') {
+                $shops = $shops->sortByDesc('rating');
+            }
+            if ($input_sort === '評価が低い順') {
+                $shops = $shops->sortBy('rating');
+                list($review_not_empty, $review_empty) = $shops->partition(function($shop){
+                    return ($shop->rating > 0);
+                });
+                $shops = $review_not_empty->merge($review_empty);
+            }
+        }
+
         // ページネーション
         $shops = new LengthAwarePaginator(
             $shops->forPage($request->page, 20),
@@ -94,6 +127,7 @@ class ShopController extends Controller
                 'shops',
                 'areas',
                 'genres',
+                'input_sort',
                 'input_area',
                 'input_genre',
                 'input_name',
@@ -152,11 +186,51 @@ class ShopController extends Controller
         $reserve_max_number = 10;
 
         // 口コミ情報の取得
-        $reviews = $shop->reviews();
-        foreach ($reviews as $review) {
-            $review->review_date = ($review->updated_at)->format('Y-m-d');
-            $review->visit_date = (new Carbon($review->reservation->scheduled_on))->format('Y年m月');
+        $reviews = $shop->reviews->sortByDesc('updated_at');
+
+        // 口コミ「新規登録可能」「編集可能」「削除可能」各フラグの設定
+        // フラグ初期化
+        $review_registerable = false;
+        $reviews->map(function ($review) use ($request) {
+            $review->editable = false;
+            $review->deletable = false;
+            // 管理者は常に削除可能
+            if ($request->user()) {
+                if ($request->user()->role_id === 1) {
+                    $review->deletable = true;
+                }
+            }
+        });
+        // フラグセット
+        $user_id = $request->user()->id ?? null;
+        if ($user_id) {
+            // 該当店舗に対する自身の口コミを取得
+            $my_review = $reviews->filter(function($review) use ($user_id) {
+                return $review->user_id === $user_id;
+            })->first();
+
+            // 編集／削除可能フラグをセット
+            if ($my_review) {
+                $my_review->editable = true;
+                $my_review->deletable = true;
+            }
+
+            // 該当店舗に対する自身の過去予約を取得
+            $reservations = Reservation::where('user_id', $user_id)
+                                        ->where('shop_id', $shop->id)
+                                        ->get();
+            $past_reservations = $reservations->filter(function($reservation) {
+                $datetime = $reservation->scheduled_on . " " . $reservation->start_at;
+                $reservation_start_carbon = new Carbon($datetime);
+                return $reservation_start_carbon < now();
+            });
+
+            // 新規登録可能フラグをセット
+            if ($my_review === null && $past_reservations->isNotEmpty() && $request->user()->role_id === 3) {
+                $review_registerable = true;
+            }
         }
+
         // 口コミ情報のページネーション
         $reviews = new LengthAwarePaginator(
             $reviews->forPage($request->page, 10),
@@ -166,9 +240,6 @@ class ShopController extends Controller
             ['path' => $request->url()],
         );
 
-        // 店舗の評価値を取得
-        $shop_rating = $shop->getShopRating();
-
         return view(
             'shop_detail',
             compact([
@@ -176,7 +247,7 @@ class ShopController extends Controller
                 'reservable_times',
                 'reserve_max_number',
                 'reviews',
-                'shop_rating',
+                'review_registerable',
             ])
         );
     }
@@ -400,38 +471,101 @@ class ShopController extends Controller
     }
 
     /**
+     * 口コミ投稿ページ表示
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     */
+    public function createReview(Request $request) {
+        session(['previous_page' => $request->getRequestUri()]);
+
+        $shop = Shop::find($request->shop_id);
+        $user_id = $request->user()->id;
+
+        // URL直打ちによる不正アクセス防止
+        $reservations = Reservation::where('user_id', $user_id)
+                                    ->where('shop_id', $shop->id)
+                                    ->get();
+        $past_reservations = $reservations->filter(function($reservation) {
+            $datetime = $reservation->scheduled_on . " " . $reservation->start_at;
+            $reservation_start_carbon = new Carbon($datetime);
+            return $reservation_start_carbon < now();
+        });
+
+        if ($past_reservations->isEmpty()) {
+            return redirect('/');
+        }
+
+        // 店舗の「評価値」「レビュー数」「お気に入り数」を算出
+        $shop->rating = $shop->getShopRating();
+        $shop->reviews_quantity = $shop->getReviewsQuantity();
+        $shop->favorites_quantity = $shop->getFavoritesQuantity();
+
+        // お気に入り登録済みかどうかのフラグを設定
+        $shop->favorite_flag = 0;
+        $favorite = Favorite::where('user_id', $user_id)->where('shop_id', $shop->id)->first();
+        if ($favorite) {
+            $shop->favorite_flag = 1;
+        }
+
+        // 口コミ情報を取得
+        $review = Review::where('user_id', $user_id)->where('shop_id', $shop->id)->first();
+
+        return view('store_shop_review', compact(['shop', 'review']));
+    }
+
+    /**
      * 口コミ投稿／更新処理
      *
      * @param ReviewRequest $request
-     * @return void
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function storeReview(ReviewRequest $request) {
+        $user_id = $request->user()->id;
+        $shop_id = $request->shop_id;
+
         try {
-            DB::transaction(function () use ($request) {
-                $review = Reservation::find($request->reservation_id)->review;
-                if ($review) {
-                    // 更新処理
-                    $review->update([
-                        'reservation_id' => $request->reservation_id,
-                        'rating' => $request->rating,
-                        'title' => $request->title,
-                        'comment' => $request->comment,
-                    ]);
-                } else {
-                    // 新規登録処理
-                    Review::create([
-                        'reservation_id' => $request->reservation_id,
-                        'rating' => $request->rating,
-                        'title' => $request->title,
-                        'comment' => $request->comment,
-                    ]);
-                }
-            });
+            $param = [
+                'user_id' => $user_id,
+                'shop_id' => $shop_id,
+                'rating' => $request->rating,
+                'comment' => $request->comment,
+            ];
+
+            if ($request->file('images')) {
+                // サムネイル画像の保存
+                // （※複数ファイル選択時は1つ目の画像を保存）
+                $images = $request->file('images');
+                $image_path = $images[0]->store('public/img');
+                $param['image'] = str_replace("public/", "", $image_path);
+            }
+
+            $review = Review::where('user_id', $user_id)->where('shop_id', $shop_id)->first();
+            // 新規登録
+            if ($review === null) { Review::create($param); }
+            // 既存口コミの更新
+            if ($review) { $review->update($param); }
         } catch (\Exception $e) {
             Log::error($e);
         }
 
-        return redirect('/mypage');
+        return redirect('/detail/'. $shop_id);
+    }
+
+    /**
+     * 口コミ削除処理
+     *
+     * @param Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
+    public function destroyReview(Request $request) {
+        try {
+            Review::find($request->review_id)->delete();
+        } catch (\Exception $e) {
+            Log::error($e);
+        }
+
+        return redirect('/detail/'. $request->shop_id);
     }
 
     /**

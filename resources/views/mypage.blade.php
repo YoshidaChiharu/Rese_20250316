@@ -220,7 +220,6 @@
         <h2 class="list-title">来店履歴</h2>
         <div class="reserve-history-list">
             @foreach($past_reservations as $reservation)
-            @if (Request::get('review_id') != $reservation->id)
             <!-- 通常時 -->
             <div class="reserve-card bg-darkblue">
                 <div class="reserve-card__inner">
@@ -249,100 +248,10 @@
                         </tr>
                     </table>
                 </div>
-                @if(empty($reservation->review))
                 <div>
-                    <button class="reserve-card__button--change button-darkblue" onclick="location.href='/mypage?review_id={{ $reservation->id }}'">口コミを投稿する</button>
+                    <button class="reserve-card__button--change button-darkblue" onclick="location.href='/detail/{{ $reservation->shop->id }}'">店舗詳細＆口コミ</button>
                 </div>
-                @else
-                <div class="reserve-card__review">
-                    <p class="review__heading">評価：{{ $reservation->review->rating }}</p>
-                    <div class="review_stars">
-                        @for ($i=1; $i<=5 ; $i++)
-                            @if($i <=$reservation->review->rating)
-                            <img src="{{ asset('img/star_on_gold.svg') }}" class="review__image--star" alt="star">
-                            @else
-                            <img src="{{ asset('img/star_on_gray.svg') }}" class="review__image--star" alt="star">
-                            @endif
-                            @endfor
-                    </div>
-                    <p class="review__heading">タイトル</p>
-                    <p class="review__title">{{ $reservation->review->title ?? 'なし' }}</p>
-                    <p class="review__heading">コメント</p>
-                    <p class="review__comment">{{ $reservation->review->comment ?? 'なし' }}</p>
-                    <button class="read-more-button" id="button">▼ もっと見る ▼</button>
-                </div>
-                <div>
-                    <button class="reserve-card__button--change button-darkblue" onclick="location.href='/mypage?review_id={{ $reservation->id }}'">口コミを編集する</button>
-                </div>
-                @endif
             </div>
-            @else
-            <!-- 口コミ投稿時 -->
-            <div class="reserve-card bg-orange">
-                <form action="/mypage/review" method="post">
-                    @csrf
-                    <div class="reserve-card__inner">
-                        <div class="reserve-card__title">
-                            <div>
-                                <img class="reserve-card__image--dish" src="{{ asset('img/dish.svg') }}" alt="dish">
-                                <span>履歴{{ $loop->iteration }}：口コミ投稿</span>
-                            </div>
-                        </div>
-                        <table class="reserve-card__table">
-                            <tr>
-                                <th>Shop</th>
-                                <td>{{ $reservation->shop->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>Date</th>
-                                <td>{{ $reservation->scheduled_on }}</td>
-                            </tr>
-                            <tr>
-                                <th>Time</th>
-                                <td>{{ $reservation->start_at }}</td>
-                            </tr>
-                            <tr>
-                                <th>Number</th>
-                                <td>{{ $reservation->number }}人</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="reserve-card__review">
-                        <input type="hidden" name="reservation_id" value="$reservation->id">
-                        <input type="hidden" id="rating" name="rating" value="{{ $reservation->review->rating ?? '0' }}">
-                        <span class="review__heading text-orange">評価</span>
-                        <div class="review_stars">
-                            @for ($i=1; $i<=5 ; $i++)
-                                @if($i <=($reservation->review->rating ?? 0))
-                                <input type="image" class="review__input--star" src="{{ asset('img/star_on_gold.svg') }}" alt="star" value="{{ $i }}" onclick="return changeStar(this.value)">
-                                @else
-                                <input type="image" class="review__input--star" src="{{ asset('img/star_off_gold.svg') }}" alt="star" value="{{ $i }}" onclick="return changeStar(this.value)">
-                                @endif
-                                @endfor
-                        </div>
-                        <p class="review__heading text-orange">タイトル（任意）</p>
-                        <input class="review__input" type="text" name="title" value="{{ old('title') ?? $reservation->review->title ?? '' }}">
-                        <p class="review__heading text-orange">コメント（任意）</p>
-                        <textarea class="review__input" name="comment" rows="5">{{
-                            old('comment') ?? $reservation->review->comment ?? '' }}</textarea>
-                        @if (count($errors) > 0)
-                        <div class="reserve-card__error">
-                            <span>※入力エラー</span>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{$error}}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
-                    </div>
-                    <div>
-                        <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
-                        <button class="reserve-card__button--change button-orange" id="js-submit-button">送信</button>
-                    </div>
-                </form>
-            </div>
-            @endif
             @endforeach
         </div>
     </div>
@@ -374,7 +283,13 @@
                                 <img src="{{ asset('img/star_on_gray.svg') }}" class="image--star" alt="star">
                                 @endif
                                 @endfor
-                                <span class="rating-value">{{ $shop->rating }}</span>
+                                <span class="rating-value">
+                                    @if($shop->rating == 0)
+                                    投稿なし
+                                    @else
+                                    {{ $shop->rating }}
+                                    @endif
+                                </span>
                     </div>
                     <div class="card-content__info">
                         <img src="{{ asset('img/speech_bubble_beige.svg') }}" alt="speech_bubble">
