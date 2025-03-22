@@ -32,7 +32,29 @@ class ShopController extends Controller
      * @return void
      */
     public function index(Request $request) {
-        $shops = Shop::all();
+        $input_sort = $request->sort;
+        $input_area = $request->area;
+        $input_genre = $request->genre;
+        $input_name = $request->name;
+
+        // 店舗情報取得（"並び替え:ランダム"の場合のみランダム取得）
+        if ($input_sort !== 'ランダム') {
+            $shops = Shop::all();
+        }
+        if ($input_sort === 'ランダム') {
+            // ページネーション表示でない場合に新規seed値生成
+            if ($request->page === null) {
+                session(['random_seed' => time()]);
+            }
+            // ページネーション表示中だがセッションが空の場合に新規seed値生成
+            // （※ブックマークから直接遷移した場合などの対策）
+            if ($request->page !== null && session('random_seed') === null) {
+                session(['random_seed' => time()]);
+            }
+            // セッションのseed値を使ってランダム取得
+            $seed = session('random_seed');
+            $shops = Shop::inRandomOrder($seed)->get();
+        }
 
         // area,genreを抽出してそれぞれ配列作成
         $areas = $shops->pluck('area')->toArray();
@@ -41,10 +63,6 @@ class ShopController extends Controller
         $genres = array_unique($genres);
 
         // 検索処理
-        $input_sort = $request->sort;
-        $input_area = $request->area;
-        $input_genre = $request->genre;
-        $input_name = $request->name;
         if ( !empty($input_area) ) {
             $shops = $shops->where('area', $input_area);
         }
@@ -80,10 +98,11 @@ class ShopController extends Controller
             }
         }
 
-        // ソート処理
+        // 店舗レーティングによるソート
         if ( !empty($input_sort) ) {
-            if ($input_sort === 'ランダム') { $shops = $shops->shuffle(); }
-            if ($input_sort === '評価が高い順') { $shops = $shops->sortByDesc('rating'); }
+            if ($input_sort === '評価が高い順') {
+                $shops = $shops->sortByDesc('rating');
+            }
             if ($input_sort === '評価が低い順') {
                 $shops = $shops->sortBy('rating');
                 list($review_not_empty, $review_empty) = $shops->partition(function($shop){
