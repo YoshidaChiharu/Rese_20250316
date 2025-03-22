@@ -21,7 +21,6 @@
 
 - 開発環境：[http://localhost/](http://localhost/)
     - phpMyAdmin：[http://localhost:8888/](http://localhost:8888/)
-- 本番環境：[http://ec2-57-180-170-88.ap-northeast-1.compute.amazonaws.com](http://ec2-57-180-170-88.ap-northeast-1.compute.amazonaws.com)
 
 ## 機能一覧
 
@@ -55,7 +54,11 @@
 - 店舗代表者 : 自店舗の予約一覧参照
 - 店舗代表者 : 予約の詳細情報の参照
 - 店舗代表者 : 予約情報の編集
-- 店舗代表者 : 予約情報の削除（決済済み予約の場合は同時に返金処理を実行）
+- 店舗代表者 : 予約情報の削除（決済済み予約の場合は同時に返金処理を実行）\
+↓ Pro入会テスト用追加機能
+- 口コミ投稿機能（Pro入会テスト用に再実装）
+- 店舗一覧ソート機能
+- csvインポートによる店舗一括登録機能
 
 ## 使用技術一覧
 
@@ -87,63 +90,59 @@ cd docker-template-LEMP-supervisor-cron
 ```
 mkdir src
 ```
-3. **srcディレクトリのパーミッションを変更**
-```
-sudo chmod 777 src
-```
-4. **ディレクトリを移動し、本プロジェクトのリモートリポジトリをクローンする**
+3. **ディレクトリを移動し、本プロジェクトのリモートリポジトリをクローンする**
 ```
 cd src
 ```
 ```
 git clone git@github.com:YoshidaChiharu/Rese_20250316.git
 ```
-5. **ディレクトリ名を変更**
+4. **ディレクトリ名を変更**
 ```
 sudo mv Rese_20250316 Rese
 ```
-6. **ディレクトリを移動し、Dockerコンテナを作成**
+5. **ディレクトリを移動し、Dockerコンテナを作成**
 ```
 cd ..
 ```
 ```
 docker-compose up -d --build
 ```
-7. **`composer install` コマンドでパッケージをインストール**
+6. **`composer install` コマンドでパッケージをインストール**
 ```
 docker-compose exec php-fpm bash
 ```
 ```
 composer install --ignore-platform-req=ext-bcmath
 ```
-8. **.envファイルを作成**
+7. **.envファイルを作成**
 ```
 cp .env.local .env
 ```
-9. **アプリケーションキーを生成**
+8. **アプリケーションキーを生成**
 ```
 php artisan key:generate
 ```
-10. **シンボリックリンクの作成**
+9. **シンボリックリンクの作成**
 ```
 php artisan storage:link
 ```
-11. **テーブル作成**
+10. **テーブル作成**
 ```
 php artisan migrate
 ```
-12. **ダミーデータ作成**
+11. **ダミーデータ作成**
 ```
 php artisan db:seed
 ```
-13. **パーミッションを変更**
+12. **パーミッションを変更**
 ```
 chmod -R 777 *
 ```
 ```
 chmod -R 2777 storage/
 ```
-14. **Dockerコンテナを再起動**
+13. **Dockerコンテナを再起動**
 ```
 exit
 ```
@@ -163,5 +162,35 @@ docker-compose restart
     ※上記２つのアカウントのみメール認証無しでログイン出来るようにしております。動作確認にご使用下さい
 - Stripeテスト用クレジットカード\
     [https://docs.stripe.com/testing?locale=ja-JP#cards](https://docs.stripe.com/testing?locale=ja-JP#cards)
+- Pro入会テスト追加機能に関する補足説明
+    - 口コミ機能
+        - 来店日時を過ぎた予約履歴が有る場合のみ口コミ可能となっております
+        - 以下手順にて確認可能です<br>
+          1.一般ユーザーアカウントで任意店舗に予約を登録する<br>
+          2.店舗代表者ダミーアカウントにて管理ページにアクセス（メニュー内「administration page」項目）<br>
+          3.「予約一覧」から該当店舗を選択<br>
+          4.予約カレンダーから予約日を選び、下部「タイムスケジュール」にて該当予約の詳細ページに遷移（左端「予約1」などから遷移可能）<br>
+          5.「編集」にて予約を過去の日付に変更<br>
+          6.手順1のアカウントに戻し、該当店舗の詳細ページに遷移（マイページの「来店履歴」からも遷移可能）
+        - 店舗の評価値については、「食べログ」等の仕様を参考に "3.00" を基準値として徐々に変動する形で実装しております（☆5評価を一つ入れただけで店舗評価が "5.00" とはならない）
+    - 店舗一覧ソート機能
+        - ランダムソートについては、ページネーション中（2/4ページ目表示中など）のみ並びを固定するように実装しております（ページ切り替え後に同じ店舗が表示される事を防ぐ為）
+    - csvインポート機能
+        - 管理者アカウントでログイン後のメニュー＞「administration page」＞「店舗一括登録」ページに実装しております<br>
+          [http://localhost/admin/register_shop_from_csv](http://localhost/admin/register_shop_from_csv)
+        - プロジェクトフォルダ配下に以下動作確認用ファイルを用意しておりますのでご活用ください<br>
+          shop_data_test.csv        ※通常動作確認用（10店舗一括登録）<br>
+          shop_data_error.csv       ※バリデーションエラー確認用（多数記述ミス）<br>
+          shop_data_error_02.csv    ※バリデーションエラー確認用（店舗情報なし）<br>
+          shop_image_01.jpg<br>
+          shop_image_02.jpg<br>
+          shop_image_03.jpg<br>
+          shop_image_04.jpg<br>
+          shop_image_05.jpg<br>
+          shop_image_06.jpg<br>
+          shop_image_07.jpg<br>
+          shop_image_08.jpg<br>
+          shop_image_09.jpg<br>
+          shop_image_10.jpg
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
