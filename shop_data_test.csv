@@ -1,0 +1,11 @@
+owner_id,name,area,genre,detail,image
+2,csvインポートテスト_01,福岡県,寿司,csvインポートテスト_01_説明文,shop_image_01.jpg
+2,csvインポートテスト_02,東京都,イタリアン,csvインポートテスト_02_説明文,shop_image_02.jpg
+2,csvインポートテスト_03,東京都,焼肉,csvインポートテスト_03_説明文,shop_image_03.jpg
+2,csvインポートテスト_04,大阪府,寿司,csvインポートテスト_04_説明文,shop_image_04.jpg
+2,csvインポートテスト_05,福岡県,居酒屋,csvインポートテスト_05_説明文,shop_image_05.jpg
+2,csvインポートテスト_06,東京都,ラーメン,csvインポートテスト_06_説明文,shop_image_06.jpg
+2,csvインポートテスト_07,東京都,焼肉,csvインポートテスト_07_説明文,shop_image_07.jpg
+2,csvインポートテスト_08,大阪府,イタリアン,csvインポートテスト_08_説明文,shop_image_08.jpg
+2,csvインポートテスト_09,東京都,ラーメン,csvインポートテスト_09_説明文,shop_image_09.jpg
+2,csvインポートテスト_10,大阪府,居酒屋,csvインポートテスト_10_説明文,shop_image_10.jpg
